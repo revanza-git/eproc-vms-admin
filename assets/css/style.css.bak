@@ -1,0 +1,1591 @@
+body{
+	color: #4C5760;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+}
+ol,ul{
+	list-style: none;
+}
+a{
+	color: #0091D2;
+} 
+form{
+	margin: 0;
+}
+.col-14{
+	width: 25%;
+	display: inline-block;
+	padding: 0px 15px;
+	float: left;
+	box-sizing: border-box;
+}
+.col-34{
+	width: 75%;
+	display: inline-block;
+	padding: 0px 15px;
+	float: left;
+	box-sizing: border-box;
+}
+.main{
+	min-height: 500px;
+}
+#emailTambah{
+	display: none;
+}
+.mainInner{
+	display: table;
+    width: 100%;
+    min-height: 500px;
+    table-layout: fixed;
+}
+.mainInner .container{
+	display: table-row;
+}
+	.yt-loader{
+	height: 3px;
+	width: 100;
+	display: block;
+	background: blue;
+}
+.colorBox{
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+}
+.graphBar{
+	margin-bottom: 20px;
+	position: relative;
+}
+.graph{
+	display: inline-block;
+	background-color: blue;
+	height: 20px;
+	float: left;
+	cursor: pointer;
+}
+.graphBarGroup{
+	display: inline-block;
+	position: relative;
+}
+.graphLegend{
+	width: 20%;
+	display: inline-block;
+	float: left;
+}
+.graphWrap,
+.graphWrapLine
+{
+	width: 100%;
+	display: inline-block;
+}
+.graphWrapLine{
+	position: absolute;
+	top: 7px;
+}
+.graphWrapLine .graph{
+	height: 8px;
+	   
+
+}
+.graphWrap .graph,
+.graphWrapLine .graph{
+	
+}
+.graphLegend p,
+.graphWrap p{
+	margin: 5px 0px;
+}
+.graphWrap .graph{
+	height: 30px;
+}
+.graphWrapLine .graph{
+	height: 15px;
+}
+.msgBlock{
+	padding: 10px;
+	border: 1px solid #cfcfcf;
+	margin-bottom: 20px;
+}
+.msgBlock ul{
+	padding: 0;
+	list-style: none;
+}
+.msgBlock.successVer{
+	border: #1E824C 1px solid;
+    color: #1E824C;
+    padding: 10px 10px;
+    background-color: rgb(224, 238, 230);
+}
+.msgBlock.warnVer{
+    border: #f39c12 1px solid;
+    color: #f39c12;
+    padding: 10px 10px;
+    background-color: rgba(243, 156, 18, 0.09);
+}
+.msgBlock.warnVer a{
+	color: #f39c12;
+	margin-bottom: 2px;
+}
+.msgBlock.errorVer{
+    border: #c0392b 1px solid;
+    color: #c0392b;
+    padding: 10px 10px;
+    background-color: rgba(192, 57, 43, 0.09);
+}
+.msgBlock.errorVer a{
+	color: #c0392b;
+	margin-bottom: 2px;
+}
+.input-form input[type="checkbox"],
+.input-form input[type="radio"]{
+	width: 13px;
+    height: 13px;
+    padding: 0;
+    margin: 0;
+    vertical-align: bottom;
+    position: relative;
+    top: -6px;
+}
+.actionBlock .fa{
+	margin-right: 5px;
+}
+.actionBlock button[type='submit']{
+	color: #0091D2;
+	background: none;
+	border: none;
+}
+/*=================
+	Header Area
+=================*/
+.header{
+	border-bottom: 1px solid #DCDCDC;
+}
+.header .container{
+	padding: 0 60px;
+}
+.logo{
+	display: block;
+	float: left;
+	margin: 20px 0px;
+}
+.logo img{
+	
+	height: 60px;
+}
+.backButton{
+	display: block;
+	float: right;
+}
+.backButton a{
+	text-decoration: none;
+	vertical-align: bottom;
+	color: #667E8A;
+}
+.backButton ul{
+
+}
+.ddMenu{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.ddMenu > li{
+	display: inline-block;
+	float: left;
+	display: relative;	
+}
+.ddMenu > li a{
+	padding:0px 10px;
+}
+.ddMenu > li.fl a{
+	
+	border-right: 1px solid #667E8A;
+}
+.ddMenu  > li .ddSubMenu{
+	display: none;
+}
+.ddMenu:hover > li .ddSubMenu{
+	display: block;
+	}
+.ddMenu .fa {
+    padding-right: 5px;
+}
+
+/*=================
+	Admin Page
+==================*/
+.navMenu{
+	margin: 0;
+	padding: 0;
+	height: 100px;
+}
+.navMenu li{
+	display: inline-block;
+	position: relative;
+	float: left;
+	padding: 50px 0;
+}
+.navMenu > li > a{
+	padding: 0px 20px;
+	border-right: 1px solid #667E8A;
+}
+.navMenu li.last a{
+	border-right: none;
+}
+.navMenu .navMenuDD{
+	position: absolute;
+	padding: 0;
+	top:80px;
+	display: none;
+	-moz-box-shadow: 0px 0px 1px #888;
+    -webkit-box-shadow: 0px 0px 1px #888;
+    box-shadow: 0px 0px 1px #888;
+    border: 1px solid #cfcfcf;
+    z-index: 99;
+}
+.navMenu > li:hover > .navMenuDD{
+	display: block;
+}		
+.navMenu .navMenuDD li{
+	height: 30px;
+	line-height: 30px;
+	padding: 10px;
+	width: 250px;
+	background: #fff;
+	
+}
+
+.loginInfo{
+    color: #ECECEC;
+    text-align: center;
+    padding: 0px 20px;
+    margin-top: 100px;
+}
+.loginInfo h2{
+	font-weight: normal;
+
+}
+
+.tab {
+    padding: 0px 20px;
+}
+.tab .tabNav{
+	margin-bottom: 0;
+}
+.tab .tabNav ul{
+	margin: 0;
+	background-color: #1E8BC3;
+	/* border: 1px #1E8BC3 solid; */
+    padding: 0;
+}
+.tab .tabNav ul li{
+	display: inline-block;
+	padding: 10px;
+}
+.tab .tabNav ul li.active{
+	background-color: #ecf0f1;
+}
+.tab .tabNav ul li a{
+	color: #fff;
+	text-decoration: none;
+}
+.tab .tabNav ul li a:hover{
+	opacity:0.7;
+}
+.tab .tabNav ul li.active a{
+	color: #2c3e50;
+}
+.tab.procView{
+	padding: 0px;
+}
+
+.pengadaanStep label{
+	display: block;
+	padding: 10px;
+	border: 1px solid #cdcdcd;
+	cursor: pointer;
+}
+.pengadaanStep label:hover{
+	background: #cdcdcd;
+}
+.pengadaanStep label input{
+	float: right;
+}
+/*=================
+	Login Page
+==================*/
+.bgSh{
+	width: 600px;
+    margin: 100px auto 0px;
+    padding-bottom: 100px;
+}
+.loginTitle{
+	margin-bottom: 40px;
+}
+.loginTitle h1{
+	font-weight: 100;
+	text-align: center;
+	margin-bottom: 0px;
+}
+.loginTitle p{
+	margin: 0;
+	text-align: center;
+	font-size: 0.8em;
+}
+.loginBox{
+	margin: 0 auto;
+}
+.logoLogin{
+	margin: 0 auto;
+}
+.logoLogin img{
+	display: block;
+    margin: 0 auto;
+    height: 100px;
+}
+.formLogin{
+	margin: 0 auto;
+    width: 300px;
+    padding: 0px 0px 0px 20px;
+    box-sizing: border-box;
+        margin-top: 50px;
+}
+
+.form-group{
+	margin: 10px 0px;
+}
+.form-group label{
+	display: block;
+}
+.form-group input{
+	height: 30px;
+	width: 100%;
+}
+.btnBlue{
+    background: #27ae60;
+    border: none;
+    border-bottom: 2px solid #1D7B45;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 100px;
+    height: 30px;
+    text-align: center;
+    text-decoration: none;
+    line-height: 30px;
+    float: right;
+    margin-left: 10px;
+}
+.errorMsg {
+    border: 1px solid #FF3F11;
+    color: #FF3F11;
+    background-color: #FFC7BA;
+    font-size: 12px;
+    text-align: center;
+    padding: 10px;
+}
+/*=================
+	Register Area
+=================*/
+.registerBlock{
+	padding: 20px 0px;
+	width: 960px;
+	margin: 0 auto;
+}
+.formHeader{
+	font-weight: 100;
+	text-transform: capitalize;
+}
+tr.input-form td{
+	line-height: 25px;
+	padding-bottom: 10px;
+	vertical-align: top;
+	max-width: 720px;
+	text-align: left;
+}
+.input-form{
+	margin-bottom: 15px;
+	clear: both;
+	font-size: 12px;
+}
+.input-form label{
+	display: inline-block;
+	width: 200px;
+}
+.input-form label.lbform{
+	width: initial;
+	margin-right: 10px;
+}
+.input-form input[type=text] ,.input-form input[type=password],.input-form textarea{
+	vertical-align: middle;
+	width: 250px;
+}
+.input-form input,.input-form select{
+	height: 25px;
+
+}
+.leftRegBox{
+	display: inline-block;
+    width: 50%;
+    float: left;
+    clear: left;
+}
+.rightRegBox{
+    width: 50%;
+    display: inline-block;
+    float: right;
+    clear: right;
+}
+.rightRegBox p{
+	margin-top: 0px;
+}
+.buttonRegBox{
+	clear:both;
+	text-align: right;
+    padding-top: 30px;
+    line-height: 30px;
+}
+.buttonRegBox input[type='submit']{
+	min-width: 100px;
+	height: 30px;
+}
+.notifReg{
+	font-size:11px;
+}
+.notifReg i{
+	float: left;
+}
+.errorForm{
+	font-size: 12px;
+	color: red;
+}
+.input-form input.col-14,
+.input-form select.col-14{
+	width: 25%;
+    padding: initial;
+}
+.input-form input.col-24,
+.input-form select.col-24{
+	width: 50%;
+    padding: initial;
+}
+.input-form input.col-34,
+.input-form select.col-34{
+	width: 75%;
+    padding: initial;
+}
+.dbBlock{
+	display: inline-block;
+	padding: 10px;
+} 
+.col-lg-24{
+	width: 25%;
+	
+}
+.linkBlock{
+	display: inline-block;
+	float: left;
+	text-decoration: none;
+	color: #fff;
+	padding: 0px 10px;
+}
+.dbBlock{
+	width: 100%;
+	box-sizing: border-box;
+}
+.dbBlock .title{
+	display: block;
+	clear: both;
+	text-transform: uppercase;
+	font-weight: bold;
+	clear: both;
+	padding: 10px 0;
+	margin: 0;
+}
+.iconBlock{
+	display: inline-block;
+    float: left;
+    font-size: 30px;
+    height: 60px;
+    line-height: 60px;
+    margin-right: 10px;
+    text-align: center;
+    vertical-align: middle;
+    width: 60px;
+}
+.iconBlock i{
+	line-height: 60px;
+}
+.totalBlock{
+	display: inline-block;
+	float: right;
+    height: 40px;
+    text-align: center;
+    width: 60px;
+}
+.totalBlock span{
+	line-height: 40px;
+	font-size: 30px;
+}
+.totalBlock p{
+	margin: 0;
+}
+.nephritisBlock{
+	background-color: #27ae60;
+    color: #fff;
+}
+.pumpkinBlock{
+	background-color: #d35400;
+    color: #fff;
+}
+.belizeBlock{
+	background-color: #2980b9;
+    color: #fff;
+}
+.orangeAtt{
+	background-color: #f39c12;
+	padding: 10px;
+	display: inline-block;
+	color: #fff;
+}
+.nephritisAtt{
+	background-color: #27ae60;
+	display: inline-block;
+	color: #fff;
+	padding: 10px;
+}
+.pomegranateAtt{
+	background-color: #c0392b;
+	display: inline-block;
+	color: #fff;
+	padding: 10px;
+}
+.input-form img{
+	display: block;
+}
+.input-form label{
+	line-height: 25px;
+	float: left;
+}
+/*=================
+	Dashboard Area
+=================*/
+.sideArea{
+	min-width: 269px;
+	width: 20%;
+	background-color: #c0392b;
+	display: table-cell;
+	vertical-align: top;
+	min-height: 500px;
+	box-sizing: border-box;
+}
+.formDashboard{
+	width: 600px;
+	margin-bottom: 20px;
+}
+.user-details{
+	height: 100px;
+}
+.listMenu{
+	list-style: none;
+	padding: 0;
+	margin: 0px;
+}
+.listMenu li{
+	height: 50px;
+}
+.listMenu li:hover,
+.listMenu li.selectedMenu
+{
+	background: #e74c3c;
+    border-left: 5px solid #751006;
+}
+.listMenu li.active{
+	background: #e74c3c;
+    border-left: 5px solid #751006;
+}
+.listMenu li a{
+	color: #ECECEC;
+    text-decoration: none;
+    text-transform: capitalize;
+    font-weight: bold;
+    line-height: 50px;
+    padding-left: 20px;
+    height: 100%;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+.listMenu li.waitBtn{
+	background: #e67e22;
+}
+.listMenu li.waitBtn:hover{
+	background: #d35400;
+	border-left: none;
+}
+.mainArea{
+	
+	vertical-align: top;
+	width: 80%;
+	padding: 30px;
+	display: table-cell;
+	box-sizing: border-box;
+	position: relative;
+}
+.btnTopGroup .btnBlue{
+	float: left;
+	margin: 0px 0px 20px;
+	    margin-right: 5px;
+}
+.msgSuccess{
+	width: 100%;
+    margin: 0px 0px 20px;
+    border: #1E824C 1px solid;
+    color: #1E824C;
+    font-weight: bold;
+    padding: 10px 10px;
+    background-color: rgb(224, 238, 230);
+    box-sizing: border-box;
+}
+.noticeMsg{
+	width: 100%;
+    margin: 0px 0px 10px;
+    border: #f1c40f 1px solid;
+    color: #d35400;
+    font-weight: bold;
+    padding: 10px 10px;
+    background-color: rgb(251, 239, 238);
+     box-sizing: border-box;	
+}
+.errorMsg{
+	width: 100%;
+    margin: 0px 0px 10px;
+    border: #e74c3c 1px solid;
+    color: #c0392b;
+    text-align: left;
+    font-weight: bold;
+    padding: 10px 10px;
+    box-sizing: border-box;	
+}
+.boxThree{
+	padding: 10px;
+	border: 1px solid #BDC3C7;
+	width: 33.3333%;
+}
+.tableData{
+	min-width: 100%;
+}
+.tableData td{
+	white-space: nowrap;
+}
+.tableData thead{
+	border-bottom: 2px solid #1E8BC3;
+}
+.tableData thead tr td{
+	/*background-color: #1E8BC3;*/
+	padding: 20px 15px;
+	
+}
+.tableData > tbody > tr > td{
+	
+	padding: 20px 15px;
+	font-size: 12px;
+	border-bottom: 1px solid #DCDCDC;
+
+}
+.tableData tbody tr td.noData{
+	text-align: center;
+}
+
+.tableData thead tr td a,
+.tableData thead tr td{
+	color: #1E8BC3;
+	font-size: 12px;
+	text-decoration: none;
+	color: #7B7B7B;
+	font-weight: bold;
+}
+.tableData thead tr td{
+	border-right: 1px solid #E6E6E6;
+    border-left: 1px solid #E6E6E6;
+    border-top: 1px solid #E6E6E6;
+}
+.tableData thead tr td:hover {
+    background-color: #E6E6E6;
+    cursor: pointer;
+}
+.tableData thead tr td a{
+	
+	color: #1E8BC3;
+	font-size: 12px;
+	text-decoration: none;
+}
+.tableData .fa-sort-desc{
+	text-align: center;
+    vertical-align: top;
+    display: inline-block;
+    line-height: 10px;
+    padding-left: 5px;
+}
+.tableData .fa-sort-asc{
+	text-align: center;
+    vertical-align: bottom;
+    display: inline-block;
+    line-height: 10px;
+    padding-left: 5px;
+}
+.tableWrapper{
+	overflow-y: hidden;
+    overflow-x: auto;
+}
+.tableHeader{
+	overflow: hidden;
+    margin-bottom: 10px;
+}
+.tab .tableWrapper{
+	padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #E6E6E6;
+    /*border-top: none;*/
+}
+.suggestionList{
+    position: absolute;
+    width: 200px;
+}
+.suggestionList ul{
+	margin: 0;
+	background: #fff;
+	padding: 0;
+	-moz-box-shadow: 0px 0px 1px #888;
+    -webkit-box-shadow: 0px 0px 1px #888;
+    box-shadow: 0px 0px 1px #888;
+    border: 1px solid #cfcfcf;
+}
+.suggestionList ul li{
+	line-height: 30px;
+	cursor: pointer;
+	list-style: none;
+	padding: 0 10px;
+}
+.suggestion input{
+	height: 30px;
+}
+.suggestionInput{
+	font-size: 12px;
+	padding: 5px;
+}
+.suggestionGroup{
+	display: inline-block;
+    float: right;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.suggestionGroup > *{
+	display: inline-block;
+
+}
+.suggestionSubmit{
+	background: transparent;
+	border: none;
+	color: #1E8BC3;
+}
+.scoreTable tr td{
+	padding: 12px 20px;
+}
+.scoreTable .doubleBorder td{
+	border: 1px solid #95a5a6;
+    background: #95a5a6;
+    color: #fff;
+}
+
+.borderQuest td{
+	border: 1px solid #95a5a6;
+}
+.borderQuest td.radioQuest{
+	border-top: none;
+	border-bottom: none;
+}
+.borderQuest:last-child td.radioQuest{
+	border-top: none;
+	border-bottom: 1px solid #95a5a6;
+}
+.evalQuest td{
+	border: 1px solid #95a5a6;
+}
+.scoreTable tr td.textQuestLv2{
+	padding-left: 60px;
+	font-size: 12px;
+}
+.scoreTable tr td.textQuestLv1{
+	padding-left: 40px;
+	font-size: 14px;
+	font-weight: bold;
+	
+}
+.subTotalQuest{
+	border: 1px solid #95a5a6;
+}
+.totalAllQuest{
+	background: #2c3e50;
+	color: #fff;
+}
+.winTable label{
+	line-height: 40px;
+	height: 100%;
+	display: block;
+	cursor: pointer;
+	background: #bdc3c7;
+	color: #fff;
+	padding-left: 30px;
+}
+.winTable label.winner{
+	background: #27ae60;
+}
+.winTable label .fa{
+	line-height: 40px;
+    padding-left: 20px;
+    color: #f1c40f;
+}
+
+.filter .filterHeader{
+	color: #1E8BC3;
+    text-decoration: none;
+    text-align: right;
+}
+.filter .filterHeader .filterBtn{
+	padding: 10px;
+	display: inline-block;
+	cursor: pointer;
+}
+.filter .groupFilterArea{
+	display: none;	
+}
+.filterArea{
+	padding: 10px;
+	width: 400px;
+	display: inline-block;
+	float: left;
+	margin-bottom: 10px;
+	border: 1px solid #cfcfcf;
+}
+
+.filterArea .filterForm{
+	width: 100%;
+}
+.filterInput{
+	margin-bottom: 10px;
+}
+
+.filterForm{
+	max-height: 200px;
+    overflow: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.addFilterGroup{
+	margin-left: 5px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+.removeFilterGroup,.removeFilterGroupDate{
+	color: #c0392b;
+}
+.groupFilterArea{
+	width: 100%;
+	display: inline-block;
+	padding: 10px;
+	box-sizing: border-box;
+    border: 1px solid #cdcdcd;
+    margin-bottom: 20px;
+}
+.hiddenFilter{
+	display: none;
+}
+.groupForm{
+	border: 1px solid #cfcfcf;
+	margin-top: -1px;
+}
+
+.groupFormHeader label{
+	cursor: pointer;
+}
+.groupFormHeader i{
+	float: right;
+}
+.groupFormHeader {
+    padding: 10px;
+    border-bottom: 1px solid #cfcfcf;
+}
+.groupFormHeader:hover{
+	background:  #cfcfcf;
+	cursor: pointer;
+}
+.groupForm .groupFormContent{
+	padding: 10px;
+	display: none;
+}
+.groupFieldBlock{
+	margin: 10px 0px;
+	border-bottom: 1px solid #cfcfcf;
+}
+.groupFieldBlock:last-child{
+	border-bottom: none;
+}
+
+.dateWrap{
+	display: inline-block;
+	float: left;
+}
+.dateWrap .groupFieldBlock{
+	margin-right: 10px;
+	display: inline-block;
+}
+.dateWrap .groupFieldBlock label{
+	width: 150px;
+}
+.addFilterGroupDate{
+	margin: 14px 5px;
+    float: left;
+    display: inline-block;
+}
+.removeFilterGroupDate{
+	margin: 14px 5px;
+    float: left;
+    display: inline-block;
+}
+.groupFieldBlock label{
+	width: 200px;
+	display: inline-block;
+	float: left;
+}
+.groupFieldBlock .dekodr-calendar{
+	float: left;
+}
+.groupFieldInput{
+	display: inline-block;
+	width: 925px;
+}
+.groupFieldInput input,
+.groupFieldInput select{
+	margin-right: 10px;
+}
+.groupFieldWrap{
+	display: inline-block;
+}
+.groupFieldWrap input,
+.groupFieldWrap select{
+	margin-bottom: 10px;
+}
+.pageNumber .navNumber{
+	text-align: center;
+}
+.pageNumber .pagination{
+	list-style: none;
+}
+.pagination li {
+    display: inline-block;
+    padding: 10px;
+}
+.pagination .active a {
+    font-weight: bold;
+}
+.pagination a {
+    text-decoration: none;
+}
+.progressBar{
+	margin-bottom: 20px;
+}
+.progressBar a{
+	text-decoration: none;
+}
+.progressBar ul{
+	list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.progressBar ul li{
+	padding: 0px 15px;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 3px solid #DCDCDC;
+	text-align: center;
+
+}
+.progressBar ul li:hover{
+	background: #E6E6E6;
+	cursor: pointer;
+}
+.progressBar ul li.active{
+	border-bottom: 3px solid #1E8BC3;
+}
+.progressBar ul li a{
+	font-weight: bold;
+}
+
+/*=================
+	K3 Area
+=================*/
+.capK3{
+	margin-bottom: 15px;
+}
+.panel-group{
+	margin-bottom: 15px;
+}
+.panel{
+	margin-bottom: 15px;
+    border: 1px solid #cfcfcf;
+    padding: 15px;
+}
+.panel,
+.panel-body{
+    border: 1px solid #cfcfcf;
+}
+.panel .panel-heading,
+.panel .panel-body{
+	padding: 15px;
+    margin-bottom: 15px;
+}
+.tambahBtn{
+	text-align: right;
+}
+.tambahBtn a{
+	text-decoration: none;
+}
+.panel .panel-heading h3,
+.panel .panel-body h4{
+	margin: 0;
+}
+.fieldPanel{
+	margin-bottom: 15px;
+	padding: 15px;
+	border: 1px solid #cdcdcd;
+	overflow: hidden;
+}
+.fieldPanel textarea{
+	width: 80%;
+}
+.fieldPanel label{
+	margin-right: 10px;
+	display: inline-block;
+}
+.assQuest{
+	list-style: none;
+	padding: 0;
+
+}
+.assQuest .fieldPanel > div{
+	display: inline-block;
+	float: left;
+	padding: 0px 10px;
+    box-sizing: border-box;
+}
+.questBox{
+	width: 40%;
+	
+}
+.questRole {
+    width: 20%;
+}
+.questBobot{
+	width: 10%;
+	
+	}
+.questCheck{
+	width: 30%;
+	
+	font-size: 12px;
+}
+.questBox p{
+	margin:0;
+}
+.assQuest ol{
+	list-style-type: decimal;
+}
+.questGrey{
+	background: #f0f0f0;
+}
+.formAss .questBox{
+	width: 70%;
+}
+.formAss .questCheck{
+	width: 20%;
+}	
+/*=================
+	Footer Area
+=================*/
+.footer{
+	font-size: 11px;
+	text-align: center;
+	border-top: 1px solid #DCDCDC;
+}
+.copyright{
+}
+.systemVer{
+	color:#9C9C9C;
+}
+
+.clearfix:before,
+.clearfix:after,
+.note:after,
+.note:before {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after, 
+.note:after {
+    clear: both;
+}
+
+/*Note*/
+.note{
+	text-align: right;
+	clear: both;
+	display: block;
+}
+.noteWrap{
+	display: inline-block;
+	position: relative;
+}
+.noteForm{
+	position: relative;
+}
+.note .noteFormWrap{
+	position: absolute;
+	display: none;
+	top: 0;
+	right: 0;
+	background: #fff;
+	padding: 10px;
+	-moz-box-shadow: 0px 0px 1px #888;
+    -webkit-box-shadow: 0px 0px 1px #888;
+    box-shadow: 0px 0px 1px #888;
+    border: 1px solid #cfcfcf;
+}
+.btnNote{
+	    color: #1E8BC3;
+    text-decoration: none;
+    text-align: right;
+    background: none;
+    border: none;
+}
+
+
+
+
+
+/*=================
+	TIPE QUEST
+=================*/
+
+.dropdownTP{
+    padding: 5px;
+    /*font-family: "century gothic";*/
+    border: none;
+    border-bottom: 2px #c0392b solid;
+    /*appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;*/
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.box{
+	margin: 20px 0;
+}
+
+.textTP{
+	width: 100px !important;
+	float: left;
+	padding: 5px;
+	margin-right: 5px;
+}
+
+.box{
+	display: none;
+}
+.box .text{
+	display: none;
+}
+.box .radio{
+	display: none;
+}
+.box .file{
+	display: none;
+}
+
+/*
+AUCTION STYLE
+*/
+
+#auction-report-bar{
+	display: none;
+}
+.warnColor{
+	color: #c0392b;
+}
+.auction-prize3{
+	color: #27ae60;
+}
+
+.lelang .panel{
+	padding: 0;
+}
+.lelang .panel-heading{
+	margin-bottom: 0;
+}
+.lelang .panel-heading h4{
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.lelang .panel-body{
+	border: none;
+}
+.lelang{
+	margin: 0px -15px;
+}
+.table{
+	width: 100%;
+}
+.panel{
+	width: 100%;
+}
+.panel > .table > tbody > tr > td{
+	padding: 8px 15px;
+}
+.text-right{
+	text-align: right;
+}
+.text-center{
+	text-align: center;
+}
+.content-group-sm{
+	margin-bottom: 15px;
+}
+#chart-container{
+	float: right;
+	display: inline-block;
+}
+.auction-button{
+	background: #2980b9;
+	width: 100%;
+	color: #fff;
+	padding: 10px;
+	font-weight: bold;
+	border: 0;
+}
+#timer{
+	font-size: 32px;
+	text-align: center;
+}
+.panel-body ul{
+	padding: 0;
+	margin: 0;
+}
+.noticeMedia{
+	border: #f39c12 1px solid;
+    color: #f39c12;
+    padding: 10px 10px;
+    background-color: rgba(243, 156, 18, 0.09);
+}
+.media{
+	margin-bottom: 15px;
+}
+.lelang .media-body{
+	font-size: 12px;
+}
+.media-left, .media-right, .media-body{
+	display: table-cell;
+    vertical-align: top;
+    position: relative;
+}
+.media-left{
+	/*padding-right: 20px;*/
+	text-align: left;
+	width: 30px;
+}
+.media-left i:before{
+	margin: 0;
+}
+.headerBid{
+	border: 1px solid #cdcdcd;
+	margin: -15px -15px 0px;
+	border-right: none;
+	border-left: none;
+}
+.headerBid ul li{
+	padding: 15px 15px;
+	display: inline-block;
+}
+.gr-text{
+	color: #27ae60;
+}
+.bodyBid{
+	border: 1px solid #cdcdcd;
+	margin: 0px -15px 0px;
+	border-right: none;
+	border-left: none;
+	border-bottom: none;
+}
+.auction-dash-table thead tr th,
+.auction-dash-table tbody tr td{
+	text-align: left;
+	padding: 15px 15px;
+}
+.auction-dash-table tr td{
+    padding: 12px 20px;
+}
+.wrapperBid > div{
+	display: inline-block;
+}
+
+#auction-blocker{
+	width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: url(../images/white.png);
+    top: 0px;
+    z-index: 3;
+    display: block;
+    margin-left: -30px;
+}
+
+
+.newGroupBtn{
+	background: none;
+    border: none;
+    color: #0091D2;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+.newGroupBlue{
+    color: #0091D2;
+    text-decoration: none;
+}
+.newGroupDd{
+    border: none;
+    border-left: 2px #0091D2 solid;
+    cursor: pointer;
+}
+.evaluasiSetting{
+	float: right;
+	margin: 0 0 10px 0;
+}
+
+
+#listDefault{
+	width: 300px;
+	max-height: 300px;
+	margin: 0 0 0 30px;
+	padding-bottom: 10px;
+	display: inline-block;
+}
+#listDefault h4{
+	text-align: center;
+	padding: 10px 0;
+	margin: 0;
+	background: #0091D2;
+	color: #fff; 
+}
+#listDefault ul{
+	margin: 0;
+	padding: 5px;
+    overflow: scroll;
+    overflow-x: hidden;
+	max-height: 250px;
+}
+#listDefault ul li{
+	margin-bottom: 10px;
+	padding: 3px 0 3px 8px;
+	border-bottom: 1px #ddd solid;
+	border-left: 3px #0091D2 solid;
+}
+#listDefault ul li .option{
+	line-height: 30px;
+}
+#listDefault ul li p{
+	display: inline;
+	padding-left: 15px;
+}
+.item{
+	width: 25%;
+	display: inline-block;
+	padding: 10px;
+	float: left;
+	
+	box-sizing: border-box;
+
+}
+.itemWrapper{
+	border: 1px solid #cdcdcd;
+	margin: -1px;
+	padding: 10px;
+	    height: 300px;
+}
+.item .image{
+	text-align: center;
+	min-height: 200px;
+}
+.item .image img{
+	max-width: 100%;
+	max-height: 200px;
+}
+.resetInput{
+	color: #0091D2;
+	cursor: pointer;
+	display: none;	
+}
+.btmItem .name{
+	margin: 10px 0px;
+	font-size: 16px;
+	
+}
+.btmItem .name a{
+	text-decoration: none;
+	font-weight: bold;
+}
+.btmItem .btn{
+	text-align: right;
+	margin: 20px 0px;
+}
+
+
+/* klasifikasiWarna */
+
+#klasifikasiWarna{
+	text-align: right;
+	margin-right: 80px;
+}
+#klasifikasiWarna li{
+	display: inline;
+	padding: 0 5px;
+}
+
+.hseForm{
+	border-left: 5px #27ae60 solid;
+}
+
+.logistikForm{
+	border-left: 5px #e74c3c solid;
+}
+
+.userForm{
+	border-left: 5px #2980b9 solid;
+}
+
+
+.customReport{
+
+}
+
+.customReport .customBox{
+	padding: 5px;
+	margin-bottom: 5px;
+	line-height: 10px;
+}
+
+
+.greyRow{
+	background: #cdcdcd;
+}
+.itemContainer{
+	clear: both;
+
+}able.remark{
+	table-layout: fixed;
+    word-break: break-all;
+    width: 100%;
+}
+
+table.remark tr td.remarkTxt{
+	white-space: pre-line;
+    word-break: break-all;
+    width: 400px;
+}
+
+.customSearch{
+	min-width: 300px;
+	max-width: 500px;
+    min-height: 20px;
+	padding: 5px;
+	border: 1px #27ae60 solid;
+	float: right;
+}
+
+/*Compare*/
+
+.compareHolder{
+	text-align: right;
+	text-transform: capitalize;
+	display: block;
+	float: right;
+	clear: both;
+}
+.compareWrapper{
+	position: relative;
+	display: none;
+}
+.compareWrapper.active{
+	display: block;
+}
+.compareList{
+	position: absolute;
+	max-height: 500px;
+	overflow-y:auto;
+	right: 0px;
+	background: #fff;
+	-moz-box-shadow: 0px 0px 1px #888;
+    -webkit-box-shadow: 0px 0px 1px #888;
+    box-shadow: 0px 0px 1px #888;
+    border: 1px solid #cfcfcf;
+    width: 300px;
+}
+a.filterBtn{
+	cursor: pointer;
+}
+.compareList ul{
+	padding: 0;
+	margin: 0;
+}
+
+.compareList ul li{
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	padding: 5px;
+	box-sizing: border-box;
+}
+.compareList ul li:hover{
+	background: #EAEAEA;
+}
+.compareList ul li > div{
+	width: 100%;
+}
+.compareList ul li > div > *{
+	float: left;
+}
+.compareList .image{
+	display: inline-block;
+	width: 100px;
+}
+.compareList .image img{
+	width: 100px;
+
+}
+.compareList .compareTitle{
+	display: inline-block;
+}
+.compareCaption{
+	text-align: left;
+	padding-left: 5px;
+}
+.compareBtn{
+	display: block;
+	padding: 5px;
+}

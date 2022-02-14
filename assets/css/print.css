@@ -1,0 +1,65 @@
+@CHARSET "ISO-8859-1";
+@page{
+	size: A4 landscape;
+	page-break-after : always;
+	margin-top : -20px;
+	margin-left : 2px;
+	margin-right : 2px;
+	margin-bottom  : -20px;
+}
+
+@media all{
+	body{	
+		font-family : "Segoe UI";
+		font-size : 11px;
+		height : 100%;
+	}
+	
+	table{
+		height : 100%;
+		width : 100%;
+		margin: 5px 0 10px 0; 
+	}
+	
+	thead {display: table-header-group;}
+	
+	tr{ 
+		page-break-after : avoid; 
+	}
+	
+	div.container{
+		page-break-after : always;
+		position: relative;
+	}
+	
+	div.content{
+		margin-top : 20px;
+		position: relative;
+	}
+	
+	table.recap-table{
+		border-collapse : collapse;
+		border : 1px solid #000;
+		page-break-after : avoid; 
+	}
+	
+	table.recap-table td{
+		border : 1px solid #000;
+		padding : 3px;
+	}
+	
+	table.recap-table th{
+		border : 1px solid #000;
+		padding : 3px;
+	}
+	
+	div.page-border{
+		page-break-after : always;
+		border : 1px solid #000;
+		width : 27cm;
+		height : 20cm;
+		top : -25px;
+		left : 5px;
+		position : relative;
+	}
+}
