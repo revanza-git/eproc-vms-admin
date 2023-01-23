@@ -20,6 +20,6 @@ class App extends CI_Controller
 
 		$this->session->sess_destroy();
 
-		header('Location: ' . TO_LOGIN . 'auth/from_external/' . $id_user);
+		header('Location: ' . TO_EPROC . 'auth/from_external/' . $id_user);
 	}
 }

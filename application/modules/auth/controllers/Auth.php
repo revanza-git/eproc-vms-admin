@@ -23,7 +23,7 @@ class Auth extends CI_Controller
             if ($admin['id_role'] == 6) {
                 redirect(site_url('auction'));
             } else {
-                //header('Location:http://10.10.10.4/eproc');
+                //header('Location:http://10.10.10.3/eproc');
                 redirect(site_url('admin'));
             }
         }
@@ -36,7 +36,7 @@ class Auth extends CI_Controller
         if ($admin['id_role'] == 6) {
             redirect(site_url('auction'));
         } else {
-            //header('Location:http://10.10.10.4/eproc');
+            //header('Location:http://10.10.10.3/eproc');
             redirect(site_url('admin'));
         }
     }

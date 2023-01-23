@@ -293,7 +293,6 @@ class certificate extends CI_Controller{
 		$return ='<html>
 				<head>
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-					
 				</head>
 				<body>
 					<style type="text/css" media="screen">
@@ -303,7 +302,7 @@ class certificate extends CI_Controller{
 							margin : 0px;
 							padding : 0px;
 							font-family : "Helvetica" !important;
-							background-image : url("http://dekodr.co.id/custom-bg.jpg"); 
+							background-image : url("https://eproc.nusantararegas.com/custom-bg.jpg"); 
 							background-repeat: no-repeat;
 							width: 500px;
   							height : 50px;
@@ -313,7 +312,7 @@ class certificate extends CI_Controller{
 							font-family : "Helvetica" !important;
 						}
 						.bg-img{
-							background-image : url("http://dekodr.co.id/custom-bg.jpg");
+							background-image : url("https://eproc.nusantararegas.com/custom-bg.jpg");
 							position: absolute;
 							left: 0;
 							top: 0;
@@ -361,8 +360,9 @@ class certificate extends CI_Controller{
 						}
 						div#first-page .certificate{
 							width: 640px;
-							margin-left: 94px;;
-							padding: 205px 0 0 100px;
+							margin-left: 190px;
+							text-align: center;
+							padding: 220px 0 0 0px;
 						}
 						div#first-page .certificate .certificateTitle{
 							margin-bottom: 50px;
@@ -553,21 +553,22 @@ class certificate extends CI_Controller{
 							padding: 10px 0;
 						}
 						table tr td:nth-child(1) {
-							width: 5px;
+							width: 100px;
 							vertical-align: top;
 						}
 						table tr td:nth-child(2) {
-							width: 10px;
+							width: 40px;
 							vertical-align: top;
+							text-align:center;
 						}
 						table tr td:nth-child(3) {
-							width: calc(625px - 18px * 2);
+							text-align: left;
     						
 						}
 					</style>
 					<div class="pageDPT" id="first-page">
 						<div class="bg-img">
-							<img src="http://dekodr.co.id/custom-bg.jpg" class="bg">
+							<img src="https://eproc.nusantararegas.com/custom-bg.jpg" class="bg">
 						</div>
 						<div class="certificateWrap">
 							
@@ -575,28 +576,22 @@ class certificate extends CI_Controller{
 								<div class="certificateTitle">
 									'.$data['vendor']['certificate_no'].'
 
-									<h2>'.$data['vendor']['legal_name'].' '.$data['vendor']['name'].'</h2>
-											<table>
+									<h2>'.$data['vendor']['legal_name'].' <span>'.$data['vendor']['name'].'</span></h2>
+											<table width=100%>
 												<tr>
-													
-														<td>NPWP</td>
-														<td>:</td>
-														<td>'.$data['vendor']['npwp_code'].'</td>
-													
+													<td>NPWP</td>
+													<td>:</td>
+													<td>'.$data['vendor']['npwp_code'].'</td>
 												</tr>
 												<tr>
-													
-														<td>Alamat</td>
-														<td>:</td>
-														<td>'.$data['vendor']['vendor_address'].'</td>
-													
+													<td>Alamat</td>
+													<td>:</td>
+													<td>'.$data['vendor']['vendor_address'].'</td>
 												</tr>
 												<tr>
-													
-														<td>No.Telp</td>
-														<td>:</td>
-														<td>'.$data['vendor']['vendor_phone'].'</td>
-													
+													<td>No. Telp</td>
+													<td>:</td>
+													<td>'.$data['vendor']['vendor_phone'].'</td>
 												</tr>
 												'.$skor_csms.'
 											</table>
@@ -874,248 +869,294 @@ class certificate extends CI_Controller{
 		#--------------------------------------------------------------------------------------------------
 		#--------------------------------------------------------------------------------------------------
 
-		$return ='<html>
+		$return =
+			'<html>
 				<head>
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+					<!--<link type="text/css" rel="stylesheet" href="'.base_url('assets/css/pdf.css').'">-->
+					<style type="text/css">
+						
+						html, body{
+							margin : 0px;
+							padding : 0px;
+							font-family : "Helvetica" !important;
+							background-image : url('.base_url('assets/images/pdf-bg.jpg').'); 
+							background-repeat : repeat-y;
+							background-size: 1140px 795px;
+							background-position: top left;
+
+						 }
+						 p{
+							font-size: 12px;
+						 }
+						 div.page{
+							margin : 0px;
+							padding : 0px;
+							font-size : 13px;
+							/*height : 753px;*//*
+							background-image : '.base_url('assets/images/report-kanan.jpg').'; */
+							background-repeat : repeat;
+						} 
+						div.pageDPT{
+							margin : 0px;
+							padding : 0px;
+							font-size : 13px;/*
+							background-image : url(../images/report-kanan.jpg); */
+							background-repeat : repeat;
+						}
+						div.page table{
+							background: #fff;
+						}
+						div#first-page{
+							position: relative;
+							page-break-inside: avoid;
+						}
+						div#first-page .certificateWrap{
+							width: 1140px;
+							/*height : 783px;*/
+							position: relative;
+						}
+						div#first-page .certificateWrap #logo{
+							width: 223px;
+							height: 73px;
+							position: absolute;
+							/*float: right;*/
+							right: 0;
+							margin: 30px 50px 0 0;
+						}
+
+						div#first-page .certificate{
+							width: 640px;
+							margin: 0 auto;
+							padding: 205px 0 0 100px;
+							/*margin: 255px auto 255px auto;*/
+						}
+
+						div#first-page .certificate .certificateTitle{
+							margin-bottom: 50px;
+							padding-left: 30px;
+						}
+						div#first-page .certificate .certificateTitle h1{
+							font-weight: 400;
+							padding: 0;
+							margin: 0;
+						}
+						div#first-page .certificate .certificateTitle p{
+							font-weight: bold;
+							padding: 0;
+							margin: 0;
+							color: #0364ab;
+						}
+
+						div#first-page .certificate .certificateContent{
+
+						}
+						div#first-page .certificate .certificateContent h2{
+							border-left: 13px #c9cc10 solid;
+							font-size: 36px;
+							text-transform: uppercase;
+							padding: 10px 0 10px 35px;
+							font-weight: 400;
+						}
+						div#first-page .certificate .certificateContent h2 span{
+							text-transform: capitalize;
+						}
+						div#first-page .certificate .certificateContent ul{
+							list-style: none;
+						}
+						div#first-page .certificate .certificateContent table{
+							margin: 0 0 50px 50px;
+						}
+						div#first-page .certificate .certificateContent ul li{
+							list-style: none;
+						}
+						div#first-page .certificate .certificateContent p{
+							margin: 75px 0 0 50px;
+							font-weight: 500;
+							font-size: 16px;
+							color: #e22839;
+						}
+
+						div#first-page .certificateFooter{
+							width: 1090px;
+							position: absolute;
+							bottom: 10px;
+							padding: 0 25px;
+							height: 50px;
+						}
+						div#first-page .certificateFooter .txt{
+							position: relative;
+						}
+						div#first-page .certificateFooter .txt #left{
+							/*float: left;*/
+							font-size: 10px;
+							position: absolute;
+							left: 0;
+							color: #fff;
+						}
+						div#first-page .certificateFooter .txt #right{
+							/*float: right;*/
+							position: absolute;
+							right: 0;
+							color: #333;
+						}
+
+
+
+						div.second-page{
+							/*background : url(../images/report-kanan.png);*/
+							/*background-repeat : repeat;*/
+							height : 753px;
+							page-break-inside : auto;
+							position: relative;
+						}
+						/*div#second-page:after {
+							content : "";
+							display: block;
+							position: absolute;
+							top: 0;
+							left: 0;
+							background : url(../images/report-kanan.png);
+							background-repeat : repeat;
+							width: 100%;
+							height: 100%;
+							opacity : 0.6;
+							z-index: -1;
+						}*/
+						div.table-separator{
+							page-break-inside : avoid;
+						}
+						table.std-table{
+							border-collapse : collapse;
+							border : 1px solid #000;
+							margin : 15px;
+						}
+						table.std-table th{
+							color : #fff;
+							border : 1px solid #000;
+						}
+						table.std-table td{
+							background : #fff;
+						}
+
+						.rekapContainer h2{
+							margin: 15px 0 0 0;
+						}
+						.rekapContainer p{
+							font-size: 13px;
+						}
+						.rekapContainer table.info{
+							min-width: 500px;
+							margin: 0 100px;
+							font-size: 11px;
+						}
+						.rekapContainer table.info span{
+							text-transform: capitalize;
+						}
+						.rekapContainer table.info td{
+							min-width: 200px;
+						}
+						.rekapContainer table{
+							margin: 15px auto;
+						}
+						.rekapContainer table th{
+							padding: 5px;
+							background: #c0392b;
+							border: 1px #c0392b solid;
+							color: #fff;
+						}
+						.rekapContainer table td{
+							padding: 3px;
+							font-size: 11px;
+							border: 1px #c0392b solid;
+						}
+						.rekapContainer table td.nilai{
+							text-align: right;
+						}
+						.nomorSertifikat{
+							text-align: center;
+							margin: 5px 0;
+						}
+
+
+
+						.scoreTable{
+							width: 90%;
+							/*padding: 0 5%;*/
+							margin: 0 auto;
+						}
+						.scoreTable tr td{
+							padding: 5px 10px;
+						}
+						.scoreTable .doubleBorder td{
+							border: 1px solid #c0392b;
+							background: #c0392b;
+							color: #fff;
+						}
+
+						.borderQuest td{
+							border: 1px solid #c0392b;
+						}
+						.borderQuest td.radioQuest{
+							border-top: none;
+							border-bottom: none;
+						}
+						.borderQuest:last-child td.radioQuest{
+							border-top: none;
+							border-bottom: 1px solid #c0392b;
+						}
+						.evalQuest td{
+							border: 1px solid #c0392b;
+						}
+						.scoreTable tr td.textQuestLv2{
+							padding-left: 60px;
+							font-size: 12px;
+						}
+						.scoreTable tr td.textQuestLv1{
+							padding-left: 40px;
+							font-size: 14px;
+							font-weight: bold;
+							
+						}
+						.subTotalQuest{
+							border: 1px solid #c0392b;
+						}
+						.totalAllQuest{
+							background: #2c3e50;
+							color: #fff;
+						}
+
+						.certificateClass{
+							text-align: center;
+							font-size: 12px;
+						}
+						.certificateClass span{
+							text-align: center;
+							font-weight: bold;
+							text-decoration: underline;
+							display: block;
+						}
+
+						.ttdContainer{
+							width: 80%;
+							font-size: 12px;
+							margin: 20px auto;
+						}
+						.ttdContainer p{
+							font-size: 13px;
+						}
+					</style>
 				</head>
 				<body>
-				<style type="text/css" media="screen">
-					html, body{
-						margin : 0px;
-						padding : 0px;
-						font-family : "Helvetica" !important;
-						background-image : url("http://dekodr.co.id/custom-bg.jpg"); 
-						background-repeat : no-repeat;
-						background-size: 1140px 795px;
-						background-position: top left;
-
-					 }
-					p{
-						font-size: 12px;
-					}
-					div.page{
-						margin : 0px;
-						padding : 0px;
-						font-size : 13px;
-						background-repeat : repeat;
-					} 
-					div.pageDPT{
-						margin : 0px;
-						padding : 0px;
-						font-size : 13px;
-						background-repeat : repeat;
-					}
-					div.page table{
-						background: #fff;
-					}
-					div#first-page{
-						position: relative;
-						page-break-inside: avoid;
-					}
-					div#first-page .certificateWrap{
-						width: 1140px;
-						position: relative;
-					}
-					div#first-page .certificateWrap #logo{
-						width: 223px;
-						height: 73px;
-						position: absolute;
-						right: 0;
-						margin: 30px 50px 0 0;
-					}
-					div#first-page .certificate{
-						width: 640px;
-						margin-left: 94px;;
-						padding: 205px 0 0 100px;
-					}
-					div#first-page .certificate .certificateTitle{
-						margin-bottom: 50px;
-						padding-left: 35px;
-						padding-top: 110px;
-					}
-					div#first-page .certificate .certificateTitle h1{
-						font-weight: 400;
-						padding: 0;
-						margin: 0;
-					}
-					div#first-page .certificate .certificateTitle p{
-						font-weight: bold;
-						padding: 0;
-						margin: 0;
-						color: #0364ab;
-					}
-					div#first-page .certificate .certificateContent h2{
-						font-size: 30px;
-						text-transform: uppercase;
-						padding: 0px 0 0px 35px;
-						font-weight: 400;
-					}
-					div#first-page .certificate .certificateContent h2 span{
-						text-transform: capitalize;
-					}
-					div#first-page .certificate .certificateContent ul{
-						list-style: none;
-					}
-					div#first-page .certificate .certificateContent table{
-						margin: 0 0 50px 40px;
-						color : #7b7f8a;
-					}
-					div#first-page .certificate .certificateContent ul li{
-						list-style: none;
-					}
-					div#first-page .certificate .certificateContent p{
-						margin: 20px 0 0 40px;
-						font-weight: 500;
-						font-size: 15px;
-						color: #000;
-					}
-					div#first-page .certificateFooter{
-						width: 1090px;
-						position: absolute;
-						bottom: 10px;
-						padding: 0 25px;
-						height: 50px;
-					}
-					div#first-page .certificateFooter .txt{
-						position: relative;
-					}
-					div#first-page .certificateFooter .txt #left{
-						font-size: 10px;
-						position: absolute;
-						left: 0;
-						color: #fff;
-					}
-					div#first-page .certificateFooter .txt #right{
-						position: absolute;
-						right: 0;
-						color: #333;
-					}
-					div.second-page{
-						height : 753px;
-						page-break-inside : auto;
-						position: relative;
-					}
-					div.table-separator{
-						page-break-inside : avoid;
-					}
-					table.std-table{
-						border-collapse : collapse;
-						border : 1px solid #000;
-						margin : 15px;
-					}
-					table.std-table th{
-						color : #fff;
-						border : 1px solid #000;
-					}
-					table.std-table td{
-						background : #fff;
-					}
-					.rekapContainer h2{
-						margin: 15px 0 0 0;
-					}
-					.rekapContainer p{
-						font-size: 13px;
-					}
-					.rekapContainer table.info{
-						min-width: 500px;
-						margin: 0 100px;
-						font-size: 11px;
-					}
-					.rekapContainer table.info span{
-						text-transform: capitalize;
-					}
-					.rekapContainer table.info td{
-						min-width: 200px;
-					}
-					.rekapContainer table{
-						margin: 15px auto;
-					}
-					.rekapContainer table th{
-						padding: 5px;
-						background: #c0392b;
-						border: 1px #c0392b solid;
-						color: #fff;
-					}
-					.rekapContainer table td{
-						padding: 3px;
-						font-size: 11px;
-						border: 1px #c0392b solid;
-					}
-					.rekapContainer table td.nilai{
-						text-align: right;
-					}
-					.nomorSertifikat{
-						text-align: center;
-						margin: 5px 0;
-					}
-					.scoreTable{
-						width: 90%;
-						margin: 0 auto;
-					}
-					.scoreTable tr td{
-						padding: 5px 10px;
-					}
-					.scoreTable .doubleBorder td{
-						border: 1px solid #c0392b;
-						background: #c0392b;
-						color: #fff;
-					}
-					.borderQuest td{
-						border: 1px solid #c0392b;
-					}
-					.borderQuest td.radioQuest{
-						border-top: none;
-						border-bottom: none;
-					}
-					.borderQuest:last-child td.radioQuest{
-						border-top: none;
-						border-bottom: 1px solid #c0392b;
-					}
-					.evalQuest td{
-						border: 1px solid #c0392b;
-					}
-					.scoreTable tr td.textQuestLv2{
-						padding-left: 60px;
-						font-size: 12px;
-					}
-					.scoreTable tr td.textQuestLv1{
-						padding-left: 40px;
-						font-size: 14px;
-						font-weight: bold;
-					}
-					.subTotalQuest{
-						border: 1px solid #c0392b;
-					}
-					.totalAllQuest{
-						background: #2c3e50;
-						color: #fff;
-					}
-					.certificateClass{
-						text-align: center;
-						font-size: 12px;
-					}
-					.certificateClass span{
-						text-align: center;
-						font-weight: bold;
-						text-decoration: underline;
-						display: block;
-					}
-					.ttdContainer{
-						width: 80%;
-						font-size: 12px;
-						margin: 20px auto;
-					}
-					.ttdContainer p{
-						font-size: 13px;
-					}
-				</style>
 					<div class="pageDPT" id="first-page">
 						<div class="certificateWrap">
-							
+							<img style="float:right;" id="logo" src="'.$logo.'">
 							<div class="certificate">
 								<div class="certificateTitle">
-									'.$data['vendor']['certificate_no'].'
+									<h1>SERTIFIKAT PENYEDIA BARANG/JASA TERDAFTAR</h1>
+									<p>'.$data['vendor']['certificate_no'].'</p>
 								</div>
+								
 								<div class="certificateContent">
 									<h2>'.$data['vendor']['legal_name'].' <span>'.$data['vendor']['name'].'</span></h2>
 											<table>
@@ -1125,7 +1166,7 @@ class certificate extends CI_Controller{
 												</tr>
 												<tr>
 													<td width=150px>Alamat</td>
-													<td>:&nbsp;&nbsp;&nbsp;'.$data['vendor']['vendor_address'].'</td>
+													<td>:&nbsp;&nbsp;&nbsp;'.nl2br($data['vendor']['vendor_address']).'</td>
 												</tr>
 												<tr>
 													<td width=150px>No. Telp</td>
@@ -1139,11 +1180,10 @@ class certificate extends CI_Controller{
 
 							<div class="certificateFooter">
 								<div class="txt">
-									<p id="left"></p>
+									<p id="left">Dicetak pada tanggal : '.date("d/m/Y, H:i:s").'</p>
 									<p id="right">
 										Dicetak dengan Sistem Aplikasi Kelogistikan PT Nusantara Regas.<br>
-										Dokumen ini resmi tanpa stempel dan/atau tanda tangan pejabat.<br>
-										Dicetak pada tanggal : '.date("d/m/Y, H:i:s").'
+										Dokumen ini resmi tanpa stempel dan/atau tanda tangan pejabat.
 									</p>
 								</div>
 							</div>
@@ -1152,18 +1192,25 @@ class certificate extends CI_Controller{
 				</body>
 			</html>';
 
-		 echo $return;die;
+		 //echo $return;die;
 
 		// var_dump(libxml_use_internal_errors(true));
-		// echo $return;
-		$dompdf = new DOMPDF();  
-		$dompdf->load_html($return);  
-		$dompdf->set_paper('A4','landscape'); 
-		$dompdf->render();
+
+		 $dompdf = new DOMPDF();  
+		 $dompdf->load_html($return);  
+		 $dompdf->set_paper('A4','landscape'); 
+		 $dompdf->render();
 									
-		$dompdf->stream("sertifikat - ".$data['vendor']['name'].".pdf",array('Attachment' => 1));
+		 $dompdf->stream("sertifikat - ".$data['vendor']['name'].".pdf",array('Attachment' => 1));
 		// $dompdf->output();
 	}
+
+
+
+
+
+
+
 
 	function csms($id = ""){
 

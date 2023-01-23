@@ -88,6 +88,7 @@ class admin_k3_passing_grade extends CI_Controller {
 		if($this->form_validation->run()==TRUE){
 			unset($_POST['Simpan']);
 			$_POST['entry_stamp'] 	= date("Y-m-d H:i:s");
+			$_POST['del'] = 0;
 			$_POST['start_score']	= ($this->input->post('start_score') != FALSE) ? $this->input->post('start_score') : NULL;
 			$_POST['end_score']		= ($this->input->post('end_score') != FALSE) ? $this->input->post('end_score') : NULL;
 			$isi 	= $this->input->post(null, true);

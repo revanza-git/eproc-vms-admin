@@ -41,7 +41,7 @@
 			?>
 			<?php if (!empty($ubo_file)) { ?>
 				<tr>
-					<td colspan="6"><a href="<?= site_url('lampiran/ubo_file/'.$ubo_file['ubo_file']) ?>" class="btnBlue"><i class="fa fa-eye"></i> Lihat Surat UBO</a></td>
+					<td colspan="6"><a href="<?= BASE_LINK.'lampiran/ubo_file/'.$ubo_file['ubo_file'] ?>" class="btnBlue"><i class="fa fa-eye"></i> Lihat Surat UBO</a></td>
 				</tr>
 			<?php } ?>
 			</tbody>
