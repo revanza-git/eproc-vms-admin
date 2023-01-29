@@ -1,8 +1,8 @@
-<?php echo $this->session->flashdata('msgSuccess') ?>
+<?php echo $this->session->flashdata('msgSuccess')?>
 
-<?php echo $this->session->flashdata('msgError') ?>
+<?php echo $this->session->flashdata('msgError')?>
 
-<?php echo $this->data_process->generate_progress('verification', $id_data) ?>
+<?php echo $this->data_process->generate_progress('verification',$id_data)?>
 
 <form method="POST">
 
@@ -10,19 +10,19 @@
 
 	<div class="graphBar" style="min-width: 400px; height: 150px; margin: 0 auto">
 
-
+		
 
 	</div>
 
 	<div class="successVer msgBlock">
 
-		<h4><?php echo count($approval_data[1]) ?> data telah sesuai</h4>
+		<h4><?php echo count($approval_data[1])?> data telah sesuai</h4>
 
 		<ul>
 
-			<?php foreach ($approval_data[1] as $key => $value) { ?>
+			<?php foreach($approval_data[1] as $key =>$value){ ?>
 
-				<li><?php echo $value; ?></li>
+			<li><?php echo $value;?></li>
 
 			<?php } ?>
 
@@ -34,11 +34,11 @@
 
 		<ul>
 
-			<h4><?php echo count($approval_data[0]) ?> data belum terverifikasi</h4>
+			<h4><?php echo count($approval_data[0])?> data belum terverifikasi</h4>
 
-			<?php foreach ($approval_data[0] as $key => $value) { ?>
+			<?php foreach($approval_data[0] as $key =>$value){ ?>
 
-				<li><?php echo $value; ?></li>
+			<li><?php echo $value;?></li>
 
 			<?php } ?>
 
@@ -50,11 +50,11 @@
 
 		<ul>
 
-			<h4><?php echo count($approval_data[3]) ?> data tidak sesuai</h4>
+			<h4><?php echo count($approval_data[3])?> data tidak sesuai</h4>
 
-			<?php foreach ($approval_data[3] as $key => $value) { ?>
+			<?php foreach($approval_data[3] as $key =>$value){ ?>
 
-				<li><?php echo $value; ?></li>
+			<li><?php echo $value;?></li>
 
 			<?php } ?>
 
@@ -64,32 +64,22 @@
 
 	<div class="buttonRegBox clearfix">
 
-		<?php
-		$admin = $this->session->userdata('admin');
-		if ($admin['id_role'] == 1 || $admin['id_role'] == 10) {
-			if ($admin['id_role'] == 1) {
-				$label = "Angkat Menjadi DPT";
-			} else {
-				$label = "Kirim Ke Supervisor";
-			}
-		?>
-			<?php
-			if (!$need_approve) { ?>
-				<? php // echo "ini";print_r($certificate_no);
-				?>
+		<?php if($this->session->userdata('admin')['id_role']==1){?>
+		<?php 
+		if(!$need_approve){ ?>
+			<?php// echo "ini";print_r($certificate_no);?>
+		
 
-
-				<!-- <span>Pilih tanggal pengangkatan</span> <?php //echo $this->form->calendar(array('name'=>'start_date','value'=>$this->form->get_temp_data('start_date')), false);
-																?>&nbsp; -->
-				<input type="hidden" id="certificate_no" name="certificate_no" value="<?php echo $certificate_no; ?>">
-				<input type="hidden" name="simpan" value="simpan">
-				<input type="submit" value="<?= $label ?>" class="btnBlue" id="approveCert">
+			<!-- <span>Pilih tanggal pengangkatan</span> <?php //echo $this->form->calendar(array('name'=>'start_date','value'=>$this->form->get_temp_data('start_date')), false);?>&nbsp; -->
+			<input type="hidden" id="certificate_no" name="certificate_no" value="<?php echo $certificate_no;?>">
+			<input type="hidden" name="simpan" value="simpan">
+			<input type="submit" value="Angkat Menjadi DPT" class="btnBlue" id="approveCert">
 
 
 
-		<?php }
-		} ?>
+		<?php }} ?>
 
 	</div>
 
 </form>
+

@@ -67,7 +67,6 @@ class admin_kurs extends CI_Controller {
 		if($this->form_validation->run()==TRUE){
 			unset($_POST['Simpan']);
 			$_POST['entry_stamp'] = date("Y-m-d H:i:s");
-			$_POST['del'] = 0;
 
 			$this->am->save_kurs($this->input->post());
 

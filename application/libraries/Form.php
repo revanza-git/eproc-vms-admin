@@ -445,19 +445,15 @@ class Form{
 			$return .= $this->hidden(array('name' => $param['name'], 'class' => 'dekodr-calendar-hidden', 'value' => $param['value'],'id'=>$param['name']));
 
 
-			
+
 			$return .= '</div>';
 		}
 
 
 
 
-		// echo $return."asdasd";die;
-		// return $return;
 
-		$cal = '<input type="date" name="'.$param['name'].'" value="'.$param['value'].'">';
-
-		return $cal;
+		return $return;
 
 	}
 

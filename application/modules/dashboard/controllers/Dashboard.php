@@ -82,16 +82,6 @@ class Dashboard extends CI_Controller {
 					'label'=>'Alamat',
 					'rules'=>'required'
 					),
-				array(
-					'field'=>'admin_name',
-					'label'=>'Nama Admin',
-					'rules'=>'required'
-					),
-				array(
-					'field'=>'admin_position',
-					'label'=>'Jabatan Admin',
-					'rules'=>'required'
-					),
 				);
 		}
 		

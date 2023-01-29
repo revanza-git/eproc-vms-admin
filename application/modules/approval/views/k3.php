@@ -11,7 +11,7 @@
 		<?php if(isset($get_csms['csms_file'])){ ?>
 		<tr>
 			<td>
-				Lampiran Sertifikat CSMS : <?php echo (isset($get_csms['csms_file'])) ? '<a href="'.BASE_LINK.('lampiran/csms_file/')."/".$get_csms['csms_file'].'">Lampiran</a>': '-';?>
+				Lampiran Sertifikat CSMS : <?php echo (isset($get_csms['csms_file'])) ? '<a href="'.base_url('lampiran/csms_file/')."/".$get_csms['csms_file'].'">Lampiran</a>': '-';?>
 			</td>
 		</tr>
 		<tr>
@@ -134,7 +134,7 @@
 												case 'file':
 													if(isset($data_k3[$val_answer['id']]['value'])){
 														if($data_k3[$val_answer['id']]['value']!=''){
-															echo '<p><a href="'.BASE_LINK.('lampiran/'.$field_quest[$val_answer['id']]['label'].'/'.$data_k3[$val_answer['id']]['value']).'" target="_blank">Lampiran</a></p>';
+															echo '<p><a href="'.base_url('lampiran/'.$field_quest[$val_answer['id']]['label'].'/'.$data_k3[$val_answer['id']]['value']).'" target="_blank">Lampiran</a></p>';
 														}else{
 															echo '-';
 														}
@@ -237,7 +237,7 @@
 												case 'file':
 													if(isset($data_k3[$val_answer['id']]['value'])){
 														if($data_k3[$val_answer['id']]['value']!=''){
-															echo '<p><a href="'.BASE_LINK.('lampiran/'.$field_quest[$val_answer['id']]['label'].'/'.$data_k3[$val_answer['id']]['value']).'" target="_blank">Lampiran</a></p>';
+															echo '<p><a href="'.base_url('lampiran/'.$field_quest[$val_answer['id']]['label'].'/'.$data_k3[$val_answer['id']]['value']).'" target="_blank">Lampiran</a></p>';
 														}else{
 															echo '-';
 														}
@@ -301,10 +301,7 @@
 		</div>
 		<?php } ?>
 
-		<?php 
-		$admin = $this->session->userdata('admin');
-		if($admin['id_role']==1 || $admin['id_role']==10){
-		?>
+		<?php if($this->session->userdata('admin')['id_role']==1){?>
 		<div class="clearfix" style="text-align: right">
 			<div style="margin-bottom: 20px">Tanggal terbit CSMS : <?php echo $this->form->calendar(array('name'=>'start_date','value'=>($this->form->get_temp_data('start_date'))?$this->form->get_temp_data('start_date'):$get_csms['start_date']), false);?></div>
 			<label class="nephritisAtt">

@@ -1,5 +1,5 @@
-<?php echo $this->session->flashdata('msgSuccess') ?>
-<?php echo $this->data_process->generate_progress('administrasi', $id_data) ?>
+<?php echo $this->session->flashdata('msgSuccess')?>
+<?php echo $this->data_process->generate_progress('administrasi',$id_data)?>
 
 <div class="formDashboard">
 	<form method="POST">
@@ -7,61 +7,61 @@
 			<tr class="input-form">
 				<td><label>Lokasi Pendaftaran</label></td>
 				<td>
-					<?php echo $sbu_name; ?>
+					<?php echo $sbu_name;?>
 				</td>
 			</tr>
 			<tr class="input-form">
 				<td><label>Badan Hukum</label></td>
 				<td>
-					<?php echo $legal_name; ?>
+					<?php echo $legal_name;?>
 				</td>
 			</tr>
 			<tr class="input-form">
 				<td><label>Nama Badan Usaha</label></td>
 				<td>
-					<?php echo $name; ?>
+					<?php echo $name;?>
 				</td>
 			</tr>
 			<tr class="input-form">
 				<td><label>NPWP*</label></td>
 				<td>
-					<?php echo $npwp_code; ?>
+					<?php echo $npwp_code;?>
 				</td>
 			</tr>
 			<!--<tr class="input-form">
 				<td><label>Tanggal Pengukuhan</label></td>
 				<td>
-					<?php echo $npwp_date ?>
+					<?php echo $npwp_date?>
 				</td>
 			</tr>-->
 			<tr class="input-form">
 				<td><label>Lampiran</label></td>
 				<td>
-					<a href="<?php echo BASE_LINK . ('lampiran/npwp_file/' . $npwp_file) ?>"><?php echo $npwp_file; ?></a>
+					<a href="<?php echo base_url('lampiran/npwp_file/'.$npwp_file)?>"><?php echo $npwp_file;?></a>
 				</td>
 			</tr>
 			<tr class="input-form">
 				<td><label>NPPKP*</label></td>
 				<td>
-					<?php echo $nppkp_code; ?>
+					<?php echo $nppkp_code;?>
 				</td>
 			</tr>
 			<!--<tr class="input-form">
 				<td><label>Tanggal Pengukuhan</label></td>
 				<td>
-					<?php echo $nppkp_date; ?>
+					<?php echo $nppkp_date;?>
 				</td>
 			</tr>-->
 			<tr class="input-form">
 				<td><label>Lampiran</label></td>
 				<td>
-					<a href="<?php echo BASE_LINK . ('lampiran/nppkp_file/' . $nppkp_file) ?>"><?php echo $nppkp_file; ?></a>
+					<a href="<?php echo base_url('lampiran/nppkp_file/'.$nppkp_file)?>"><?php echo $nppkp_file;?></a>
 				</td>
 			</tr>
 			<tr class="input-form">
 				<td><label>Status</label></td>
 				<td>
-					<?php echo $vendor_office_status; ?>
+					<?php echo $vendor_office_status;?>
 				</td>
 			</tr>
 			<tr class="input-form">
@@ -73,7 +73,7 @@
 			<tr class="input-form">
 				<td><label>No Telp</label></td>
 				<td>
-					<?php echo $vendor_phone; ?>
+				<?php echo $vendor_phone; ?>
 				</td>
 			</tr>
 			<tr class="input-form">
@@ -113,29 +113,21 @@
 				</td>
 			</tr>
 		</table>
-		<?php
-		$admin = $this->session->userdata('admin');
-		if ($admin['id_role'] == 1 || $admin['id_role'] == 10) {
-		?>
-			<div class="clearfix">
-				<label class="orangeAtt">
-					<input type="checkbox" name="mandatory" value="1" <?php echo $this->data_process->set_mandatory($data_status); ?>>&nbsp;<i class="fa fa-exclamation-triangle"></i>&nbsp;Mandatory
-				</label>
-				<label class="nephritisAtt">
-					<input type="radio" name="status" value="1" <?php echo $this->data_process->set_yes_no(1, $data_status); ?>>&nbsp;<i class="fa fa-check"></i>&nbsp;OK
-				</label>
-				<label class="pomegranateAtt">
-					<input type="radio" name="status" value="0" <?php echo $this->data_process->set_yes_no(0, $data_status); ?>>&nbsp;<i class="fa fa-times"></i>&nbsp;Not OK
-				</label>
-			</div>
-			<div class="buttonRegBox clearfix">
-				<a href="<?= base_url('approval/download_surat_pernyataan/' . $id_data) ?>" target="_blank" class="btnBlue"><i class="fa fa-download"></i> Download Surat Pernyataan</a>
-				<input type="submit" value="Simpan" class="btnBlue" name="simpan">
-			</div>
-		<?php } else { ?>
-			<div class="buttonRegBox clearfix">
-				<a href="<?= base_url('approval/download_surat_pernyataan/' . $id_data) ?>" target="_blank" class="btnBlue"><i class="fa fa-download"></i> Download Surat Pernyataan</a>
-			</div>
-		<?php } ?>
+		<?php if($this->session->userdata('admin')['id_role']==1){?>
+		<div class="clearfix">
+			<label class="orangeAtt">
+				<input type="checkbox" name="mandatory" value="1" <?php echo $this->data_process->set_mandatory($data_status);?>>&nbsp;<i class="fa fa-exclamation-triangle"></i>&nbsp;Mandatory
+			</label>
+			<label class="nephritisAtt">
+				<input type="radio" name="status" value="1" <?php echo $this->data_process->set_yes_no(1,$data_status);?>>&nbsp;<i class="fa fa-check"></i>&nbsp;OK
+			</label>
+			<label class="pomegranateAtt">
+				<input type="radio" name="status" value="0" <?php echo $this->data_process->set_yes_no(0,$data_status);?>>&nbsp;<i class="fa fa-times"></i>&nbsp;Not OK
+			</label>
+		</div>
+		<div class="buttonRegBox clearfix">
+			<input type="submit" value="Simpan" class="btnBlue" name="simpan">
+		</div>
+		<?php }?>
 	</form>
 </div>

@@ -71,7 +71,6 @@ class Admin_bidang extends CI_Controller {
 		if($this->form_validation->run()==TRUE){
 			unset($_POST['Simpan']);
 			$_POST['entry_stamp'] = date("Y-m-d H:i:s");
-			$_POST['del'] = 0;
 
 			$this->im->save_data_bidang($this->input->post());
 

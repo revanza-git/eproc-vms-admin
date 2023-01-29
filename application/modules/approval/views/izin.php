@@ -36,7 +36,11 @@
 							<?php foreach($table[$surat] as $field =>$label){
 								if($field=='izin_file'){
 								?>
-								<td><a href="<?php echo BASE_LINK.('lampiran/izin_file/'.$value['izin_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
+								<?php if ($value['izin_file'] != '') { ?>
+								<td><a href="<?php echo base_url('lampiran/izin_file/'.$value['izin_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
+								<?php } else {?>
+								<td> - </td>
+								<?php } ?>
 								<?php }elseif($field=='no'){?>
 								<td><a href="<?php echo site_url('approval/bsb/'.$id_data.'/'.$value['id']);?>"><?php echo $value['no']?></a></td>
 								<?php }elseif($field=='issue_date'){?>
@@ -70,10 +74,7 @@
 		</div>
 	</div>
 	
-	<?php 
-		$admin = $this->session->userdata('admin');
-		if($admin['id_role']==1 || $admin['id_role']==10){
-		?>
+	<?php if($this->session->userdata('admin')['id_role']==1){?>
 	<div class="buttonRegBox clearfix">
 		<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 	</div>

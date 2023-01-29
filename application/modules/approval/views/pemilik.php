@@ -41,19 +41,15 @@
 			?>
 			<?php if (!empty($ubo_file)) { ?>
 				<tr>
-					<td colspan="6"><a href="<?= BASE_LINK.'lampiran/ubo_file/'.$ubo_file['ubo_file'] ?>" class="btnBlue"><i class="fa fa-eye"></i> Lihat Surat UBO</a></td>
+					<td colspan="6"><a href="<?= site_url('lampiran/ubo_file/'.$ubo_file['ubo_file']) ?>" class="btnBlue"><i class="fa fa-eye"></i> Lihat Surat UBO</a></td>
 				</tr>
 			<?php } ?>
 			</tbody>
 		</table>
-	<br>
-
+		
 	</div>
 
-	<?php 
-		$admin = $this->session->userdata('admin');
-		if($admin['id_role']==1 || $admin['id_role']==10){
-		?>
+		<?php if($this->session->userdata('admin')['id_role']==1){?>
 <div class="buttonRegBox clearfix">
 	<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 </div>

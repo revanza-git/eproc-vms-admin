@@ -26,7 +26,11 @@
 						<td><?php echo (strtotime($value['issue_date']) > 0) ? default_date($value['issue_date']) : "-";?></td>
 						<td><?php echo $value['type'];?></td>
 						<td><?php echo ($value['expire_date']=='lifetime')?'Seumur Hidup': ((strtotime($value['expire_date']) > 0 ) ? default_date($value['expire_date']) : "-");?></td>
-						<td><a href="<?php echo BASE_LINK.('lampiran/agen_file/'.$value['agen_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
+						<?php if (condition) { ?>
+							<td><a href="<?php echo base_url('lampiran/agen_file/'.$value['agen_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
+						<?php } else { ?>
+							<td>-</td>
+						<?php } ?>
 						<td><input type="checkbox" name="agen[<?php echo $value['id']?>][mandatory]" value="1" <?php echo $this->data_process->set_mandatory($value['data_status']);?>></td>
 						<td class="actionBlock">
 							<input type="radio" name="agen[<?php echo $value['id']?>][status]" value="1" <?php echo $this->data_process->set_yes_no(1,$value['data_status']);?>>
@@ -47,10 +51,7 @@
 		</table>
 		
 	</div>
-	<?php 
-		$admin = $this->session->userdata('admin');
-		if($admin['id_role']==1 || $admin['id_role']==10){
-		?>
+	<?php if($this->session->userdata('admin')['id_role']==1){?>
 	<div class="buttonRegBox clearfix">
 		<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 	</div>
