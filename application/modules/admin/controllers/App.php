@@ -13,6 +13,10 @@ class App extends CI_Controller
 
 	public function index()
 	{
+		// if (!$this->session->userdata('admin')) {
+            // redirect('main');
+        // }
+		
 		$admin = $this->session->userdata('admin');
 
 		// print_r($admin);die;
@@ -30,6 +34,6 @@ class App extends CI_Controller
 		$photo_profile 	= $getUser['photo_profile'];
 		// $division	 	= $getUser['division'];
 
-		header("Location: http://10.10.10.3/eproc_perencanaan/main/from_eks/".$name."/".$id_user."/".$id_role."/".$id_division."/".$app_type."/".$email."/".$photo_profile);
+		header("Location: http://10.10.10.3/eproc_nusantararegas/main/from_eks/".$name."/".$id_user."/".$id_role."/".$id_division."/".$app_type."/".$email."/".$photo_profile);
 	}
 }
