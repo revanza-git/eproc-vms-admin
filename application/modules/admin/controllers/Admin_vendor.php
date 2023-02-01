@@ -31,11 +31,11 @@ class Admin_vendor extends CI_Controller {
 				'label'	=>	'Daftar Tunggu',
 
 				'filter'=>	array(
+								array('table'=>'ms_vendor|name' ,'type'=>'text','label'=> 'Nama Penyedia Barang / Jasa'),
 
 								array('table'=>'tb_legal|name' ,'type'=>'text','label'=> 'Badan Usaha'),
 
-								array('table'=>'ms_vendor|name' ,'type'=>'text','label'=> 'Nama Badan Usaha'),
-array('table'=>'ms_vendor|need_approve|status_dpt' ,'type'=>'dropdown','label'=> 'Status'),
+								array('table'=>'ms_vendor|need_approve|status_dpt' ,'type'=>'dropdown','label'=> 'Status'),
 
 
 								// array('table'=>'ms_vendor|edit_stamp' ,'type'=>'text','label'=> 'Aktivitas Terakhir'),
@@ -53,34 +53,33 @@ array('table'=>'ms_vendor|need_approve|status_dpt' ,'type'=>'dropdown','label'=>
 
 
 	public function waiting_list($status=""){
-$this->load->library('form');
-$search = $this->input->get('q');
+		$this->load->library('form');
+		$search = $this->input->get('q');
 
-$this->load->model('vendor/vendor_model','vm');
+		$this->load->model('vendor/vendor_model','vm');
 
-$sort = $this->utility->generateSort(array('legal_name', 'name', 'last_update'));
+		$sort = $this->utility->generateSort(array('legal_name', 'name', 'last_update'));
 
-$per_page=10;
+		$per_page=10;
 
-$search = $this->input->get('q');
+		$search = $this->input->get('q');
 
-$page = '';
+		$page = '';
 
 
-$data['status']	= $status;
-$data['filter_list'] = $this->filter->group_filter_post($this->get_field_dt());
-$data['pagination'] = $this->utility->generate_page('admin/admin_vendor/waiting_list/'.$status,$sort, $per_page, $this->vm->get_waiting_list($status,$search, $sort, '','',FALSE));
-$data['sort'] = $sort;
-$data['list'] = $this->vm->get_waiting_list($status,$search, $sort, $page, $per_page,TRUE,$filter,0);
+		$data['status']	= $status;
+		$data['filter_list'] = $this->filter->group_filter_post($this->filter->get_field());
+		$data['pagination'] = $this->utility->generate_page('admin/admin_vendor/waiting_list/'.$status,$sort, $per_page, $this->vm->get_waiting_list($status,$search, $sort, '','',FALSE));
+		$data['sort'] = $sort;
+		$data['list'] = $this->vm->get_waiting_list($status,$search, $sort, $page, $per_page,TRUE,$filter,0);
 
-$layout['content'] =  $this->load->view('vendor/waiting_list',$data,TRUE);
-// $layout['content'] = $this->load->view('admin/admin/dashboard_content',$data,TRUE);
+		$layout['content'] =  $this->load->view('vendor/waiting_list',$data,TRUE);
+		// $layout['content'] = $this->load->view('admin/admin/dashboard_content',$data,TRUE);
 
-$item['header'] = $this->load->view('header',$this->session->userdata('admin'),TRUE);
-$item['content'] = $this->load->view('admin/dashboard',$layout,TRUE);
+		$item['header'] = $this->load->view('header',$this->session->userdata('admin'),TRUE);
+		$item['content'] = $this->load->view('admin/dashboard',$layout,TRUE);
 
-$this->load->view('template',$item);
-
+		$this->load->view('template',$item);
 	}
 
 
@@ -176,9 +175,9 @@ $this->load->view('template',$item);
 	}
 
 	public function export_excel($title="Data Penyedia Barang/Jasa", $data){
-		$data = $this->vm->get_all_vendor_list;
+		$data = $this->vm->get_all_vendor_list();
 		$csms_limit = $this->vm->get_csms_limit();
-		print_r($data);die;
+		// print_r($data);die;
 		$table = "<table border=1>";
 
 			$table .= "<tr>";
@@ -240,6 +239,7 @@ $this->load->view('template',$item);
 			$table .= "<td style='background: #f6e58d;'>NPWP</td>";
 			$table .= "<td style='background: #f6e58d;'>Alamat</td>";
 			$table .= "<td style='background: #f6e58d;'>Telepon</td>";
+			$table .= "<td style='background: #f6e58d;'>Email</td>";
 			$table .= "</tr>";
 
 		foreach ($data as $key => $value) {
@@ -254,6 +254,7 @@ $this->load->view('template',$item);
 			$table .= "<td>".$value['npwp_code']."</td>";
 			$table .= "<td>".$value['vendor_address']."</td>";
 			$table .= "<td>".$value['vendor_phone']."</td>";
+			$table .= "<td>".$value['email']."</td>";
 			$table .= "</tr>";
 		}
 		$table .= "</table>";
