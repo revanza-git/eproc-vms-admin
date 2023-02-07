@@ -29,7 +29,7 @@ class Graph_model extends CI_Model
 					    tr_progress_kontrak
 					WHERE
 					    del = 0 AND id_procurement = ? AND id_contract = ?
-					ORDER BY solid_start_date,type ASC ";
+					ORDER BY solid_start_date ASC ";
 
 		$data = $this->db->query($query,array($id_procurement,$get_kontrak['id']))->result_array();
 

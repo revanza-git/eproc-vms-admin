@@ -105,7 +105,7 @@
 					    </div>
 					</td>
 					<td><?php echo $value['total_white'];?></td>
-					<td><a href="<?php echo base_url('lampiran/blacklist_file/'.$value['blacklist_file']);?>" target="_blank"><?php //echo $value['blacklist_file'];?><i class="fa fa-download"></i></a></td>
+					<td><a href="<?php echo BASE_LINK.('lampiran/blacklist_file/'.$value['blacklist_file']);?>" target="_blank"><?php //echo $value['blacklist_file'];?><i class="fa fa-download"></i></a></td>
 
 					<td class="actionBlock">
 

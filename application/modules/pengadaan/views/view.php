@@ -20,7 +20,7 @@
 							} else if($tipe_pengadaan == 'jasa_konsultasi') {
 								$tipe = 'Jasa Konsultasi';
 							} else if($tipe_pengadaan == 'jasa_lainnya') {
-								$tipe = 'Jasa Konsultasi';
+								$tipe = 'Jasa Lainnya';
 							} else if($tipe_pengadaan == 'jasa_konsultan_konstruksi') {
 								$tipe = 'Jasa Konsultan Perencana/Pengawas Konstruksi';
 							} else if($tipe_pengadaan == 'jasa_konsultan_non_konstruksi') {
@@ -133,7 +133,7 @@
 		</table>
 		
 		<div class="buttonRegBox clearfix">
-			<?php if($this->session->userdata('admin')['id_role']==3){ ?>
+			<?php if($this->session->userdata('admin')['id_role'] == 3 || $this->session->userdata('admin')['id_role'] == 10){ ?>
 			<a href="<?php echo site_url('pengadaan/report/summary/index/'.$id);?>" class="editBtn lihatData"><i class="fa fa-file-text-o"></i>&nbsp;Summary</a>
 			
 			<a href="<?php echo site_url('pengadaan/edit/'.$id);?>" class="editBtn"><i class='fa fa-cog'></i>&nbsp;Ubah</a>

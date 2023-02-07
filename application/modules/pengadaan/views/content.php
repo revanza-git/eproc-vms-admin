@@ -9,7 +9,7 @@
 	
 	<div class="filterBtnWp">
 		<div class="btns">
-			<?php if($this->session->userdata('admin')['id_role']==3){?>
+			<?php if($this->session->userdata('admin')['id_role']==3 || $this->session->userdata('admin')['id_role']==10){?>
 				<a href="<?php echo site_url('pengadaan/tambah');?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
 			<?php } ?>
 			<?php //if ($admin['id_role'] != 3) { ?>
@@ -44,6 +44,11 @@
 		<?php 
 		if(count($pengadaan_list)){
 			foreach($pengadaan_list as $row => $value){
+				if ($value['symbol'] == null || $value['symbol'] == 'IDR') {
+					$symbol = 'Rp. ';
+				} else {
+					$symbol = $value['symbol'].' ';
+				}
 		?>
 				<tr>
 					<td><?php echo $value['name'];?></td>
@@ -51,9 +56,9 @@
 					<td><?php echo $value['npwp_code'];?></td>
 					<td><?php echo $value['pemenang'];?></td>
 					<?php if ($value['contract_price'] != '') { ?>
-					<td><?php echo "Rp. ".number_format($value['contract_price']);?></td>	
+					<td><?php echo $symbol.number_format($value['contract_price']);?></td>	
 					<?php } else {?>
-					<td><?php echo "Rp. ".number_format($value['nilai']).' (Nilai HPS)';?></td>
+					<td><?php echo $symbol.number_format($value['nilai']).' (Nilai HPS)';?></td>
 					<?php } ?>
 					<td><?php echo $value['status'];?></td>
 					<td><?php echo $value['budget_year'];?></td>
@@ -64,7 +69,7 @@
 
 					<td class="actionBlock">
 						<a href="<?php echo site_url('pengadaan/view/'.$value['id'])?>" class="editBtn lihatData"><i class="fa fa-search"></i>&nbsp;Lihat data</a>
-						<?php if($this->session->userdata('admin')['id_role']==3){?>
+						<?php if($this->session->userdata('admin')['id_role']==3 || $this->session->userdata('admin')['id_role']==10){?>
 						<a href="<?php echo site_url('pengadaan/hapus_pengadaan/'.$value['id'])?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
 						<?php }?>
 					</td>

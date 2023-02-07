@@ -188,7 +188,7 @@ class blacklist_model extends CI_Model{
 							trb.need_approve need_approve_bl,
 							trb.del del,
 						');
-
+		$this->db->where('tr_blacklist.del', 0);
 		$this->db->where('tr_blacklist.id_blacklist', $id);
 		$this->db->where('tr_blacklist.id IN (SELECT max(id) FROM tr_blacklist WHERE tr_blacklist.id_blacklist = '.$id.' GROUP BY id_vendor order by id ASC)',NULL,FALSE);
 

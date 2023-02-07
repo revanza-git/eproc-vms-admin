@@ -7,6 +7,7 @@ class Pengadaan_model extends CI_Model{
 		$this->perencanaan_db = $this->load->database('perencanaan',true);
 		$this->field_master = array(
 								'name',
+								'id_division',
 								'budget_source',
 								'id_pejabat_pengadaan',
 								'budget_year',
@@ -134,7 +135,7 @@ class Pengadaan_model extends CI_Model{
 
 		$this->db->select('*, ms_procurement.id id, ms_procurement.name name, 
 		ms_vendor.name as pemenang
-		, proc_date, ms_procurement.del del, tb_mekanisme.name mekanisme_name, ms_procurement.idr_value nilai, ms_contract.contract_price');
+		, proc_date, ms_procurement.del del, tb_mekanisme.name mekanisme_name, ms_procurement.idr_value nilai, ms_contract.contract_price, tb_kurs.symbol');
 		$this->db->group_by('ms_procurement.id');
 		$this->db->where('ms_procurement.del',0);
 		$this->db->where('ms_procurement.id_mekanisme!=',1);
@@ -154,6 +155,7 @@ class Pengadaan_model extends CI_Model{
 		$this->db->join('tb_mekanisme','tb_mekanisme.id=ms_procurement.id_mekanisme','LEFT');
 		$this->db->join('ms_contract','ms_contract.id_procurement=ms_procurement.id','LEFT');
 		$this->db->join('ms_vendor','ms_contract.id_vendor=ms_vendor.id','LEFT');
+		$this->db->join('tb_kurs', 'ms_contract.id_kurs=tb_kurs.id','LEFT');
 		
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
@@ -235,6 +237,7 @@ class Pengadaan_model extends CI_Model{
    		$_param = array();
 		$sql = "INSERT INTO ms_procurement (
 								`name`,
+								`id_division`,
 								`budget_source`,
 								`id_pejabat_pengadaan`,
 								`budget_year`,
@@ -249,7 +252,7 @@ class Pengadaan_model extends CI_Model{
 								`id_kurs`,
 								`tipe_pengadaan`
 								) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
                 //`no_bahp`,`bahp_date`,`price_nego`,`nego_kurs`,`price_nego_kurs`,
 
 		foreach($this->field_master as $_param) $param[$_param] = $data[$_param];
@@ -504,6 +507,7 @@ class Pengadaan_model extends CI_Model{
    		$query 		= $this->db
 							->select('tb_progress_pengadaan.*, tr_progress_pengadaan.file')
 							->where('del',0)
+							->where('id_procurement', null)
 							->order_by('tb_progress_pengadaan.no', 'ASC')
 							->join('tr_progress_pengadaan', 'tr_progress_pengadaan.id_progress = tb_progress_pengadaan.id', 'LEFT')
 							->get('tb_progress_pengadaan')
@@ -518,8 +522,41 @@ class Pengadaan_model extends CI_Model{
    		return $result;
    	}
 
-   
-   	
+	public function get_custom_progress_pengadaan($id_pengadaan)
+	{
+		$query = $this->db
+				->select('tb_progress_pengadaan.*, tr_progress_pengadaan.file')
+				->where('del',0)
+				->where('id_procurement', $id_pengadaan)
+				->order_by('tb_progress_pengadaan.no', 'ASC')
+				->join('tr_progress_pengadaan', 'tr_progress_pengadaan.id_progress = tb_progress_pengadaan.id', 'LEFT')
+				->get('tb_progress_pengadaan')
+				->result_array();
+				
+		$result = array();
+		foreach($query as $value){
+		$result[$value['id']]['value'] 		= $value['value'];
+		$result[$value['id']]['lampiran'] 	= $value['lampiran'];
+		$result[$value['id']]['file'] 		= $value['file'];
+		}
+		return $result;
+	}
+
+	public function save_custom_progress_pengadaan($data, $id_pengadaan)
+	{
+		$get_last_no = $this->db->where('del', 0)->order_by('no', 'desc')->get('tb_progress_pengadaan')->row_array();
+		
+		$save = array(
+			'value' 	=> $data['value'],
+			'no' 		=>  $get_last_no['no'],
+			'id_procurement' 	=> $id_pengadaan,
+			'entry_stamp' => date('Y-m-d H:i:s')
+		);
+
+		$a = $this->db->insert('tb_progress_pengadaan', $save);
+
+		return $a;
+	}
 
    	function save_denda($id,$data){
    		$res = $this->db->where('id_procurement',$id)->get('tr_denda')->num_rows();
@@ -1042,7 +1079,14 @@ class Pengadaan_model extends CI_Model{
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
-   		return $this->db->get('ms_procurement_peserta')->result_array();
+   		$a = $this->db->get('ms_procurement_peserta')->result_array();
+		$b = array();
+		foreach ($a as $key => $value) {
+			$b[$value['peserta_name']][] = $value;
+		}
+		
+   		//return $this->db->get('ms_procurement_peserta')->result_array();
+		return $a;
 
    	}
    	function get_procurement_negosiasi($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
@@ -1063,9 +1107,24 @@ class Pengadaan_model extends CI_Model{
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
 
-   		return $this->db->get('ms_procurement_negosiasi')->result_array();
-
+   		$a = $this->db->get('ms_procurement_negosiasi')->result_array();
+		$b = array();
+		foreach ($a as $key => $value) {
+			$b[$value['peserta_name']][] = $value;
+		}
+   		return $b;
    	}
+	
+	public function get_peserta($id_pengadaan)
+	{
+		$a = $this->db->select('ms_vendor.name, ms_vendor.id')->where('id_proc', $id_pengadaan)
+						->join('ms_vendor', 'ms_vendor.id=ms_procurement_peserta.id_vendor', 'LEFT')
+						->where('ms_procurement_peserta.del', 0)
+						->get('ms_procurement_peserta')
+						->result_array();
+		return $a;
+	}
+	
    	function get_procurement_negosiasi_($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
 
    		$result = $this->db->select('ms_procurement_peserta.*, tb_kurs.symbol symbol, ms_procurement_peserta.id id,ms_vendor.name peserta_name,ms_procurement_peserta.id_vendor id_vendor')
@@ -1086,6 +1145,7 @@ class Pengadaan_model extends CI_Model{
    		return $this->db->get('ms_procurement_peserta')->result_array();
 
    	}
+	
    	function get_peserta_list($id){
 
    		$bsb = $this->db->select('id_sub_bidang')->where('id_proc',$id)->get('ms_procurement_bsb')->result_array();
@@ -1108,6 +1168,7 @@ class Pengadaan_model extends CI_Model{
 
    		return $res;
    	}
+	
    	function get_ijin_list($id,$vendor_id){
 
    		$id_bsb = array('id_bidang'=>array(),'id_sub_bidang'=>array());
@@ -1138,6 +1199,7 @@ class Pengadaan_model extends CI_Model{
 
    		return $res;
    	}
+	
    	function get_pemenang($id){
 
    		
@@ -1153,9 +1215,10 @@ class Pengadaan_model extends CI_Model{
    		return $id_pemenang;
 
    	}
+	
    	function get_pemenang_list($id){
    		
-   		$id_pemenang = $this->db->select('ms_procurement_peserta.id id, ms_vendor.name name, is_winner, fee')
+   		$id_pemenang = $this->db->select('ms_procurement_peserta.id id, ms_vendor.name name, is_winner, fee, ms_vendor.id id_vendor')
    		->join('ms_vendor','ms_vendor.id=ms_procurement_peserta.id_vendor')
    		->where('ms_procurement_peserta.id_proc',$id)
    		->where('ms_procurement_peserta.del',0)
@@ -1213,6 +1276,7 @@ class Pengadaan_model extends CI_Model{
 	}
 
 	function proses_pemenang($id,$data){
+		// print_r($data);die;
 		$this->db->where('id_proc',$id);
 		$this->db->update('ms_procurement_peserta',array('is_winner'=>0));
 
@@ -1259,10 +1323,14 @@ class Pengadaan_model extends CI_Model{
    	}
 
 	function hapus_pengadaan_peserta($id){
+		$a = $this->db->where('id',$id)->get('ms_procurement_peserta')->row_array();
+		$this->db->where('id_vendor', $a['id_vendor'])->update('ms_procurement_negosiasi', array('del'=>1));
+		
 		$this->db->where('id',$id);
 		
 		return $this->db->update('ms_procurement_peserta',array('del'=>1));
 	}
+	
 	function get_pejabat(){
 		$arr = $this->db->select('id,name')->get('tb_pejabat_pengadaan')->result_array();
 		$result = array();
@@ -1424,7 +1492,7 @@ class Pengadaan_model extends CI_Model{
 	   	// }
 // echo $this->db->last_query();die;
    		//$this->db->where('((vendor_status = 2 AND is_active = 1 '.$bsb.' AND ms_vendor.name LIKE "%'.$q.'%") OR is_vms = 0) '.$peserta_id)
-		$this->db->where('((vendor_status = 2 AND is_active = 1 AND ms_vendor.name LIKE "%'.$q.'%") OR is_vms = 0) '.$peserta_id)
+		$this->db->where('((is_active = 1 AND ms_vendor.name LIKE "%'.$q.'%") OR is_vms = 0) '.$peserta_id)
    		->order_by('is_vms','DESC')
    		->group_by('miu_bsb.id_vendor')
    		->join('ms_vendor_admistrasi','ms_vendor_admistrasi.id_vendor=ms_vendor.id','LEFT');
@@ -1658,7 +1726,24 @@ class Pengadaan_model extends CI_Model{
 
    		return true;
    	}
-   	function save_negosiasi($post){
+		
+	public function save_negosiasi($data)
+	{
+		$res = $this->db->insert('ms_procurement_negosiasi', $data);
+		if($res){
+			return true;
+		}
+	}
+	
+	public function hapus_negosiasi($id)
+	{
+		$a = $this->db->where('id', $id)->update('ms_procurement_negosiasi', array('del' => 1));
+		if ($a) {
+			return true;
+		}
+	}
+	
+   	function save_negosiasi_($post){
    		// print_r($post);die;
    		foreach($post['negosiasi'] as $id_vendor => $value){	
    			// print_r($key);
@@ -1744,5 +1829,11 @@ class Pengadaan_model extends CI_Model{
    		// print_r($exp);die;
    		return "asd";
    	}
+
+   	public function procurement_is_done($id)
+	{
+		$q = $this->db->where('id',$id)->update('ms_procurement',array('edit_stamp'=>date('Y-m-d H:i:s'), 'is_done'=>1));
+		return $q;
+	}
 
 }

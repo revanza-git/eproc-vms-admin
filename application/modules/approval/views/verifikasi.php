@@ -64,20 +64,31 @@
 
 	<div class="buttonRegBox clearfix">
 
-		<?php if($this->session->userdata('admin')['id_role']==1){?>
-		<?php 
-		if(!$need_approve){ ?>
-			<?php// echo "ini";print_r($certificate_no);?>
-		
+		<?php
+		$admin = $this->session->userdata('admin');
+		if ($admin['id_role'] == 1 || $admin['id_role'] == 10) {
+			if ($admin['id_role'] == 1) {
+				$label = "Angkat Menjadi DPT";
+			} else {
+				$label = "Kirim Ke Supervisor";
+			}
+		?>
+			<?php
+			if (!$need_approve) { ?>
+				<?php // echo "ini";print_r($certificate_no);
+				?>
 
-			<!-- <span>Pilih tanggal pengangkatan</span> <?php //echo $this->form->calendar(array('name'=>'start_date','value'=>$this->form->get_temp_data('start_date')), false);?>&nbsp; -->
-			<input type="hidden" id="certificate_no" name="certificate_no" value="<?php echo $certificate_no;?>">
-			<input type="hidden" name="simpan" value="simpan">
-			<input type="submit" value="Angkat Menjadi DPT" class="btnBlue" id="approveCert">
+
+				<!-- <span>Pilih tanggal pengangkatan</span> <?php //echo $this->form->calendar(array('name'=>'start_date','value'=>$this->form->get_temp_data('start_date')), false);
+																?>&nbsp; -->
+				<input type="hidden" id="certificate_no" name="certificate_no" value="<?php echo $certificate_no; ?>">
+				<input type="hidden" name="simpan" value="simpan">
+				<input type="submit" value="<?= $label ?>" class="btnBlue" id="approveCert">
 
 
 
-		<?php }} ?>
+		<?php }
+		} ?>
 
 	</div>
 

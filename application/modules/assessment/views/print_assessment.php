@@ -63,7 +63,7 @@
 					<td style="border: none !important;">
 						<?php
 							$cat ="";
-							$kategori = ($valuev['point'] >= -30) ? $cat="Hijau" : (($valuev['point'] <=-31 && $valuev['point'] >=-60) ? $cat="Kuning" : (($valuev['point'] <=-61 && $valuev['point'] >=-120) ? $cat="Merah" : $cat="Hitam")) ;
+							$kategori = ($valuev['point'] >= -30) ? $cat="Biru" : (($valuev['point'] <=-31 && $valuev['point'] >=-60) ? $cat="Kuning" : (($valuev['point'] <=-61 && $valuev['point'] >=-120) ? $cat="Merah" : $cat="Hitam")) ;
 							echo $cat;
 						?>
 					</td>

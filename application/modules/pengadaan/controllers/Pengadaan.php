@@ -73,10 +73,10 @@ class Pengadaan extends CI_Controller {
 										'label'	=>'Progress Paket Pengadaan'
 										),
 								
-								'progress_pengerjaan'=>array(
-										'url' 	=> site_url('pengadaan/view/'.$this->id_pengadaan.'/progress_pengerjaan#tabNav'),
-										'label'	=>'Progress Paket Pengerjaan'
-								)
+								// 'progress_pengerjaan'=>array(
+								// 		'url' 	=> site_url('pengadaan/view/'.$this->id_pengadaan.'/progress_pengerjaan#tabNav'),
+								// 		'label'	=>'Progress Paket Pengerjaan'
+								// )
 							);
 		}
 		$this->tabNav = $array;
@@ -264,11 +264,33 @@ class Pengadaan extends CI_Controller {
 				);
 			}
 		}
+
+		$division = array(
+			6 => 3,// sekper
+			7 => 4,//Hukum
+			8 => 5,//HSSE
+			9 => 2,//spi
+			10=> 8,//lng&gas
+			11=> 7,//perencanaan&pengembangan bisnis
+			12=>10,//reliability
+			13=>12,//QMQA
+			14=> 9,//Transportasi LNG & FSRU
+			15=>11,//gas & ORF
+			16=>13,//controller
+			17=>14,//perbendaharaan
+			18=>18,//layum
+			19=>16,//perbendaharaan
+			20=>15,//sisteminformasi
+			21=> 1,//procurement
+			22=> 6,//resiko
+		);
+
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			$_POST['entry_stamp'] 	= date("Y-m-d H:i:s");
 			$_POST['idr_value'] 	= preg_replace("/[,]/", "", $this->input->post('idr_value'));
 			$_POST['kurs_value'] 	= preg_replace("/[,]/", "", $this->input->post('kurs_value'));
+			$_POST['id_division']	= $division[$_POST['budget_spender']];
 			unset($_POST['Simpan']);
 
 			$res = $this->pm->save_data($this->input->post());
@@ -370,11 +392,33 @@ class Pengadaan extends CI_Controller {
 				);
 			}
 		}
+
+		$division = array(
+			6 => 3,// sekper
+			7 => 4,//Hukum
+			8 => 5,//HSSE
+			9 => 2,//spi
+			10=> 8,//lng&gas
+			11=> 7,//perencanaan&pengembangan bisnis
+			12=>10,//reliability
+			13=>12,//QMQA
+			14=> 9,//Transportasi LNG & FSRU
+			15=>11,//gas & ORF
+			16=>13,//controller
+			17=>14,//perbendaharaan
+			18=>18,//layum
+			19=>16,//perbendaharaan
+			20=>15,//sisteminformasi
+			21=> 1,//procurement
+			22=> 6,//resiko
+		);
+		
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			$_POST['edit_stamp'] 	= date("Y-m-d H:i:s");
 			$_POST['idr_value'] 	= preg_replace("/[,]/", "", $this->input->post('idr_value'));
 			$_POST['kurs_value'] 	= preg_replace("/[,]/", "", $this->input->post('kurs_value'));
+			$_POST['id_division']	= $division[$_POST['budget_spender']];
 			unset($_POST['Simpan']);
 			$res = $this->pm->edit_data($this->input->post(),$id);
 			if($res){
@@ -389,11 +433,20 @@ class Pengadaan extends CI_Controller {
 
 		$data['ttr']	= $arr;
 		$data['v_ttr']	= $data['tipe_transaksi'];
+		$penilaian = array(''=>'Pilih Tipe Scoring','scoring'=>'Scoring','non_scoring'=>'Non-Scoring');
+		$penilaian_ = array(
+						''=>'Pilih Tipe Scoring',
+						'kualitas_terbaik'=>'Kualitas/Teknik Terbaik',
+						'kualitas'=>'Kualitas/Teknik dan Harga',
+						'harga'=>'Harga Terendah');
 
 		$data['pejabat_pengadaan'] = $this->pm->get_pejabat();
 		$data['budget_holder_list'] = $this->pm->get_budget_holder();
 		$data['budget_spender_list'] = $this->pm->get_budget_spender();
 		$data['id_mekanisme_list'] = $this->pm->get_mekanisme();
+		$data['evaluation_method_list'] = $penilaian;
+		$data['evaluation_method_desc_list'] = $penilaian_;
+		
 		$data['id'] = $id;
 		$layout['content']= $this->load->view('edit',$data,TRUE);
 		$item['header'] = $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
@@ -417,8 +470,8 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function bsb($id,$page){
-		if($this->session->userdata('admin')['id_role']!=3){ 
-			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
+			redirect('pengadaan/view/'.$id.'/progress_pengadaan');
 		}
 		$data['sort'] = $this->utility->generateSort(array('bidang_name', 'sub_bidang_name'));
 		$data['tabNav'] = $this->tabNav;
@@ -430,7 +483,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function barang($id,$page){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		// $data['data_pengadaan'] = $this->pm->get_pengadaan($id);
@@ -496,7 +549,7 @@ class Pengadaan extends CI_Controller {
 
 	public function tambah_bidang($id){
 			// print_r($this->session->userdata('form')['id_dpt_type']);
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
@@ -537,7 +590,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function tambah_sub_bidang($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
@@ -590,7 +643,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function hapus_bsb($id,$id_proc){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		if($this->pm->hapus_pengadaan_bsb($id)){
@@ -603,7 +656,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function peserta($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$data['sort'] = $this->utility->generateSort(array('peserta_name'));
@@ -618,7 +671,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function penawaran($id,$page,$act='view'){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$data['sort'] = $this->utility->generateSort(array('peserta_name'));
@@ -647,7 +700,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function negosiasi($id,$page,$act='view'){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$data['sort'] = $this->utility->generateSort(array('peserta_name'));
@@ -667,19 +720,61 @@ class Pengadaan extends CI_Controller {
 		
         $negosiasi = $this->pm->get_procurement_negosiasi($id,NULL, $data['sort'], '','',FALSE);
         
-        if(empty($negosiasi)){
-            $data['pagination'] = $this->utility->generate_page('pengadaan/view/'.$id.'/'.$page,$data['sort'], NULL,  $this->pm->get_procurement_penawaran_($id,NULL, $data['sort'], '','',FALSE));
-            $data['list'] = $this->pm->get_procurement_penawaran_($id,NULL, $data['sort'], '','',FALSE);
-        }else{
-            $data['pagination'] = $this->utility->generate_page('pengadaan/view/'.$id.'/'.$page,$data['sort'], NULL,  $this->pm->get_procurement_negosiasi($id,NULL, $data['sort'], '','',FALSE));
-            $data['list'] = $this->pm->get_procurement_negosiasi($id,NULL, $data['sort'], '','',FALSE);
-        }
+         // if(empty($negosiasi)){
+        //     $data['pagination'] = $this->utility->generate_page('pengadaan/view/'.$id.'/'.$page,$data['sort'], NULL,  $this->pm->get_procurement_penawaran_($id,NULL, $data['sort'], '','',FALSE));
+        //     $data['list'] = $this->pm->get_procurement_penawaran_($id,NULL, $data['sort'], '','',FALSE);
+        // }else{
+		$data['pagination'] = $this->utility->generate_page('pengadaan/view/'.$id.'/'.$page,$data['sort'], NULL,  $this->pm->get_procurement_negosiasi($id,NULL, $data['sort'], '','',FALSE));
+		$data['list'] = $this->pm->get_procurement_negosiasi($id,NULL, $data['sort'], '','',FALSE);
+        // }}
 
 		return $this->load->view('tab/negosiasi',$data,TRUE);
 	}
+	
+	public function tambah_negosiasi($id_pengadaan)
+	{
+		$_POST = $this->securities->clean_input($_POST,'save');
+		$admin = $this->session->userdata('admin');
+		
+		if($_POST['Simpan']){
+			unset($_POST['Simpan']);
+
+			$save = $this->input->post();
+			$save['id_proc'] = $id_pengadaan;
+			$save['value'] = preg_replace("/[,]/", "", $save['value']);
+			$save['fee'] = preg_replace("/[,]/", "", $save['fee']);
+			
+			$res = $this->pm->save_negosiasi($save);
+			if($res){
+				$this->session->set_flashdata('msgSuccesss','<p class="msgSuccess">Sukses menambah data!</p>');
+
+				redirect(site_url('pengadaan/view/'.$id_pengadaan.'/negosiasi'));
+			}
+		}
+
+		$data = array(
+			'id_pengadaan' => $id_pengadaan,
+			'peserta' => $this->pm->get_peserta($id_pengadaan)
+		);
+
+		$layout['content']= $this->load->view('tab/tambah_negosiasi',$data,TRUE);
+		$item['header'] = $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
+		$item['content'] = $this->load->view('admin/dashboard',$layout,TRUE);
+		$this->load->view('template',$item);
+	}
+
+	public function hapus_negosiasi($id, $id_pengadaan)
+	{
+		$res = $this->pm->hapus_negosiasi($id);
+		if($res){
+			$this->session->set_flashdata('msgSuccesss','<p class="msgSuccess">Sukses menghapus data!</p>');
+
+			redirect(site_url('pengadaan/view/'.$id_pengadaan.'/negosiasi'));
+		}
+	}
 
 	public function tambah_vendor($id_proc,$id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$form['id_proc'] 		= $id_proc;
@@ -694,7 +789,7 @@ class Pengadaan extends CI_Controller {
 		}
 	}
 	public function tambah_peserta($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$admin = $this->session->userdata('admin');
@@ -729,7 +824,7 @@ class Pengadaan extends CI_Controller {
 		$data_vendor = $this->pm->search_kandidat($id);
 	}
 	public function hapus_peserta($id,$id_proc){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan'.'#tabNav');
 		}
 		if($this->pm->hapus_pengadaan_peserta($id)){
@@ -742,7 +837,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function tambah_ijin_usaha($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
@@ -813,7 +908,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function pemenang($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$_POST = $this->securities->clean_input($_POST,'save');
@@ -871,7 +966,7 @@ class Pengadaan extends CI_Controller {
 		return $view;
 	}
 	public function pemenang_edit($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$_POST = $this->securities->clean_input($_POST,'save');
@@ -951,7 +1046,7 @@ class Pengadaan extends CI_Controller {
 
 	public function kontrak($id){
 
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 
@@ -1080,7 +1175,7 @@ class Pengadaan extends CI_Controller {
 	}
 	public function kontrak_edit($id)
 	{
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$_POST = $this->securities->clean_input($_POST,'save');
@@ -1232,7 +1327,7 @@ class Pengadaan extends CI_Controller {
 		}
 	}
 	public function submit($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$data = $this->pm->get_pengadaan($id);
@@ -1261,10 +1356,11 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function progress_pengadaan($id){
-		
+		$data['detailPengadaan'] = $this->pm->get_pengadaan($id);
 		$data['pengadaan'] = $this->pm->get_paket_progress($id);
 		$data['progress'] 	= $this->pm->get_progress_pengadaan($id);
 		$data['step_pengadaan'] = $this->pm->get_pengadaan_step();
+		$data['custom_step_pengadaan'] = $this->pm->get_custom_progress_pengadaan($id);
 		$total_progress = count($data['step_pengadaan']);
 		
 
@@ -1324,8 +1420,50 @@ class Pengadaan extends CI_Controller {
 					} 
 			#}
 		}
+		if ($this->input->post('done')) {
+			$done = $this->pm->procurement_is_done($id);
+			if ($done) {
+				$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Pengadaan Telah Selesai!</p>');
+				redirect(current_url().'#tabNav');
+			}
+		}
 		return $this->load->view('tab/progress_pengadaan',$data,TRUE);
 	}
+	
+	public function tambah_progress_pengadaan($id_pengadaan)
+	{
+		$_POST = $this->securities->clean_input($_POST,'save');
+		$admin = $this->session->userdata('admin');
+		$vld = 	array(
+			array(
+				'field'=>'value',
+				'label'=>'Judul',
+				'rules'=>'required'
+				)
+			);
+
+		$this->form_validation->set_rules($vld);
+		if($this->form_validation->run()==TRUE){
+			unset($_POST['Simpan']);
+
+			$res = $this->pm->save_custom_progress_pengadaan($this->input->post(), $id_pengadaan);
+			if($res){
+				$this->session->set_flashdata('msgSuccesss','<p class="msgSuccess">Sukses menambah data!</p>');
+
+				redirect(site_url('pengadaan/view/'.$id_pengadaan.'/progress_pengadaan'));
+			}
+		}
+
+		$data = array(
+			'id_pengadaan' => $id_pengadaan
+		);
+
+		$layout['content']= $this->load->view('tab/tambah_progress_pengadaan',$data,TRUE);
+		$item['header'] = $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
+		$item['content'] = $this->load->view('admin/dashboard',$layout,TRUE);
+		$this->load->view('template',$item);
+	}
+	
 	public function do_upload_($file){
 			$target_dir = "./lampiran/progress_pengadaan/";
 			$new_name 	= "progress_lampiran_".$this->utility->name_generator();
@@ -1365,7 +1503,7 @@ class Pengadaan extends CI_Controller {
 		return $this->load->view('tab/progress_pengerjaan',$data,TRUE);
 	}
 	public function denda($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$data = $this->pm->get_denda($id);
@@ -1434,7 +1572,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function amandemen($id=0,$page,$id_amandemen=0){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 
@@ -1528,7 +1666,7 @@ class Pengadaan extends CI_Controller {
 
 
 	public function penilaian_kerja($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$data = $this->pm->get_pengadaan($id);
@@ -1555,7 +1693,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function penilaian_pengadaan($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$data = $this->pm->get_pengadaan($id);
@@ -1591,7 +1729,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function remark($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$data = $this->pm->get_pengadaan($id);
@@ -1616,7 +1754,7 @@ class Pengadaan extends CI_Controller {
 		
 		$config['upload_path'] = './lampiran/'.$db_name.'/';
 		$config['allowed_types'] = 'pdf|jpeg|jpg|png|gif|doc|docx';
-		$config['max_size'] = '2096';
+		$config['max_size'] = '20960';
 		
 		$this->load->library('upload');
 		$this->upload->initialize($config);
@@ -1635,7 +1773,7 @@ class Pengadaan extends CI_Controller {
 	//BARANG
 
 	public function tambah_barang($id){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
@@ -1736,7 +1874,7 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function edit_barang($id,$id_procurement){
-		if($this->session->userdata('admin')['id_role']!=3){ 
+		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
 		$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();

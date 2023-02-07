@@ -58,11 +58,7 @@
 			<tr class="input-form">
 				<td><label>Jenis Pengadaan* :</label></td>
 				<td>
-					<select name="tipe_pengadaan" required>
-						<?php foreach ($ttr as $key => $value) { ?>
-							<option value="<?php echo $key ?>" <?php $s = ($value==$v_ttr) ? 'selected' : '';?> <?php echo $s; ?>><?php echo $value ?></option>
-						<?php } ?>
-					</select>
+					<?php echo form_dropdown('tipe_pengadaan', $ttr, ($this->form->get_temp_data('tipe_pengadaan')) ? $this->form->get_temp_data('tipe_pengadaan') : $tipe_pengadaan, ''); ?>
 					
 					<?php echo form_error('tipe_pengadaan'); ?>
 				</td>
@@ -152,9 +148,18 @@
 				<td>
 
 					<?php 
-					$penilaian = array('scoring'=>'Scoring','non_scoring'=>'Non-Scoring');
-					echo form_dropdown('evaluation_method', $penilaian, $this->form->get_temp_data('evaluation_method'),'');?>
+					echo form_dropdown('evaluation_method', $evaluation_method_list, ($this->form->get_temp_data('evaluation_method'))?$this->form->get_temp_data('evaluation_method'):$evaluation_method,'')?>
 					<?php echo form_error('evaluation_method'); ?>
+				</td>
+
+			</tr>
+			<tr id="evaluation_method_desc_div" class="input-form">
+				<td><label>Metode Evaluasi Scoring*</label></td>
+				<td>
+
+					<?php 
+					echo form_dropdown('evaluation_method_desc', $evaluation_method_desc_list, ($this->form->get_temp_data('evaluation_method_desc'))?$this->form->get_temp_data('evaluation_method_desc'):$evaluation_method_desc,'');?>
+					<?php echo form_error('evaluation_method_desc'); ?>
 				</td>
 
 			</tr>

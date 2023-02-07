@@ -70,13 +70,6 @@
 				<span style="word-break: break-word">Pabrikan/Keagenan/Distributor</span>
 			</a>
 		</li>
-		<li <?php echo ($this->uri->segment(1) == 'evaluasi') ? 'class="selectedMenu"' : ''; ?>>
-			<a href="<?php echo site_url('evaluasi'); ?>">
-				<!-- <i class="fa fa-file-o"></i> -->
-				&nbsp;
-				<span style="word-break: break-word">Evaluasi Kinerja</span>
-			</a>
-		</li>
 		<?php 
 		$user = $this->session->userdata('user');
 		if($this->dpt->check_iu($user['id_user'])>0){?>
@@ -88,13 +81,6 @@
 			</a>
 		</li>
 		<?php }?>
-		<li <?php echo ($this->uri->segment(1)=='k3')?'class="selectedMenu"':''; ?>>
-			<a href="<?php echo site_url('k3');?>">
-				<!-- <i class="fa fa-file-o"></i> -->
-				&nbsp; 
-				<span>Aspek K3 / CSMS</span>
-			</a>
-		</li>
 
 		<?php 
 		$this->load->model('dashboard/dashboard_model');

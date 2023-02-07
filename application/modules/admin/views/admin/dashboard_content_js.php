@@ -66,13 +66,22 @@
 
                     data:   [{
 
-                                name: 'Daftar Tunggu',
+                                name: 'Daftar Tunggu (Aktif)',
 
-                                y: <?php echo $chart['daftar_tunggu_chart']->num_rows(); ?>,
+                                y: <?php echo $chart['dt_aktif']->num_rows(); ?>,
 
                                 color: '#3498db'
 
-                            }, {
+                            },
+                            {
+
+                                name: 'Daftar Tunggu (Tidak Aktif)',
+
+                                y: <?php echo $chart['dt_non_aktif']->num_rows(); ?>,
+
+                                color: '#ffd700'
+
+                            },{
 
                                 name: 'Daftar Hitam',
 

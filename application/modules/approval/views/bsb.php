@@ -7,8 +7,13 @@
 		<tr class="input-form">
 			<td><label><?php echo $value;?></label></td>
 			<td>
-				<?php echo $get_data[$key];?>
-			</td>			<tr>
+				<?php if($key == 'izin_file'){ ?>
+				<a target="blank" href="<?php echo BASE_LINK.('lampiran/izin_file/'.$get_data[$key])?>"><?= $get_data[$key] ?></a>
+				<?php } else { 
+				echo $get_data[$key];
+				}?>
+			</td>
+			<tr>
 		<?php }?>
 	</table>
 </div>

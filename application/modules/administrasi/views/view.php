@@ -121,7 +121,6 @@
 			</tr>
 		</table>
 		<div class="buttonRegBox clearfix">
-			<a href="<?= base_url('administrasi/download_surat_pernyataan') ?>" target="_blank" class="btnBlue"><i class="fa fa-download"></i> Download Surat Pernyataan</a>
 			<a href="<?php echo site_url('administrasi/edit');?>" class="btnBlue">Edit</a>
 		</div>
 

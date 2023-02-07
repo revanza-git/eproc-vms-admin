@@ -10,7 +10,7 @@
 					<td><?php 
 						$res = array();
 						foreach ($list as $key => $value) {
-							$res[$value['id']] = $value['name'];
+							$res[$value['id_vendor']] = $value['name'];
 						}
 						echo form_dropdown('pemenang', $res, ($this->form->get_temp_data('pemenang'))?$this->form->get_temp_data('pemenang'):$data['name'],'');?>
 						<?php echo form_error('pemenang'); ?>

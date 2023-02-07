@@ -39,8 +39,6 @@ class Pemilik extends CI_Controller {
 
 		$sort = $this->utility->generateSort(array('name', 'shares', 'percentage'));
 
-		$data['ubo_file'] = $this->pm->get_ubo($data['id_user']);
-
 		$data['situ_list']	= $this->pm->get_pemilik_list($search, $sort, $page, $per_page,TRUE);
 		$data['filter_list']= $this->filter->group_filter_post($this->get_field());
 		$data['pagination'] = $this->utility->generate_page('pemilik',$sort, $per_page, $this->pm->get_pemilik_list($search, $sort, '','',FALSE));
@@ -102,49 +100,6 @@ class Pemilik extends CI_Controller {
 		$this->load->view('template',$item);
 	}
 
-	public function upload_ubo()
-	{
-		$_POST = $this->securities->clean_input($_POST,'save');
-		$user = $this->session->userdata('user');
-		$vld = 	array(
-			array(
-				'field'=>'ubo_file',
-				'label'=>'Lampiran Surat UBO',
-				'rules'=>'callback_do_upload[ubo_file]'
-				)
-			);
-		//print_r($this->input->post());
-		//print_r($id);
-		$this->form_validation->set_rules($vld);
-		if($this->form_validation->run()==TRUE){
-			unset($_POST['Simpan']);
-			$save = $this->input->post();
-			$save['id_vendor'] = $user['id_user'];
-			$result = $this->pm->save_ubo($save);
-
-			if($result){
-				$this->dpt->edit_data($id,'ms_pemilik');
-				$this->dpt->non_iu_change($user['id_user']);
-				$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses mengubah data!</p>');
-				redirect(site_url('pemilik'));
-			}else{
-				$this->session->set_flashdata('msgSuccess','<p class="msgError">Gagal Mengubah data!!</p>');
-				redirect(site_url('pemilik'));
-			}
-
-		}
-		$data = $this->pm->get_ubo($user['id_user']);
-		
-		$data['id_aktar']	= $this->pm->get_akta_list();
-
-		$layout['content']= $this->load->view('upload_surat_ubo',$data,TRUE);
-
-		$user = $this->session->userdata('user');
-		$item['header'] = $this->load->view('dashboard/header',$user,TRUE);
-		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
-		$this->load->view('template',$item);
-	}
-
 	public function check_total_percentage($field,$id=0){
 		$total = $this->pm->get_total_percentage($id);
 
@@ -156,7 +111,6 @@ class Pemilik extends CI_Controller {
 			return true;
 		}
 	}
-
 	public function edit($id){
 		$data = $this->pm->get_data($id);
 		$_POST = $this->securities->clean_input($_POST,'save');
@@ -216,7 +170,6 @@ class Pemilik extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
-
 	public function hapus($id){
 		if($this->pm->delete($id)){
 			$this->dpt->non_iu_change($user['id_user']);

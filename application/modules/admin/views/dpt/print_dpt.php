@@ -1,4 +1,4 @@
-		<style type="text/css">
+<style type="text/css">
 			html{
 				padding: 20px;
 			}

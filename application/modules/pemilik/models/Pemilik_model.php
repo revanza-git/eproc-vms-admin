@@ -125,20 +125,6 @@ class pemilik_model extends CI_Model{
     	$res = $this->db->select('SUM(percentage) as sum')->where('del',0)->where('id<>',$id)->where('id_vendor',$user['id_user'])->get('ms_pemilik')->row_array();
     	return $res['sum'];
     }
-
-    public function save_ubo($data)
-	{
-		$cek = $this->db->where('del', 0)->where('id_vendor', $data['id_vendor'])->get('tr_surat_ubo')->row_array();
-		if (empty($cek)) {
-			$data['entry_stamp'] = date('Y-m-d H:i:s');
-			$a = $this->db->insert('tr_surat_ubo', $data);
-		} else {
-			$data['edit_stamp'] = date('Y-m-d H:i:s');
-			$a = $this->db->where('del', 0)->where('id_vendor', $data['id_vendor'])->update('tr_surat_ubo', $data);
-		}
-		return $a;
-	}
-
 	public function get_ubo($id_vendor)
 	{
 		$a = $this->db->where('del', 0)->where('id_vendor', $id_vendor)->get('tr_surat_ubo')->row_array();

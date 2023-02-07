@@ -54,7 +54,6 @@ class Administrasi_model extends CI_Model{
 			->join('ms_vendor_admistrasi', 'ms_vendor.id=ms_vendor_admistrasi.id_vendor', 'LEFT')
 			->join('tb_legal', 'tb_legal.id=ms_vendor_admistrasi.id_legal', 'LEFT')
 			->get('ms_vendor_pic');
-			
 		return $a->row_array();
 	}
 }

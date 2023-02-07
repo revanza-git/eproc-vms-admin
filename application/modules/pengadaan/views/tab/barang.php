@@ -4,7 +4,7 @@
 	<div class="tableWrapper" style="margin-bottom: 20px">
 	
 	<?php echo $this->session->flashdata('msgSuccess')?>
-	<?php if($this->session->userdata('admin')['id_role']==3){ ?>
+	<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
 	<div class="btnTopGroup clearfix">
 	<a href="<?php echo site_url('pengadaan/tambah_barang/'.$id);?>" class="btnBlue"><i class="fa fa-plus"></i>Tambah</a>
 	</div>
@@ -27,7 +27,7 @@
 						<td><?php echo $value['nama_barang'];?></td>
 						<td><?php echo $value['symbol'];?></td>
 						<td><?php echo number_format($value['nilai_hps']);?></td>
-						<?php if($this->session->userdata('admin')['id_role']==6||$this->session->userdata('admin')['id_role']==3){ ?>
+						<?php if($this->session->userdata('admin')['id_role']==6||$this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
 						<td class="actionBlock">
 							<a href="<?php echo site_url('pengadaan/edit_barang/'.$value['id'].'/'.$id)?>"><i class="fa fa-cog"></i>&nbsp;Ubah</a> | 
 							<a href="<?php echo site_url('pengadaan/hapus_barang/'.$value['id'].'/'.$id)?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>

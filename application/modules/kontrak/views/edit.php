@@ -58,11 +58,7 @@
 			<tr class="input-form">
 				<td><label>Jenis Pengadaan* :</label></td>
 				<td>
-					<select name="tipe_pengadaan" required>
-						<?php foreach ($ttr as $key => $value) { ?>
-							<option value="<?php echo $key ?>" <?php $s = ($value==$v_ttr) ? 'selected' : '';?> <?php echo $s; ?>><?php echo $value ?></option>
-						<?php } ?>
-					</select>
+					<?php echo form_dropdown('tipe_pengadaan', $ttr, ($this->form->get_temp_data('tipe_pengadaan')) ? $this->form->get_temp_data('tipe_pengadaan') : $tipe_pengadaan, ''); ?>
 					
 					<?php echo form_error('tipe_pengadaan'); ?>
 				</td>

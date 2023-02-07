@@ -124,7 +124,7 @@
 							<td><?php echo $value['legal_name'];?></td>
 							<td><a href="<?php echo site_url('approval/administrasi/'.$value['id'])?>"><?php echo $value['name'];?></a></td>
 
-							<td><?php if(isset($value['last_update'])){echo default_date($value['last_update'])." - ";echo date("H:i:s", strtotime($value['last_update']));}else{ echo "-" ;}?></td>
+							<td><?php if(isset($value['last_update'])){echo default_date($value['last_update'])." - ";echo date("H:i:s", strtotime($value['last_update'].'-7 hours'));}else{ echo "-" ;}?></td>
 							<?php if($this->session->userdata('admin')['id_role']==8){ ?>
 							<td><?php 
 									if ($value['start_date'] == '0000-00-00 00:00:00' || $value['start_date'] == null || $value['start_date'] == '') {
@@ -180,7 +180,7 @@
 							<td><?php echo $value['legal_name'];?></td>
 							<td><a href="<?php echo site_url('approval/administrasi/'.$value['id'])?>"><?php echo $value['name'];?></a></td>
 
-							<td><?php if(isset($value['last_update'])){echo default_date($value['last_update'])." - ";echo date("H:i:s", strtotime($value['last_update']));}else{ echo "-" ;}?></td>
+							<td><?php if(isset($value['last_update'])){echo default_date($value['last_update'])." - ";echo date("H:i:s", strtotime($value['last_update'].'-7 hours'));}else{ echo "-" ;}?></td>
 							<?php if($this->session->userdata('admin')['id_role']==8){ ?>
 							<td><?php 
 									if ($value['start_date'] == '0000-00-00 00:00:00' || $value['start_date'] == null || $value['start_date'] == '') {
@@ -248,7 +248,9 @@
 </div>
 <div class="filterWrapperOverlay"></div>
 <div class="filterWrapper">
-	<form method="POST">
-		<?php echo $filter_list;?>
-	</form>
+	<div class="filterWrapperInner">
+		<form method="POST">
+			<?php echo $filter_list;?>
+		</form>			
+	</div>
 </div>

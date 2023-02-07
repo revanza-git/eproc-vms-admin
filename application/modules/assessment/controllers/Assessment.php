@@ -16,8 +16,29 @@ class Assessment extends CI_Controller {
 		$this->load->helpers('utility_helpers');
 				
 	}
+	
+	public function select_year()
+	{
+		$search = $this->input->get('q');
+		$page = '';
+		$per_page = 10;
+		$sort = $this->utility->generateSort(array('ms_procurement.name', 'pemenang', 'point', 'tr_assessment.category'));
 
-	public function index()
+		$data['admin']			= $this->session->userdata('admin');
+		$data['list_year'] = $this->am->grouping_by_year();
+		$data['filter_list'] = $this->filter->group_filter_post($this->get_field_pe());
+
+		$data['pagination'] = $this->utility->generate_page('assessment/select_year', $sort, $per_page, $this->am->grouping_by_year());
+		$data['sort'] = $sort;
+
+		$layout['content'] = $this->load->view('assessment/select_year', $data, TRUE);
+		// $layout['script'] = $this->load->view('assessment/content_js', $data, TRUE);
+		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
+		$item['content'] = $this->load->view('admin/dashboard', $layout, TRUE);
+		$this->load->view('template', $item);
+	}
+
+	public function index($year)
 	{	
 		// print_r($this->session->userdata());die;
 		$this->load->library('form');
@@ -29,11 +50,12 @@ class Assessment extends CI_Controller {
 
 		$sort = $this->utility->generateSort(array('ms_procurement.name', 'pemenang', 'point', 'tr_assessment.category'));
 		
-		$data['pengadaan_list']=$this->am->get_pengadaan_list($search, $sort, $page, $per_page,TRUE);
+		$data['year'] = $year;
+		$data['pengadaan_list']=$this->am->get_pengadaan_list($year, $search, $sort, $page, $per_page,TRUE);
 		$data['admin']			= $this->session->userdata('admin');
 		$data['filter_list'] = $this->filter->group_filter_post($this->get_field_pe());
 
-		$data['pagination'] = $this->utility->generate_page('assessment',$sort, $per_page, $this->am->get_pengadaan_list($search, $sort, '','',FALSE));
+		$data['pagination'] = $this->utility->generate_page('assessment/index/'.$year,$sort, $per_page, $this->am->get_pengadaan_list($year, $search, $sort, '','',FALSE));
 		$data['sort'] = $sort;
 
 		$layout['content']= $this->load->view('assessment/content',$data,TRUE);
@@ -92,7 +114,11 @@ class Assessment extends CI_Controller {
 		// $this->db->delete($id)
 	}
 
-
+	public function auto_assessment()
+	{
+		return $this->am->auto_assessment();
+	}
+	
 	public function form_assessment($id,$id_vendor){
 		$this->load->model('blacklist/blacklist_model','blm');
 		$data = $this->am->get_pengadaan($id);
@@ -110,7 +136,7 @@ class Assessment extends CI_Controller {
 			$_POST['id_vendor'] 		= $id_vendor;
 			$_POST['id_procurement'] 	= $id;
 			$_POST['date']				= date('Y-m-d H:i:s');
-			// print_r($this->input->post());
+			//print_r($this->input->post());die;
 			$assessment = $this->am->save_assessment($id,$this->input->post());
 
 			switch ($this->session->userdata('admin')['id_role']) {
@@ -145,12 +171,12 @@ class Assessment extends CI_Controller {
 
 			if($assessment){
 
-				foreach ($email['to'] as $keyTo => $valueTo) {
+				/*foreach ($email['to'] as $keyTo => $valueTo) {
 					# code...
 					// echo $valueTo['email']." - ".$email['msg'];
 					$this->utility->mail($valueTo['email'], $email['msg'], $email['subject']);
 
-				}
+				}*/
 
 
 				if($this->session->userdata('admin')['id_role']==3){
@@ -373,12 +399,9 @@ class Assessment extends CI_Controller {
 			$table .= "</tr>";
 		}
 		$table .= "</table>";
+
 		header('Content-type: application/ms-excel');
-
     	header('Content-Disposition: attachment; filename='.$title.'.xls');
-
-
-
 		echo $table;
 	}
 }

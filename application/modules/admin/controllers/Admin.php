@@ -3,6 +3,7 @@
 class Admin extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
+		$this->load->model('main_model','mm');
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
@@ -10,6 +11,7 @@ class Admin extends CI_Controller {
 	}
 	
 	public function index(){
+		// print_r($this->session->userdata('admin'));
 		$this->load->library('datatables');
 		$this->load->model('vendor/vendor_model','vm');
 		$this->load->model('main_model','mm');
@@ -17,7 +19,9 @@ class Admin extends CI_Controller {
 										'daftar_tunggu_chart'	=>	$this->mm->get_daftar_tunggu_chart(),
 										'daftar_hitam_chart'	=>	$this->mm->daftar_hitam_chart(),
 										'daftar_merah_chart'	=>	$this->mm->daftar_merah_chart(),
-										'dpt_chart'				=>	$this->mm->dpt_chart()
+										'dpt_chart'				=>	$this->mm->dpt_chart(),
+										'dt_aktif'				=>	$this->mm->dt(1),
+										'dt_non_aktif'			=>	$this->mm->dt(0)
 									);
 
 			if(count($_POST['nomorBtn'])){
@@ -55,6 +59,12 @@ class Admin extends CI_Controller {
 		$this->load->view('template',$item);
 	}
 
+	public function search_bar($q)
+	{
+		$data = $this->mm->search_bar($q);
+		echo json_encode($data);
+	}
+
 	public function logout(){
 		$this->session->sess_destroy();
 		redirect(site_url());
@@ -71,5 +81,15 @@ class Admin extends CI_Controller {
 							->from('ms_vendor_admistrasi');
 
 		echo $this->datatables->generate();
+	}
+	
+	public function mail_test()
+	{
+		$this->load->library('utility');
+		$a = 'telah masuk kedalam daftar tunggu di Sistem Aplikasi Kelogistikan PT Nusantara Regas. <br/>
+		Untuk selanjutnya, silahkan memeriksa kembali kelengkapan data - data calon DPT di aplikasi. <br/><br/>
+		Terima kasih.<br/>
+		PT Nusantara Regas';
+		return $this->utility->mail('arinaldha@gmail.com', $a, 'test');
 	}
 }

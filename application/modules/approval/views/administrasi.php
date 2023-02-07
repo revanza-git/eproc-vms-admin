@@ -37,7 +37,7 @@
 			<tr class="input-form">
 				<td><label>Lampiran</label></td>
 				<td>
-					<a href="<?php echo base_url('lampiran/npwp_file/'.$npwp_file)?>"><?php echo $npwp_file;?></a>
+					<a href="<?php echo BASE_LINK.('lampiran/npwp_file/'.$npwp_file)?>"><?php echo $npwp_file;?></a>
 				</td>
 			</tr>
 			<tr class="input-form">
@@ -55,7 +55,7 @@
 			<tr class="input-form">
 				<td><label>Lampiran</label></td>
 				<td>
-					<a href="<?php echo base_url('lampiran/nppkp_file/'.$nppkp_file)?>"><?php echo $nppkp_file;?></a>
+					<a href="<?php echo BASE_LINK.('lampiran/nppkp_file/'.$nppkp_file)?>"><?php echo $nppkp_file;?></a>
 				</td>
 			</tr>
 			<tr class="input-form">
@@ -113,7 +113,10 @@
 				</td>
 			</tr>
 		</table>
-		<?php if($this->session->userdata('admin')['id_role']==1){?>
+		<?php
+		$admin = $this->session->userdata('admin');
+		if ($admin['id_role'] == 1 || $admin['id_role'] == 10) {
+		?>
 		<div class="clearfix">
 			<label class="orangeAtt">
 				<input type="checkbox" name="mandatory" value="1" <?php echo $this->data_process->set_mandatory($data_status);?>>&nbsp;<i class="fa fa-exclamation-triangle"></i>&nbsp;Mandatory
@@ -126,8 +129,13 @@
 			</label>
 		</div>
 		<div class="buttonRegBox clearfix">
+			<a href="<?= base_url('approval/download_surat_pernyataan/' . $id_data) ?>" target="_blank" class="btnBlue"><i class="fa fa-download"></i> Download Surat Pernyataan</a>
 			<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 		</div>
-		<?php }?>
+		<?php } else { ?>
+		<div class="buttonRegBox clearfix">
+			<a href="<?= base_url('approval/download_surat_pernyataan/' . $id_data) ?>" target="_blank" class="btnBlue"><i class="fa fa-download"></i> Download Surat Pernyataan</a>
+		</div>
+		<?php } ?>
 	</form>
 </div>

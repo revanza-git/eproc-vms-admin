@@ -33,7 +33,7 @@ class Note extends CI_Controller {
  		$this->email->clear(TRUE);
 
 		$this->email->from('vms-noreply@nusantararegas.com', 'VMS REGAS');
-		$this->email->bcc('muarifgustiar@gmail.com'); 
+		// $this->email->bcc('muarifgustiar@gmail.com'); 
 		$this->email->to($to); 
 
 		$this->email->subject('Catatan verifikasi berkas Sistem Aplikasi Kelogistikan PT Nusantara Regas');

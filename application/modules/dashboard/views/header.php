@@ -1,6 +1,6 @@
 <div class="logo">
 	<div class="logoInner">
-        <a href="<?php echo site_url()?>"><img src="<?php echo base_url('assets/images/logo-nr.png');?>"></a>
+        <a href="<?php echo site_url()?>"><img src="<?php echo base_url('assets/images/login-regas-logo.png');?>"></a>
     </div>
 </div>
 <div class="backButton">

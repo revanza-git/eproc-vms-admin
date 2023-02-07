@@ -286,6 +286,7 @@ class Vendor extends CI_Controller {
 
 	public function to_waiting_list(){
 		$user = $this->session->userdata('user');
+		// print_r($user);die;
 		if($this->vm->check_pic($user['id_user'])==0){
 			redirect(site_url('dashboard/pernyataan'));
 		}

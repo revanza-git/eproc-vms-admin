@@ -6,9 +6,10 @@
 	<?php if ($count_contract > 0) { ?>
 		<?php if($this->session->userdata('admin')['id_role']==3){ ?>
 		<div class="btnTopGroup clearfix">
-		<a href="<?php echo site_url('kontrak/tambah_bast/'.$id);?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
+			<a href="<?php echo site_url('kontrak/tambah_bast/'.$id);?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
 		</div>
-		<legend>
+		<?php } ?>
+	<legend>
 		<p>Keterangan :</p>
 		<p><font color="#27ae60">&#8718; Kontrak</font></p>
 		<p><font color="#7f8c8d">&#8718; Jangka Waktu Pelaksanaan Pekerjaan</font></p>
@@ -61,7 +62,7 @@
 				
 		</div>
 	</div>
-		<?php } ?>
+		
 	<?php } else { ?>
 		<p class="noticeMsg">Isi kontrak terlebih dahulu!</p>
 	<?php } ?>
@@ -94,7 +95,7 @@
 								if ($value['bast_file'] == '' || $value['bast_file'] == null) {
 									$file = '-';
 								} else{
-									$file = '<a href="'.site_url('lampiran/bast_file/'.$value['bast_file']).'" target="blank">'.$value['bast_file'].'</a>';
+									$file = '<a href="'.BASE_LINK.('lampiran/bast_file/'.$value['bast_file']).'" target="blank">'.$value['bast_file'].'</a>';
 								}
 								echo $file;
 							?>

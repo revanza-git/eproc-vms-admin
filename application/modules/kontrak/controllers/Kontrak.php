@@ -269,6 +269,7 @@ class Kontrak extends CI_Controller {
 		$user = $this->session->userdata('user');
 		$layout['get_dpt_type'] = $this->im->get_dpt_type();		
 		$layout['winner'] 		= $this->pm->get_winner_vendor($id);
+		$layout['kurs'] = $this->km->get_kurs($id);
 		// echo print_r($this->pm->get_winner_vendor($id));die;
 		$vld = 	array(
 					array(
@@ -335,6 +336,7 @@ class Kontrak extends CI_Controller {
 		$user = $this->session->userdata('user');
 		$layout['get_dpt_type'] = $this->im->get_dpt_type();
 		$data['winner'] 		= $this->pm->get_winner_vendor($id_proc);
+		$data['kurs'] = $this->km->get_kurs($id_proc);
 		$vld = 	array(
 					array(
 						'field'=>'no_contract',
@@ -372,6 +374,7 @@ class Kontrak extends CI_Controller {
 			// echo "string";die;
 			$_POST['edit_stamp'] = date("Y-m-d H:i:s");
 			unset($_POST['Update']);
+
 			$res = $this->km->edit_kontrak($this->input->post(),$id);
 			if($res){
 				$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses mengedit kontrak!</p>');
@@ -845,7 +848,7 @@ class Kontrak extends CI_Controller {
 		
 		$config['upload_path'] = './lampiran/'.$db_name.'/';
 		$config['allowed_types'] = 'pdf|jpeg|jpg|png|gif|doc|docx';
-		$config['max_size'] = '2096';
+		$config['max_size'] = '20960';
 		
 		$this->load->library('upload');
 		$this->upload->initialize($config);

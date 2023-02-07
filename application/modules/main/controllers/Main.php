@@ -13,7 +13,7 @@ class Main extends CI_Controller {
 			$item['header'] = '';
 			$item['content'] = $this->load->view('login',NULL,TRUE);
 			$this->load->view('template',$item);*/
-			header("Location: https://eproc.nusantararegas.com/eproc_nusantararegas/main/logout");
+			header("Location: https://deveproc.nusantararegas.com/eproc_nusantararegas/main/logout");
 		}
 	}
 	
@@ -87,8 +87,8 @@ class Main extends CI_Controller {
 				$app			=	$admin['app'];
 				$division		=	$admin['division'];
 
-				header('Location:https://eproc.nusantararegas.com/eproc_pengadaan/main/login_admin/'.$id_user.'/'.$name.'/'.$id_role.'/'.$role_name.'/'.$app.'/'.$id_sbu.'/'.$sbu_name.'/'.$division);
-				// header('Location:https://eproc.nusantararegas.com/eproc');
+				header('Location:https://deveproc.nusantararegas.com/eproc_pengadaan/main/login_admin/'.$id_user.'/'.$name.'/'.$id_role.'/'.$role_name.'/'.$app.'/'.$id_sbu.'/'.$sbu_name.'/'.$division);
+				// header('Location:https://deveproc.nusantararegas.com/eproc');
 				// redirect(site_url('auction'));
 			}else{
 				redirect(site_url('admin'));
@@ -99,7 +99,7 @@ class Main extends CI_Controller {
 	public function logout(){
 		$this->session->sess_destroy();
 		// redirect(site_url());
-		header('Location: http://10.10.10.4/eproc_nusantararegas/main/logout');
+		header('Location: http://10.10.10.3/eproc_nusantararegas/main/logout');
 	}
 	
 	public function showUser()
@@ -211,7 +211,7 @@ class Main extends CI_Controller {
 	// 				$this->load->view('template',$item);
 	// 			}else if($this->session->userdata('admin')){
 	// 				if($this->session->userdata('admin')['id_role']==6){
-	// 					// header('Location:https://eproc.nusantararegas.com/eproc');
+	// 					// header('Location:https://deveproc.nusantararegas.com/eproc');
 	// 					redirect(site_url('auction'));
 	// 				}else{
 	// 					redirect(site_url('admin'));

@@ -67,12 +67,7 @@
 		<?php }
 		?>
 		</tbody>
-	</table><br>
-	<a href="<?= site_url('lampiran/UBO-File.docx') ?>" class="btnBlue"><i class="fa fa-download"></i> Download Surat UBO</a>
-	<a href="<?= site_url('pemilik/upload_ubo') ?>" class="btnBlue"><i class="fa fa-upload"></i> Upload Surat UBO</a>
-	<?php if (!empty($ubo_file)) { ?>
-		<a href="<?= site_url('lampiran/ubo_file/'.$ubo_file['ubo_file']) ?>" class="btnBlue"><i class="fa fa-eye"></i> Lihat Surat UBO</a>
-	<?php } ?>
+	</table>
 	
 </div>
 <div class="pageNumber">

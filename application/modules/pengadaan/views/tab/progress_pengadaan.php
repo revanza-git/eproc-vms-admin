@@ -69,7 +69,7 @@
 
 	<?php 
 
-		if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==9) {
+		if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10||$this->session->userdata('admin')['id_role']==9) {
 
 			echo $this->utility->tabNav($tabNav,'progress_pengadaan');
 
@@ -82,7 +82,7 @@
 			
 
 			<div class="tableWrapper">
-
+			
 				<p>Grafik Progress</p>
 
 				<div class="graphBar clearfix">
@@ -145,15 +145,17 @@
 					<p class="notifReg"><i>*Arahkan Mouse untuk melihat keterangan pada Grafik Progress</i></p>
 
 				</div>
-
+				<br><br><br><br><br>
+				<a href="<?= site_url('pengadaan/view/'.$id_pengadaan.'/tambah_progress_pengadaan') ?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah Proses Pengadaan</a>
+				<br><br>
 				<?php echo form_open_multipart();?>
 
 					<div class="pengadaanStep">
-
+					
 						<table class="tableData">
 
 						<thead>
-
+						
 							<tr>
 								<td>Proses Pengadaan</td>
 								<td style="text-align: center">Status</td>
@@ -163,12 +165,12 @@
 
 						</thead>
 						
-						<?php  /*print_r($progress[$key]['value'].'Tandain')*/;/**/foreach($step_pengadaan as $key => $val){ ?>
+						<?php foreach($step_pengadaan as $key => $val){ ?>
 
 							<tr>
 								<td><?php echo $val['value']?></td>
 
-								<td style="text-align: center"><?php if($this->session->userdata('admin')['id_role']==3){ ?>
+								<td style="text-align: center"><?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
 									<input type="hidden" name="progress[<?php echo $key;?>]" value="0">
 									<input type="checkbox" name="progress[<?php echo $key;?>]" value="1" <?php echo ($progress[$key]['value'])?'checked':'';?>>
 									<?php }else{  
@@ -178,7 +180,7 @@
 
 								<td>
 									<?php 
-									if($this->session->userdata('admin')['id_role']==3){
+									if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){
 										if($progress[$key]['date'] > 0){
 											#echo default_date($progress[$key]['date']);
 											echo $this->form->calendar(array('name'=>'date['.$key.']','value'=>$progress[$key]['date']), false);
@@ -209,13 +211,13 @@
 									<?php if (($progress[$key]['file'] != '')) {
 										echo "<a style='margin-right: 5px' href='".base_url('lampiran/progress_pengadaan/')."/".$progress[$key]['file']."' title='".$progress[$key]['file']."' target='_blank'><i class='fa fa-download'></i></a>";
 									?>
-										<?php if ($this->session->userdata('admin')['id_role']==3) { ?>
+										<?php if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10) { ?>
 											<input type="file" name="file_upload[<?php echo $key;?>]">
 										<?php } ?>
 									<?php
 									}else{
 									?>
-										<?php if ($this->session->userdata('admin')['id_role']==3) { ?>
+										<?php if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10) { ?>
 											<input type="file" name="file_upload[<?php echo $key;?>]">
 										<?php } ?>
 									<?php }?>
@@ -225,14 +227,77 @@
 
 							</tr>
 
-							<?php }?>
+						<?php 
+							}
+						if (count($custom_step_pengadaan) > 0) {
+							foreach($custom_step_pengadaan as $key => $val){
+						?>
+													<tr>
+								<td><?php echo $val['value']?></td>
 
+								<td style="text-align: center"><?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
+									<input type="hidden" name="progress[<?php echo $key;?>]" value="0">
+									<input type="checkbox" name="progress[<?php echo $key;?>]" value="1" <?php echo ($progress[$key]['value'])?'checked':'';?>>
+									<?php }else{  
+										echo ($progress[$key]['value'])?'<i class="fa fa-check-square-o"></i>':'<i class="fa fa-square-o"></i>';
+									} ?>
+								</td>
+
+								<td>
+									<?php 
+									if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){
+										if($progress[$key]['date'] > 0){
+											#echo default_date($progress[$key]['date']);
+											echo $this->form->calendar(array('name'=>'date['.$key.']','value'=>$progress[$key]['date']), false);
+										}else{
+											echo $this->form->calendar(array('name'=>'date['.$key.']'), false);
+										}
+										if ($key == 10) {
+											# code...
+												echo " - ".$this->form->calendar(array('name'=>'date_['.$key.']','value'=>$progress[$key]['date']), false);
+										}
+									}else{
+										echo default_date($progress[$key]['date']);
+									}?>
+								</td>
+								<td width="70px">
+									<?php 
+									$lampiran = explode(";", $val['lampiran']);
+									$a = '<i class="fa fa-square-o"></i>';
+									foreach ($lampiran as $lampiran_) {
+										if ($lampiran_ != null) {
+											echo "<a style='margin-right: 5px' href='".base_url('lampiran/progress_pengadaan/file/')."/".$lampiran_."' title='".$lampiran_."'><i class='fa fa-download'></i></a>";
+										}else{
+											echo "--";
+										}
+									}?>
+								</td>
+								<td width="162px">
+									<?php if (($progress[$key]['file'] != '')) {
+										echo "<a style='margin-right: 5px' href='".base_url('lampiran/progress_pengadaan/')."/".$progress[$key]['file']."' title='".$progress[$key]['file']."' target='_blank'><i class='fa fa-download'></i></a>";
+									?>
+										<?php if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10) { ?>
+											<input type="file" name="file_upload[<?php echo $key;?>]">
+										<?php } ?>
+									<?php
+									}else{
+									?>
+										<?php if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10) { ?>
+											<input type="file" name="file_upload[<?php echo $key;?>]">
+										<?php } ?>
+									<?php }?>
+									
+									
+								</td>
+
+							</tr>
+						<?php } }?>
 						</table>
 
-						<?php if($this->session->userdata('admin')['id_role']==3){ ?>
+						<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
 
 						<div class="buttonRegBox clearfix">
-
+						
 							<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 
 						</div>

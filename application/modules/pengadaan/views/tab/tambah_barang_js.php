@@ -2,106 +2,106 @@
 
 	<script>
 
-		var obj = $("#material_name");
+var obj = $("#material_name");
 
-    	var res = $("#id_material");
+var res = $("#id_material");
 
-    	var reset = $('.resetInput');
+var reset = $('.resetInput');
 
-    	var cat = $('#cat');
+var cat = $('#cat');
 
-    	var hps = $('#hps');
+var hps = $('#hps');
 
-    	var kurs_hide = $('#id_kurs_hide');
+var kurs_hide = $('#id_kurs_hide');
 
-    	var kurs_drop = $('.kurs_drop');
+var kurs_drop = $('.kurs_drop');
 
-	    $(function(){
+$(function(){
 
-	    	
+	
 
-	        obj.autocomplete({
+	obj.autocomplete({
 
-	            source: function(request, response) {
+		source: function(request, response) {
 
-	                $.ajax({
+			$.ajax({
 
-		                url: "<?php echo site_url('katalog/search')?>",
+				url: "<?php echo site_url('katalog/search')?>",
 
-		                data: { term: obj.val(),cat:$('.kategori').val()},
+				data: { term: obj.val(),cat:$('.kategori').val()},
 
-		                dataType: "json",
+				dataType: "json",
 
-		                type: "POST",
+				type: "POST",
 
-		                success: function(data){
+				success: function(data){
 
-		                   	response( $.map( data, function( item ) {
+					   response( $.map( data, function( item ) {
 
-				                return {
+						return {
 
-				                    label: item.name,
+							label: item.name,
 
-				                    value: item.name,
+							value: item.name,
 
-				                    id: item.id,
+							id: item.id,
 
-				                    avg: item.average,
+							avg: item.average,
 
-				                    kurs: item.id_kurs,
+							kurs: item.id_kurs,
 
-				                }
+						}
 
-				            }));
+					}));
 
-		                }
+				}
 
-		            });
+			});
 
-		        },
+		},
 
-		        select:function(event,ui){
-		        	res.val(ui.item.id);
-		        	obj.prop('readonly',true);
-		        	cat.hide();
-		        	kurs_hide.val(ui.item.kurs);
-		        	
-		        	if(ui.item.kurs==="null" || ui.item.kurs===null || ui.item.kurs==="" || typeof ui.item.kurs === "undefined"){
-		        		kurs_drop.prop('disabled',false);
-		        	}else{
-		        		kurs_drop.prop('disabled',true).hide();
-		        	}
-		        	
+		select:function(event,ui){
+			res.val(ui.item.id);
+			obj.prop('readonly',true);
+			cat.hide();
+			kurs_hide.val(ui.item.kurs);
+			
+			if(ui.item.kurs==="null" || ui.item.kurs===null || ui.item.kurs==="" || typeof ui.item.kurs === "undefined"){
+				kurs_drop.prop('disabled',false);
+			}else{
+				kurs_drop.prop('disabled',true).hide();
+			}
+			
 
-		        	$('input',cat).prop('selected',false);
+			$('input',cat).prop('selected',false);
 
-		        	reset.toggle();
+			reset.toggle();
 
 
 
-		        },
+		},
 
-		        minLength: 2
+		minLength: 2
 
-	        });
+	});
 
-	       
+   
 
-	    });
+});
 
-	    function resetInput(){
+function resetInput(){
 
-        	obj.prop('readonly',false);
+	obj.prop('readonly',false);
 
-        	obj.val('');
+	obj.val('');
 
-        	res.val('');
+	res.val('');
 
-        	cat.show();
-        	kurs_drop.prop('disabled',false).show();
-        	reset.toggle();
+	cat.show();
+	kurs_drop.prop('disabled',false).show();
+	reset.toggle();
 
-        }
+}
 
-	</script>
+</script>
 

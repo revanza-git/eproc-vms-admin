@@ -1,338 +1,340 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Assessment extends CI_Controller {
-
-	public $id_pengadaan;
-	public $tabNav;
-
-	public function __construct(){
+class Assessment_model extends CI_Model{
+	function __construct(){
 		parent::__construct();
+		
+	}
+	function get_pengadaan_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()) 
+    {
+    	$user = $this->session->userdata('user');
+		$this->db->select('*, ms_procurement.id id, ms_procurement.name name, tb_blacklist_limit.value category, ms_vendor.id id_vendor, ms_vendor.name pemenang, "-" as pemenang_kontrak , "-" as user_kontrak , proc_date, ms_procurement.del del');
+		$this->db->group_by('ms_procurement.id');
+		$this->db->where('ms_procurement.del',0);
+		// $this->db->where('ms_procurement_peserta.is_winner',1);
+		// $this->db->where('ms_vendor.is_active',1);
+		$this->db->where('ms_procurement.id_mekanisme!=',1);
+		
+		if($this->session->userdata('admin')['id_role']==4){
+			$this->db->where('ms_procurement.status_procurement=',1);
+		}
+		$this->db->join('ms_contract','ms_contract.id_procurement=ms_procurement.id','LEFT');
+		// $this->db->join('ms_procurement_peserta','ms_procurement_peserta.id_proc=ms_procurement.id','LEFT');
+		$this->db->join('ms_vendor','ms_vendor.id=ms_contract.id_vendor');
 
-		if(!$this->session->userdata('admin')){
-			redirect(site_url());
+		$this->db->join('tr_assessment','tr_assessment.id_vendor=ms_vendor.id AND tr_assessment.id_procurement = ms_procurement.id','LEFT');
+		
+		$this->db->join('tb_blacklist_limit','tb_blacklist_limit.id=tr_assessment.category','LEFT');
+		
+		$this->db->join('ms_procurement_bsb','ms_procurement_bsb.id_proc=ms_procurement.id','LEFT');
+		
+		
+		if($this->input->get('sort')&&$this->input->get('by')){
+			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
+		}
+		if($is_page){
+			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
+			$this->db->limit($per_page, $per_page*($cur_page - 1));
+		}
+		
+		$a = $this->filter->generate_query($this->db->group_by('ms_procurement.id'),$filter);
+
+		$query = $a->get('ms_procurement');	
+		// echo $this->db->last_query();	
+		return $query->result_array();
+		
+    }
+
+   	function get_pengadaan($id){
+   		$arr = $this->db->select('*,ms_procurement.name name, tb_budget_holder.name budget_holder_name, tb_budget_spender.name budget_spender_name, tb_pejabat_pengadaan.name pejabat_pengadaan_name,tb_mekanisme.name mekanisme_name')
+   		->where('ms_procurement.id',$id)
+   		->join('tb_pejabat_pengadaan','tb_pejabat_pengadaan.id=ms_procurement.id_pejabat_pengadaan','LEFT')
+		->join('tb_budget_holder','tb_budget_holder.id=ms_procurement.budget_holder','LEFT')
+		->join('tb_budget_spender','tb_budget_spender.id=ms_procurement.budget_spender','LEFT')
+		->join('tb_mekanisme','tb_mekanisme.id=ms_procurement.id_mekanisme','LEFT')
+   		->get('ms_procurement')->row_array();
+		
+		return $arr;
+   	}
+
+
+   	function get_assessment_vendor_list($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+   		$result = $this->db->select('mpp.id id,ms_vendor.name peserta_name,
+   			(SELECT point FROM tr_ass_point where id_vendor = ms_vendor.id AND id_procurement = '.$id.' ORDER BY id DESC LIMIT 0, 1) as `point` , tb_blacklist_limit.value as kategori, mpp.id_vendor id_vendor')
+   		->where('mpp.id_proc',$id)
+   		->where('ms_vendor.is_active',1)
+   		->join('ms_vendor','ms_vendor.id=mpp.id_vendor')
+   		->join('tr_assessment','tr_assessment.id_vendor=mpp.id_vendor')
+   		->join('tb_blacklist_limit','tb_blacklist_limit.id=tr_assessment.category')
+   		->group_by('mpp.id')
+   		// ->where('tr_ass_point.id_procurement',$id)
+   		/*->where('mpp.del',0)*/;
+   		if($this->input->get('sort')&&$this->input->get('by')){
+			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
+		}
+		if($is_page){
+			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
+			$this->db->limit($per_page, $per_page*($cur_page - 1));
+		}
+		$res = $this->db->get('ms_procurement_peserta mpp')->result_array();
+		// echo $this->db->last_query();
+   		return $res;
+   	}
+   	
+   	function get_vendor_report($id){
+   		$query = $this->db 	->select('ms_vendor.id id, ms_vendor.name name, ms_vendor.npwp_code npwp_code, (SELECT point FROM tr_ass_point where id_vendor = '.$id.' ORDER BY tr_ass_point.id DESC LIMIT 0, 1) point')
+   							->where('id',$id)
+   							->get('ms_vendor')
+   							->result_array();
+
+   		return $query;
+   	}
+
+   	function get_assessment_vendor($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+
+   		$result = $this->db->select('ms_vendor.name peserta_name,tr_ass_point.point point,ms_vendor.id id_vendor, tr_ass_point.date date')
+   		->where('id_vendor',$id)
+   		->join('ms_vendor','ms_vendor.id=tr_ass_point.id_vendor');
+		
+		if($this->input->get('sort')&&$this->input->get('by')){
+			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
+		}
+		if($is_page){
+			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
+			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
 
-		$this->load->model('assessment_model','am');
-				
-	}
+   		$query = $this->db->get('tr_ass_point')->result_array();
 
-	public function index()
-	{	
-		$this->load->library('form');
-		$search = $this->input->get('q');
-		$page = '';
-		$post = $this->input->post();
+		return $query;
+   	}
 
-		$per_page=10;
+   	function get_procurement_peserta($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
 
-		$sort = $this->utility->generateSort(array('ms_procurement.name', 'pemenang', 'point', 'tr_assessment.category'));
+   		$result = $this->db->select('ms_procurement_peserta.id id,ms_vendor.name peserta_name,ms_procurement_peserta.id_vendor id_vendor')->where('ms_procurement_peserta.id_proc',$id)
+   		->join('ms_vendor','ms_vendor.id=ms_procurement_peserta.id_vendor')
+   		->where('ms_procurement_peserta.del',0);
 		
-		$data['pengadaan_list']=$this->am->get_pengadaan_list($search, $sort, $page, $per_page,TRUE);
+		if($this->input->get('sort')&&$this->input->get('by')){
+			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
+		}
+		if($is_page){
+			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
+			$this->db->limit($per_page, $per_page*($cur_page - 1));
+		}
+   		return $this->db->get('ms_procurement_peserta')->result_array();
 
-		$data['filter_list'] = $this->filter->group_filter_post($this->get_field_pe());
+   	}
+  
 
-		$data['pagination'] = $this->utility->generate_page('assessment',$sort, $per_page, $this->am->get_pengadaan_list($search, $sort, '','',FALSE));
-		$data['sort'] = $sort;
 
-		$layout['content']= $this->load->view('assessment/content',$data,TRUE);
-		$layout['script']= $this->load->view('assessment/content_js',$data,TRUE);
-		$item['header'] = $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
-		$item['content'] = $this->load->view('admin/dashboard',$layout,TRUE);
-		$this->load->view('template',$item);
-	}
+	public function get_question_assessment(){
+		$result = array();
+		$group_ass = $this->db->select('*')->get('ms_ass_group')->result_array();
 
-	public function view_vendor($id_pengadaan){
-		$post = $this->input->post();
-
-		$per_page=10;
-
-		$data['sort'] = $this->utility->generateSort(array('peserta_name','point'));
-	
-		$data['list'] = $this->am->get_assessment_vendor_list($id_pengadaan,NULL, $data['sort'], '','',FALSE);
 		
-		// $data['filter_list'] = $this->form->group_filter_post($this->get_field());
-		$page = 'peserta';
-		$data['pagination'] = $this->utility->generate_page('assessment/content_vendor/'.$id_pengadaan, NULL,  $this->am->get_assessment_vendor_list($id_pengadaan,NULL, $data['sort'], '','',FALSE));
-		
-		$data['id']			= $id_pengadaan;
-		$layout['content']	= $this->load->view('assessment/content_vendor',$data,TRUE);
-		$layout['script']	= $this->load->view('assessment/content_js',$data,TRUE);
-		$layout['script']	= $this->load->view('assessment/form_filter',$data,TRUE);
-		$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
-		$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
-		$this->load->view('template',$item);
-	}
-
-
-	public function history_nilai($id)
-	{	
-		$post = $this->input->post();
-
-		$per_page=10;
-
-		$data['sort'] 		= $this->utility->generateSort(array('date','point'));
-		$data['list']		= $this->am->get_assessment_vendor($id);
-
-		// $data['filter_list'] = $this->form->group_filter_post($this->get_field());
-		$page = 'peserta';
-		$data['pagination'] = $this->utility->generate_page('assessment/history_nilai/'.$id, NULL,  $this->am->get_assessment_vendor($id,NULL, $data['sort'], '','',FALSE));
-		
-		$data['id']	= $id;
-		$layout['content']	= $this->load->view('assessment/history_nilai',$data,TRUE);
-
-
-		$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
-		$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
-		$this->load->view('template',$item);
-	}
-
-	public function hapus_history($id){
-		// $this->db->delete($id)
-	}
-
-
-	public function form_assessment($id,$id_vendor){
-		$this->load->model('blacklist/blacklist_model','blm');
-		$data = $this->am->get_pengadaan($id);
-
-		$data['assessment_question'] = $this->am->get_question_assessment();
-		$data['tabNav'] = $this->tabNav;
-		$data['data_assessment'] = $this->am->get_assessment($id,$id_vendor);
-		$data['data_approve'] = $this->am->get_approve($id,$id_vendor);
-		// print_r($data);die;
-
-		if($this->input->post('simpan')){
-
-			unset($_POST['simpan']);
-
-			$_POST['id_vendor'] 		= $id_vendor;
-			$_POST['id_procurement'] 	= $id;
-			$_POST['date']				= date('Y-m-d H:i:s');
-			// print_r($this->input->post());
-			$assessment = $this->am->save_assessment($id,$this->input->post());
-
-			switch ($this->session->userdata('admin')['id_role']) {
-				case 9:
-					$text 				= 'Data telah terkirim ke User HSE';
-					$email['to']		= $this->am->get_mail(2);
-					$email['subject']	= "Penilaian (".$data['name'].") - Sistem Aplikasi Kelogistikan PT Nusantara Regas";
-					$email['msg']		= '
-						Admin User telah memberikan penilaian pada <b>'.$data['name'].'</b> dalam Sistem Aplikasi Kelogistikan PT Nusantara Regas.<br/>
-						Untuk melengkapi proses penilaian, harap login ke sistem dan mengakses menu Assessment untuk melengkapi data - data penilaian pada pengadaan <b>'.$data['name'].'</b> di aplikasi.<br/><br/><br/>
-						Terima kasih.<br/>
-						PT Nusantara Regas';
-					redirect('assessment/print_bast/'.$id.'/'.$id_vendor);
-					break;
-				
-				case 2:
-					$text 				= 'Data telah terkirim ke User Logistik';
-					$email['to']		= $this->am->get_mail(3);
-					$email['subject']	= "Penilaian (".$data['name'].") - Sistem Aplikasi Kelogistikan PT Nusantara Regas";
-					$email['msg']		= '
-						Admin HSE telah memberikan penilaian pada <b>'.$data['name'].'</b> dalam Sistem Aplikasi Kelogistikan PT Nusantara Regas.<br/>
-						
-						Untuk melengkapi proses penilaian, harap login ke sistem dan mengakses menu Assessment untuk melengkapi data - data penilaian pada pengadaan <b>'.$data['name'].'</b> di aplikasi.<br/><br/><br/>
-						Terima kasih.<br/>
-						PT Nusantara Regas';
-					break;
-
-				case 3:
-					$text 			= 'Data telah tersimpan';
-					break;
-			}
-
-			if($assessment){
-
-				foreach ($email['to'] as $keyTo => $valueTo) {
-					# code...
-					// echo $valueTo['email']." - ".$email['msg'];
-					$this->utility->mail($valueTo['email'], $email['msg'], $email['subject']);
-
-				}
-
-
-				if($this->session->userdata('admin')['id_role']==3){
-					$poin = $this->am->check_poin($id,$id_vendor);
-					
-					$cb = $this->blm->check_blacklist($poin,$id_vendor,site_url('assessment/'));
-
-					if($this->am->check_approve($id,$id_vendor)>0){
-						$this->am->set_assessment($id_vendor,$poin,$cb['id_blacklist'],$id);
-						if($cb['id_blacklist']==1||$cb['id_blacklist']==2){
-								if($this->session->userdata('admin')['id_role']==3){
-									$this->session->set_userdata('blacklist',$cb);
-									
-									$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Penyedia Barang/Jasa masuk dalam Daftar '.(($cb['id_blacklist']==1)?'Merah':'Hitam').'</p>');
-									redirect('blacklist/tambah/');
-								}
-							
-						}else{
-							$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">'.$text.'</p>');
-							redirect(site_url('assessment'));
-						}
-						
-					}else{
-						$this->session->set_flashdata('msgSuccess','<p class="errorMsg">Penilaian harus disetujui User HSE</p>');
-						redirect(current_url());
-					}
-				}else{
-
-					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">'.$text.'</p>');
-					redirect(site_url('assessment'));
-				}
-			}
+		foreach($group_ass as $key => $value){
+			$result[$value['id']]['name'] = $value['name'];
+			$assessment = $this->db->select('*')->where('id_group',$value['id'])->get('ms_ass')->result_array();
 			
-
-		}
-
-		$data['role'] 		= $this->session->userdata('admin');
-		$layout['content']	= $this->load->view('assessment/form_assessment',$data,TRUE);
-		$layout['script']	= $this->load->view('assessment/form_assessment_js',$data,TRUE);
-		$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
-		$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
-		$this->load->view('template',$item);
-	}
-
-	public function print_bast($id, $id_vendor){
-		$data['role'] 		= $this->session->userdata('admin');
-		$data['default']	= $this->am->get_default_template()->row_array();
-		$data['content']	= $this->am->get_data_bast($id, $id_vendor)->row_array();
-		$pengadaan	= $this->am->get_bast_fill($id)->row();
-		
-		$data['text']		= $data['default']['text'];
-		$data['text'] = str_replace(
-								array(
-									'{pekerjaan}',
-									'{penyedia}',
-									'{alamat_penyedia}',
-									'{no_kontrak}',
-									'{tanggal_kontrak}',
-									'{besaran_kontrak}',
-									'{besaran_terbilang}',
-									'{hari}',
-									'{tanggal}',
-									'{bulan}',
-									'{tahun}'
-								),
-								array(
-									$pengadaan->pekerjaan,
-									$pengadaan->legal_name.' '.$pengadaan->penyedia,
-									$pengadaan->alamat_penyedia,
-									$pengadaan->no_kontrak,
-									default_date($pengadaan->tanggal_kontrak),
-									number_format($pengadaan->besaran),
-									'<b>'.terbilang($pengadaan->besaran).'</b>',
-									get_hari(date('Y-m-d')),
-									date('j'),
-									get_month(date('Y-m-d')),
-									date('Y')
-
-								),
-								$data['text']
-							);
-		if(isset($data['content']['value'])){
-			$data['text'] = $data['content']['value'];
-		}
-		
-		if($this->input->post('simpan')){
-			if($this->am->insert_bast($id, $id_vendor)){
-				redirect(site_url('assessment/export_bast/'.$id.'/'.$id_vendor));
+			foreach($assessment as $ass){
+				$result[$value['id']]['quest'][] = $ass;
 			}
 		}
-		$layout['content']	= $this->load->view('assessment/print_bast',$data,TRUE);
-		$layout['script']	= $this->load->view('assessment/print_bast_js',$data,TRUE);
-		$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
-		$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
-		$this->load->view('template',$item);
+
+		return $result;
 	}
-	public function export_bast($id,$id_vendor){
-		$data = $this->am->get_data_bast($id,$id_vendor)->row_array();
-  		header("Cache-Control: ");// leave blank to avoid IE errors
-		header("Pragma: ");// leave blank to avoid IE errors
-		header("Content-type: application/octet-stream");
-  		// header("Content-type: application/vnd.ms-word");
-		header("Content-Disposition: attachment; Filename=SaveAsWordDoc.doc");
-
-		echo '<html xmlns:v="urn:schemas-microsoft-com:vml"
-				xmlns:o="urn:schemas-microsoft-com:office:office"
-				xmlns:w="urn:schemas-microsoft-com:office:word"
-				xmlns="http://www.w3.org/TR/REC-html40">';
-		echo '<head>
-				<meta http-equiv=Content-Type content="text/html; charset=utf-8">
-				<meta name=ProgId content=Word.Document>
-				<meta name=Generator content="Microsoft Word 9">
-				<meta name=Originator content="Microsoft Word 9">
-				<!--[if !mso]>
-				<style>
-				v\:* {behavior:url(#default#VML);}
-				o\:* {behavior:url(#default#VML);}
-				w\:* {behavior:url(#default#VML);}
-				.shape {behavior:url(#default#VML);}
-				</style>
-				<![endif]-->
-				<title>title</title>
-				<!--[if gte mso 9]><xml>
-				 <w:WordDocument>
-				  <w:View>Print</w:View>
-				  <w:DoNotHyphenateCaps/>
-				  <w:PunctuationKerning/>
-				  <w:DrawingGridHorizontalSpacing>9.35 pt</w:DrawingGridHorizontalSpacing>
-				  <w:DrawingGridVerticalSpacing>9.35 pt</w:DrawingGridVerticalSpacing>
-				 </w:WordDocument>
-				</xml><![endif]-->
-				<style>
-				</head><body>';	
-
-		echo $data['value'].'</body></html>';
-
-
-		die();
+	public function get_assessment($id_pengadaan,$id_vendor){
+		$result = array();
+		$data_list = $this->db->select('id_ass, value')
+		->where(
+				array('id_vendor'=>$id_vendor,'id_procurement'=>$id_pengadaan)
+				)
+		->get('tr_ass_result')->result_array();
+		foreach($data_list as $key=>$row){
+			$result[$row['id_ass']] = $row['value'];
+		}
+		return $result;
 	}
-	public function print_assessment($id,$id_vendor){
-		$data = $this->am->get_pengadaan($id);
-		// $data_kontrak = $this->am->get_kontrak($id);
+	public function check_approve($id_pengadaan, $id_vendor){
+		$sql = $this->db->query("SELECT SUM(is_approve) as sum FROM tr_ass_result
+				WHERE id_procurement = $id_pengadaan 
+				AND id_vendor = $id_vendor")->row_array();
+		return $sql['sum'];
+	}
+	public function get_approve($id_pengadaan,$id_vendor){
+		$result = array();
+		$data_list = $this->db->select('id_ass, is_approve')
+		->where(
+				array('id_vendor'=>$id_vendor,'id_procurement'=>$id_pengadaan)
+				)
+		->get('tr_ass_result')->result_array();
+		foreach($data_list as $key=>$row){
+			$result[$row['id_ass']] = $row['is_approve'];
+		}
+		return $result;
+	}
 
-		$data['assessment_question'] 	= $this->am->get_question_assessment();
-		$data['data_assessment'] 		= $this->am->get_assessment($id,$id_vendor);
-		$data['vendor'] 				= $this->am->get_vendor_report($id_vendor);
-		$data['nilai_assessment'] 		= $this->am->get_assessment($id,$id_vendor);
+	public function save_assessment($id, $post){
+		$get_approve = $this->get_approve($post['id_procurement'],$post['id_vendor']);
+
+		foreach($post['ass'] as $key=>$row){
+
+			$this->db->delete('tr_ass_result',array(
+				'id_vendor' 		=>$post['id_vendor'],
+				'id_procurement' 	=>$post['id_procurement'],
+				'id_ass'			=>$key,
+			));
+
+			$insert = $this->db->insert('tr_ass_result',array(
+				'id_vendor' 		=>$post['id_vendor'],
+				'id_procurement' 	=>$post['id_procurement'],
+				'id_ass'			=>$key,
+				'is_approve'		=>$get_approve[$key],
+				'value'				=>$row,
+				'entry_stamp'		=>date("Y-m-d H:i:s")
+			));
+
+			if(!$insert){
+
+				return false;
+
+			}
+		}
+		foreach($post['is_approve'] as $key => $row){
+			$this->db->where('id_vendor',$post['id_vendor'])
+			->where('id_procurement',$post['id_procurement'])
+			->where('id_ass',$key)
+			->update('tr_ass_result',array('is_approve'=>$row));
+		}
+
+		if($this->session->userdata('admin')['id_role']==3){
+			$poin = $this->check_poin($id,$post['id_vendor']);
+			$this->db->insert('tr_ass_point',array('id_vendor'=>$post['id_vendor'],'id_procurement'=>$post['id_procurement'],'date'=>$post['date'],'point'=>$poin,'entry_stamp'=>date("Y-m-d H:i:s")));
+		}
+		return true;
+	}
+	public function set_assessment($id_vendor,$poin,$kategori,$id_procurement){
+		$num_rows = $this->db->where('id_vendor',$id_vendor)->where('id_procurement',$id_procurement)->get('tr_assessment')->num_rows();
+		if($num_rows==0){
+			$this->db->insert('tr_assessment',array(
+														'id_vendor'		=>$id_vendor,
+														'id_procurement'=>$id_procurement,
+														'point'			=>$poin,
+														'category'		=>$kategori,
+														'entry_stamp'	=>date('Y-m-d H:i:s')
+													));
+		}else{
+			$this->db->where('id_vendor',$id_vendor)->where('id_procurement',$id_procurement)->update('tr_assessment',array(
+														'point'			=>$poin,
+														'category'		=>$kategori,
+														'edit_stamp'	=>date('Y-m-d H:i:s')
+													));
+		}
+		$last_poin = $this->db->where('id_vendor',$id_vendor)->get('tr_assessment_point')->num_rows();
+		if($last_poin==0){
+			$this->db->insert('tr_assessment_point',array(
+														'id_vendor'		=>$id_vendor,
+														'point'			=>$poin,
+														'category'		=>$kategori,
+														'entry_stamp'	=>date('Y-m-d H:i:s')
+													));
+		}else{
+			$this->db->where('id_vendor',$id_vendor)->update('tr_assessment_point',array(
+														'point'			=>$poin,
+														'category'		=>$kategori,
+														'edit_stamp'	=>date('Y-m-d H:i:s')
+													));
+		}
+	}
+	public function check_poin($id,$id_vendor){
+		$query = $this->db->query('SELECT SUM(value) as num FROM tr_ass_result WHERE id_procurement = '.$id.' AND id_vendor = '.$id_vendor)->row_array();
+
+		return $query['num'];
+	}
+
+	function get_mail($id){
+		$query = $this->db->select('id_role, name, email')
+							->where('id_role', $id)
+							->get('ms_admin');
+		$res   =  $query->result_array();
+
+		return $res;
+	}
+	function insert_bast($id, $id_vendor){
+		$bast = $this->get_data_bast($id, $id_vendor)->row_array();
+		if(empty($bast)){
+			return $this->db->insert('tr_bast',
+					array(
+						'id_vendor'=>$id_vendor,
+						'id_procurement'=>$id,
+						'value'=>$this->input->post('text'),
+						'entry_stamp'=>date('Y-m-d H:i:s')
+					)
+				);
+		}else{
+			return $this->db 	->where('id_procurement',$id)
+						->where('id_vendor',$id_vendor)
+						->update('tr_bast',
+									array(
+										'value'=>$this->input->post('text'),
+										'edit_stamp'=>date('Y-m-d H:i:s')
+										)
+								);
+		}
 		
-		
-
-		$layout['content']= $this->load->view('assessment/print_assessment',$data,TRUE);
-		$this->load->view('template_print',$layout);
+	}
+	function get_data_bast($id_procurement, $id_vendor){
+		$query = "	SELECT 
+						*
+					FROM
+						tr_bast
+					WHERE 
+						id_procurement = ?
+						AND id_vendor = ?
+				";
+		$query = $this->db->query($query, array($id_procurement, $id_vendor));
+		return $query;
 	}
 
+	function get_default_template(){
+		$query = "	SELECT 
+						*
+					FROM
+						tb_bast_print
+					ORDER BY id DESC
+					LIMIT 0,1
+				";
+		$query = $this->db->query($query);
 
-	public function get_field_pe(){
-		return array(
-			array(
-				'label'	=>	'Pengadaan',
-				'filter'=>	array(
-								array('table'=>'ms_procurement|name' ,'type'=>'text','label'=> 'Nama Pengadaan'),
-								array('table'=>'ms_vendor|name' ,'type'=>'text','label'=> 'Nama Pemenang'),
-								array('table'=>'ms_procurement_bsb|id_bidang|get_bidang' ,'type'=>'dropdown','label'=> 'Bidang'),
-							)
-			),
-			array(
-				'label'	=>	'Kontrak',
-				'filter'=>	array(
-								array('table'=>'ms_contract|contract_date' 	,'type'=>'date','label'=> 'Tanggal Kontrak'),
-								array('table'=>'ms_contract|no_contract','type'=>'text','label'=> 'No. Kontrak'),
-								array('table'=>'ms_contract|no_sppbj','type'=>'text','label'=> 'SPPBJ'),
-								array('table'=>'ms_contract|sppbj_date','type'=>'date','label'=> 'Tanggal SPPBJ'),
-								array('table'=>'ms_contract|no_spmk','type'=>'text','label'=> 'SPMK'),
-								array('table'=>'ms_contract|spmk_date','type'=>'date','label'=> 'Tanggal SPMK'),
-								array('table'=>'ms_contract|contract_price','type'=>'number_range','label'=> 'Nilai Kontrak (Rp)'),
-							)
-			),
-			array(
-				'label'	=>	'Assessment',
-				'filter'=>	array(
-								array('table'=>'tr_assessment|point','type'=>'number_range','label'=> 'Skor Assessment'),
-								array('table'=>'tr_assessment_point|category|get_warna','type'=>'dropdown','label'=> 'Warna'),
-							)
-			),
-		);
+		return $query;
+	}
+
+	function get_bast_fill($id){
+		$query =	"	SELECT
+							a.name pekerjaan,
+							b.contract_price besaran,
+							b.contract_price_kurs besaran_kurs,
+							b.no_contract no_kontrak,
+							b.contract_date tanggal_kontrak,
+							b.contract_date tanggal_kontrak,
+							c.symbol,
+							d.name penyedia,
+							e.vendor_address alamat_penyedia,
+							f.name legal_name
+						FROM
+							ms_procurement a
+
+						LEFT JOIN ms_contract b ON b.id_procurement = a.id
+						LEFT JOIN tb_kurs c ON b.contract_kurs = c.id						
+						LEFT JOIN ms_vendor d ON d.id = b.id_vendor
+						LEFT JOIN ms_vendor_admistrasi e ON d.id = e.id_vendor
+						LEFT JOIN tb_legal f ON f.id = e.id_legal
+
+						WHERE a.id = ?
+					";
+		$query = $this->db->query($query,array($id));
+		
+		return $query;
 	}
 }

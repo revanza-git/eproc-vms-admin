@@ -98,34 +98,6 @@
 
 			<tr class="input-form">
 
-				<td><label>Nama Admin*</label></td>
-
-				<td>
-
-				<input type="text" name="admin_name" value="<?php echo $this->form->get_temp_data('admin_name');?>">
-
-					<?php echo form_error('admin_name'); ?>
-
-				</td>
-
-			</tr>
-
-			<tr class="input-form">
-
-				<td><label>Jabatan Admin*</label></td>
-
-				<td>
-
-				<input type="text" name="admin_position" value="<?php echo $this->form->get_temp_data('admin_position');?>">
-
-					<?php echo form_error('admin_position'); ?>
-
-				</td>
-
-			</tr>
-
-			<tr class="input-form">
-
 				<td><label>Bertindak untuk dan atas nama</label></td>
 
 				<td>
@@ -133,12 +105,6 @@
 					<b><?php echo $data_vendor['legal_name'].' '.$data_vendor['name']; ?></b>
 
 				</td>
-
-			</tr>
-
-			<tr class="input-form">
-
-				<td><label><b>*Harap mengisi posisi tertinggi diperusahaan</b></label></td>
 
 			</tr>
 

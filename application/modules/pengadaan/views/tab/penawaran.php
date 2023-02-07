@@ -10,7 +10,7 @@
 					<td><a href="?<?php echo $this->utility->generateLink('sort','desc')?>&sort=<?php echo ($sort['peserta_name'] == 'asc') ? 'desc' : 'asc'; ?>&by=peserta_name">Peserta<i class="fa fa-sort-<?php echo ($sort['peserta_name'] == 'asc') ? 'desc' : 'asc'; ?>"></i></a></td>
                     <td>Nilai Penawaran</td>
                     <td>Nilai Fee</td>
-					<?php if($this->session->userdata('admin')['id_role']==3){ ?><td class="actionPanel">Action</td><?php } ?>
+					<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?><td class="actionPanel">Action</td><?php } ?>
 				</tr>
 			</thead>
 			<tbody>
@@ -45,7 +45,7 @@
 								<p> <?php echo ($value['fee']);?></p>
 							<?php } ?>
                         </td>
-						<?php if($this->session->userdata('admin')['id_role']==3){ ?>
+						<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
 						<td class="actionBlock">
 							<a href="<?php echo site_url('pengadaan/hapus_peserta/'.$value['id'].'/'.$id)?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
 						</td>
@@ -61,7 +61,7 @@
 			?>
 			</tbody>
 		</table>
-		<?php if($this->session->userdata('admin')['id_role']==3){ ?>
+		<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
 			<?php if($act=='edit'){?>
 			<div class="buttonRegBox clearfix">
 				<input type="submit" value="Simpan" class="btnBlue" name="simpan">

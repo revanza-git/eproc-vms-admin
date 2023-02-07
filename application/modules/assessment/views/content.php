@@ -1,5 +1,5 @@
 <?php echo $this->session->flashdata('msgSuccess')?>
-<h2 class="formHeader">Penilaian Kinerja</h2>
+<h2 class="formHeader">Penilaian Kinerja <?= $year ?> </h2>
 <div class="tableWrapper" style="margin-bottom: 20px">
 
 	<div class="filterBtnWp">

@@ -7,6 +7,27 @@ class Main_model extends CI_Model{
 
 	}
 
+	public function dt($st)
+	{
+		if ($st == '0') {
+			$query = "SELECT * FROM ms_vendor WHERE del = 0 AND vendor_status = 1 AND (need_approve = 0 OR need_approve IS NULL)";
+		} else {
+			$query = "SELECT * FROM ms_vendor WHERE del = 0 AND vendor_status = 1 AND need_approve = ".$st;
+		}
+		$query = $this->db->query($query);
+
+		return $query;
+	}
+
+	public function search_bar($q)
+	{
+		$query = " SELECT * FROM ms_vendor WHERE del = 0 AND name LIKE '%".$q."%'";
+
+		$query = $this->db->query($query)->result_array();
+
+		return $query;
+	}
+
 	public function to_app($id)
 	{
 		$query = "	SELECT

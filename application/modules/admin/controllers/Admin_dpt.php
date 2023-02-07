@@ -105,6 +105,7 @@ class Admin_dpt extends CI_Controller {
 			$table .= "<td style='background: #f6e58d;'>NPWP</td>";
 			$table .= "<td style='background: #f6e58d;'>Alamat</td>";
 			$table .= "<td style='background: #f6e58d;'>Telepon</td>";
+			$table .= "<td style='background: #f6e58d;'>Email</td>";
 			$table .= "</tr>";
 
 		foreach ($data as $key => $value) {
@@ -129,6 +130,7 @@ class Admin_dpt extends CI_Controller {
 			$table .= "<td>".$value['npwp_code']."</td>";
 			$table .= "<td>".$value['vendor_address']."</td>";
 			$table .= "<td>".$value['vendor_phone']."</td>";
+			$table .= "<td>".$value['email']."</td>";
 			$table .= "</tr>";
 		}
 		$table .= "</table>";
