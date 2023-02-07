@@ -302,7 +302,7 @@ class certificate extends CI_Controller{
 							margin : 0px;
 							padding : 0px;
 							font-family : "Helvetica" !important;
-							background-image : url("https://deveproc.nusantararegas.com/custom-bg.jpg"); 
+							background-image : base_url("assets/images/custom-bg.jpg"); 
 							background-repeat: no-repeat;
 							width: 500px;
   							height : 50px;
@@ -312,7 +312,7 @@ class certificate extends CI_Controller{
 							font-family : "Helvetica" !important;
 						}
 						.bg-img{
-							background-image : url("https://deveproc.nusantararegas.com/custom-bg.jpg");
+							background-image : base_url("assets/images/custom-bg.jpg");
 							position: absolute;
 							left: 0;
 							top: 0;
@@ -568,7 +568,7 @@ class certificate extends CI_Controller{
 					</style>
 					<div class="pageDPT" id="first-page">
 						<div class="bg-img">
-							<img src="https://deveproc.nusantararegas.com/custom-bg.jpg" class="bg">
+							<img src="https://eproc.nusantararegas.com/custom-bg.jpg" class="bg">
 						</div>
 						<div class="certificateWrap">
 							
@@ -1238,7 +1238,7 @@ class certificate extends CI_Controller{
 		
 
 		// $logo	= base_url('assets/images/login-regas-logo.jpg');
-			$logo = 'https://deveproc.nusantararegas.com/eproc/lampiran/login-regas-logo.jpg';
+			$logo = 'https://eproc.nusantararegas.com/eproc/lampiran/login-regas-logo.jpg';
 
 		#Pengurus Vendor
 		foreach ($data['administrasi'] as $key => $value)
