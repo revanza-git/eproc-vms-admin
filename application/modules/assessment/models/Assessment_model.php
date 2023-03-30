@@ -117,10 +117,10 @@ class Assessment_model extends CI_Model{
 	
 	function get_pengadaan_list($year, $search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
 	{
+		
 		$admin = $this->session->userdata('admin');
 		$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
-
-		// print_r($admin);
+		
 		$this->db->select('*, 
 		ms_procurement.id id, 
 		ms_procurement.name name, 
@@ -131,12 +131,13 @@ class Assessment_model extends CI_Model{
 		"-" as user_kontrak , 
 		proc_date, 
 		ms_procurement.del del');
-		$this->db->group_by('ms_procurement.id');
+		// $this->db->group_by('ms_procurement.id');
 		$this->db->where('ms_procurement.del', 0);
 		$this->db->where('ms_procurement.id_mekanisme!=', 1);
 		$this->db->where('ms_procurement.id_mekanisme!=', 6);
-		//$this->db->where('ms_procurement_peserta.is_winner', 1);
+		// $this->db->where('ms_procurement_peserta.is_winner', 1);
 		$this->db->where('ms_procurement.entry_stamp LIKE "%' . $year . '%"');
+		// $this->db->where('ms_procurement.budget_year', 2023);
 
 		if ($admin['id_role'] == 4) {
 			$this->db->where('ms_procurement.status_procurement=', 1);
@@ -149,7 +150,7 @@ class Assessment_model extends CI_Model{
 			$this->db->where('id_division', $admin['id_division']);
 		}
 
-		$this->db->join('ms_contract', 'ms_contract.id_procurement=ms_procurement.id', 'LEFT');
+		$this->db->join('ms_contract', 'ms_contract.id_procurement=ms_procurement.id', 'INNER');
 		$this->db->join('ms_vendor', 'ms_vendor.id=ms_contract.id_vendor', 'LEFT');
 		//$this->db->join('ms_procurement_peserta', 'ms_procurement_peserta.id_vendor=ms_vendor.id','LEFT');
 		$this->db->join('tr_assessment', 'tr_assessment.id_vendor=ms_vendor.id AND tr_assessment.id_procurement = ms_procurement.id', 'LEFT');
@@ -165,11 +166,64 @@ class Assessment_model extends CI_Model{
 		}
 
 		$a = $this->filter->generate_query($this->db->group_by('ms_procurement.id'), $filter);
-
 		$query = $a->get('ms_procurement');
-		// echo $this->db->last_query();
-		// die;
+		
 		return $query->result_array();
+	}
+
+	function getPengadaanNew($year, $search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array()){
+		$admin = $this->session->userdata('admin');
+
+		$query = 	"	SELECT 
+    						*, 
+							ms_procurement.id as id, 
+							ms_procurement.name as `name`, 
+							tb_blacklist_limit.value as category, 
+							ms_vendor.id id_vendor, 
+							ms_vendor.name pemenang, 
+							'-' as pemenang_kontrak, 
+							'-' as user_kontrak, 
+							proc_date, 
+							ms_procurement.del as del
+    					FROM
+							ms_procurement
+						JOIN ms_contract ON ms_contract.id_procurement=ms_procurement.id
+						LEFT JOIN	ms_vendor ON ms_vendor.id=ms_contract.id_vendor
+						LEFT JOIN ms_procurement_peserta ON ms_procurement_peserta.id_vendor=ms_vendor.id
+						LEFT JOIN tr_assessment ON tr_assessment.id_vendor=ms_vendor.id AND tr_assessment.id_procurement = ms_procurement.id
+						LEFT JOIN tb_blacklist_limit ON tb_blacklist_limit.id=tr_assessment.category
+						LEFT JOIN ms_procurement_bsb ON ms_procurement_bsb.id_proc=ms_procurement.id
+    					WHERE ms_procurement.del = 0 AND ms_procurement.id_mekanisme != 1 AND ms_procurement.id_mekanisme!= 6 AND  ms_procurement.budget_year = ?
+						GROUP BY ms_procurement.id
+    				";
+    	$query = $this->db->query($query, $year);
+    	// echo $this->db->last_query();
+		print_r($query->row_array());
+    	return $query->row_array();
+
+		// $arr = $this->db->select('*, 
+		// ms_procurement.id id, 
+		// ms_procurement.name name, 
+		// tb_blacklist_limit.value category, 
+		// ms_vendor.id id_vendor, 
+		// ms_vendor.name pemenang, 
+		// "-" as pemenang_kontrak , 
+		// "-" as user_kontrak , 
+		// proc_date, 
+		// ms_procurement.del del')
+		// ->join('ms_contract', 'ms_contract.id_procurement=ms_procurement.id', 'LEFT')
+		// ->join('ms_vendor', 'ms_vendor.id=ms_contract.id_vendor', 'LEFT')
+		// ->join('tr_assessment', 'tr_assessment.id_vendor=ms_vendor.id AND tr_assessment.id_procurement = ms_procurement.id', 'LEFT')
+		// ->join('tb_blacklist_limit', 'tb_blacklist_limit.id=tr_assessment.category', 'LEFT')
+		// ->join('ms_procurement_bsb', 'ms_procurement_bsb.id_proc=ms_procurement.id', 'LEFT')
+		// ->where('ms_procurement.del', 0)
+		// // ->where('ms_procurement.id_mekanisme!=', 1)
+		// // ->where('ms_procurement.id_mekanisme!=', 6)
+		// ->where('ms_procurement.budget_year', 2023)
+		// ->group_by('ms_procurement.id')
+   		// ->get('ms_procurement')->row_array();
+		// print_r($arr);
+		// return $arr;
 	}
 
     function get_division($id){

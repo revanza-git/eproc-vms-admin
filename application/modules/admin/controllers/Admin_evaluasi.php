@@ -35,7 +35,6 @@ class admin_evaluasi extends CI_Controller {
 		$data['pagination'] 	= $this->utility->generate_page('admin/admin_evaluasi',$sort, $per_page, $this->em->get_evaluasi_list($search, $sort, '','',FALSE));
 		$data['sort'] 			= $sort;
 		
-		// echo print_r($data['quest_all']);
 		$layout['content']	= $this->load->view('evaluasi/content',$data,TRUE);
 
 		$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);

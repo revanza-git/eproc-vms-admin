@@ -109,7 +109,7 @@ class Kontrak extends CI_Controller {
 	public function view($id,$page='kontrak',$opt = null){
 		$this->session->set_userdata('summary',$page);
 		$data = $this->pm->get_pengadaan($id);
-		// print_r($data);
+		// echo 'table: '; print_r($data['table']);
 		$data['id'] = $id;
 		$data['table'] = $this->$page($id,$page,$opt);
 		
@@ -267,15 +267,17 @@ class Kontrak extends CI_Controller {
 		$fill = $this->securities->clean_input($_POST,'save');
 		$item = $vld = $save_data = array();
 		$user = $this->session->userdata('user');
-		$layout['get_dpt_type'] = $this->im->get_dpt_type();		
+		$layout['get_dpt_type'] = $this->im->get_dpt_type();
+		// echo 'dpt type'; print_r($this->im->get_dpt_type());		
 		$layout['winner'] 		= $this->pm->get_winner_vendor($id);
 		$layout['kurs'] = $this->km->get_kurs($id);
-		// echo print_r($this->pm->get_winner_vendor($id));die;
+		// echo 'winner'; print_r($this->pm->get_winner_vendor($id));
 		$vld = 	array(
 					array(
 						'field'=>'id_vendor',
 						'label'=>'Perusahaan',
-						'rules'=>'required'
+						'rules'=>'required',
+						// 'rules'=>''
 					),
 					array(
 						'field'=>'no_contract',
@@ -304,8 +306,11 @@ class Kontrak extends CI_Controller {
 					)
 				);
 		$this->form_validation->set_rules($vld);
-		// print_r($this->input->post());die;
+
+		// echo 'test_print : '; print_r($this->input->post());
+
 		if($this->form_validation->run()==TRUE){
+			echo 'form true';
 			$_POST['entry_stamp'] = date("Y-m-d H:i:s");
 			$_POST['id_procurement'] = $id;
 			$_POST['contract_price'] 	= preg_replace("/[,]/", "", $this->input->post('contract_price'));
@@ -453,10 +458,12 @@ class Kontrak extends CI_Controller {
 				);
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
+			echo 'form true';
 			$_POST['entry_stamp'] = date("Y-m-d H:i:s");
 			$_POST['id_proc'] = $id;
 			unset($_POST['Simpan']);
 			$res = $this->km->save_spk($this->input->post());
+			echo 'form res'; print_r($res);
 			// $res = $this->kmt->save_spk($this->input->post());
 			if($res){
 				$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses membuat spk!</p>');
@@ -738,6 +745,7 @@ class Kontrak extends CI_Controller {
 			$_POST['entry_stamp'] = date("Y-m-d H:i:s");
 			$_POST['id_proc'] = $id;
 			unset($_POST['Simpan']);
+			// echo 'pp  '; print_r($_POST);
 			$res = $this->km->save_bast($this->input->post());
 			if($res){
 				$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses membuat bast!</p>');
@@ -833,8 +841,10 @@ class Kontrak extends CI_Controller {
 	}
 
 	public function do_upload_($file){
+		// echo 'test upload';
 			$target_dir = "./lampiran/progress_pengadaan/";
 			$new_name 	= "progress_lampiran_".$this->utility->name_generator();
+			// $target_file = $target_dir.$new_name+".pdf";
 			$target_file = $target_dir.$new_name;
 			if (!move_uploaded_file($file["tmp_name"], $target_file)) {
 				echo "Sorry, there was an error uploading your file.".$file["error"];
@@ -843,10 +853,13 @@ class Kontrak extends CI_Controller {
 	}
 
 	public function do_upload($name = '', $db_name = ''){	
+		
 		$form = $this->session->userdata('form');
 		$file_name = $_FILES[$db_name]['name'] = $db_name.'_'.$this->utility->name_generator($_FILES[$db_name]['name']);
-		
+		// echo 'name'; print_r($db_name);
 		$config['upload_path'] = './lampiran/'.$db_name.'/';
+		// $config['upload_path'] = './lampiran/po_file';
+		echo 'upl'; print_r($config['upload_path']);
 		$config['allowed_types'] = 'pdf|jpeg|jpg|png|gif|doc|docx';
 		$config['max_size'] = '20960';
 		

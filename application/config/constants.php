@@ -18,7 +18,8 @@ define('FILE_READ_MODE', 0644);
 define('FILE_WRITE_MODE', 0666);
 define('DIR_READ_MODE', 0755);
 define('DIR_WRITE_MODE', 0755);
-define('BASE_LINK', 'https://deveproc.nusantararegas.com/eproc_pengadaan/');
+define('BASE_LINK_EXTERNAL', 'https://eproc.nusantararegas.com/eproc_pengadaan/');
+define('BASE_LINK', 'http://10.10.10.3/eproc_pengadaan/');
 
 /*
 |--------------------------------------------------------------------------

@@ -46,22 +46,29 @@ class Kontrak_model extends CI_Model
 	}
 
 	public function save_kontrak($data){
-
+		echo 'data : '; print_r($data);
 		$this->db->insert('ms_contract',$data);
 		$id = $this->db->insert_id();
-
+		echo 'data id : '; print_r($id);
 		$this->db->where('id',$data['id_procurement'])->update('ms_procurement',array('status_procurement'=>2));
 		$this->db->insert('tr_progress_kontrak',
 												array(
 													'id_procurement' 		=> $data['id_procurement'],
 													'id_contract'	 		=> $id,
+													'id_spk' => 1,
+													'id_bast' => 1,
+													'id_amandemen' => 1,
+													'denda' => 0,
+
 													'step_name'		 		=> 'Jangka Waktu Pelaksanaan Pekerjaan',
+													'solid_start_date'		=> $data['start_contract'],
 													'start_date'			=> $data['start_contract'],
 													'end_date'				=> $data['end_contract'],
 													'supposed'				=> get_range_date($data['end_contract'],$data['start_contract']),
 													'type'					=> 2,
+													'parent' => 0,
 													'is_kontrak'			=> 1,
-													'solid_start_date'		=> $data['start_contract']
+													
 												)
 											);
 		
@@ -148,6 +155,8 @@ class Kontrak_model extends CI_Model
 
 	public function save_spk($data)
 	{
+		// echo 'data'; print_r($data);
+
 		$this->db->insert('ms_spk',$data);
 		$id_spk = $this->db->insert_id();
 
@@ -183,7 +192,8 @@ class Kontrak_model extends CI_Model
 													'supposed'				=> get_range_date($data['end_date'],$data['start_date']),
 													'type'					=> 2,
 													'id_spk'				=> $id_spk,
-													'solid_start_date'		=> $data['start_date']
+													'solid_start_date'		=> $data['start_date'],
+													'denda'					=> 0,
 												)
 											);
 
@@ -206,7 +216,8 @@ class Kontrak_model extends CI_Model
 													'type'					=> 5,
 													'id_spk'				=> $id_spk,
 													'id_bast'				=> $id_bast,
-													'solid_start_date'		=> $data['start_date']
+													'solid_start_date'		=> $data['start_date'],
+													'denda'					=> 0
 												)
 											);
 	}
@@ -309,6 +320,7 @@ class Kontrak_model extends CI_Model
 
 	public function save_amandemen($data)
 	{
+		echo 'amandemen file'; print_r($data);
 		$this->db->insert('ms_amandemen',$data);
 
 		$id_amandemen = $this->db->insert_id();
@@ -320,7 +332,7 @@ class Kontrak_model extends CI_Model
 		$data_kontrak = $this->db->where('del',0)->where('id_procurement',$data['id_proc'])->get('ms_contract')->row_array();
 
 		if (count($cek_prog) > 0) {
-
+			echo 'update pr kontrak';
 			$arr = array(
 				'start_date'		=> $data['start_date'],
 				'end_date'			=> $data['end_date'],
@@ -330,7 +342,7 @@ class Kontrak_model extends CI_Model
 
 			$return = $this->db->where('id_amandemen',$id_amandemen)->update('tr_progress_kontrak',$arr);
 		} else {
-			
+			echo 'insert ama';
 			$arr = array(
 				'id_procurement'	=> $data['id_proc'],
 				'id_contract'		=> $data_kontrak['id'],
@@ -340,7 +352,9 @@ class Kontrak_model extends CI_Model
 				'end_date'			=> $data['end_date'],
 				'supposed'			=> $supposed,
 				'entry_stamp'		=> date('Y-m-d H:i:s'),
-				'type'				=> 3
+				'type'				=> 3,
+				'denda'				=> 0,
+				'solid_start_date'	=> $data['start_date'],
 			);
 
 			$return = $this->db->insert('tr_progress_kontrak',$arr);
@@ -426,6 +440,8 @@ class Kontrak_model extends CI_Model
 
 	public function save_bast($data)
 	{
+		// echo 'data bast'; print_r($data);
+		$data['del'] = 0;
 		$this->db->insert('ms_bast',$data);
 
 		$bast_type = ($data['bast_type'] == 'bast_tahapan') ? 'BAST Tahapan' : 'BAST Final';
@@ -450,6 +466,7 @@ class Kontrak_model extends CI_Model
 		$supposed = 0;
 
 		if ($data['bast_type'] == 'bast_tahapan') {
+			// echo 'bast tahapan';
 			$spk = $this->get_spk_date($data['id_proc']);
 
 			if ($spk['end_date'] == '' || $spk['start_date'] == '') {
@@ -467,6 +484,7 @@ class Kontrak_model extends CI_Model
 				$end_date = $spk['end_date'];
 			}
 		} else {
+			// echo 'bast final';
 			$amandemen = $this->get_amandemen_date($data['id_proc']);
 			// print_r($amandemen);die;
 			if ($amandemen['start_date'] != '' && $amandemen['end_date'] != '') {
@@ -476,14 +494,10 @@ class Kontrak_model extends CI_Model
 				$end_date = $contract['end_date'];
 			}
 		}		
-		// print_r($spk);die;		
-		// print_r($contract);die;
-		// echo $end_date;die;
-		// echo $spk['end_date'].' '.$data['start_date'];die;
-		// print_r($data_kontrak);die;
+		
 		if (strtotime($data['end_date']) > strtotime($end_date)) {
 
-			// echo "string 1";die;
+			// echo "string 1";
 			
 			$hari 		  		  = get_range_date($data['end_date'],$end_date);
 			// echo $hari;die;
@@ -545,7 +559,8 @@ class Kontrak_model extends CI_Model
 				'supposed'			=> get_range_date($data['end_date'],$end_date),
 				'entry_stamp'		=> date('Y-m-d H:i:s'),
 				'type'				=> 4,
-				'solid_start_date'	=> $end_date
+				'solid_start_date'	=> $end_date, 
+				'denda'				=> 0
 			);
 
 			$this->db->insert('tr_progress_kontrak',$arr);
@@ -560,13 +575,14 @@ class Kontrak_model extends CI_Model
 					'supposed'			=> $supposed,
 					'entry_stamp'		=> date('Y-m-d H:i:s'),
 					'type'				=> 5,
-					'solid_start_date'	=> $data['end_date']
+					'solid_start_date'	=> $data['end_date'],
+					'denda'				=> 0
 				);
 
 			$return = $this->db->insert('tr_progress_kontrak',$arr_);
 
 		} else {
-			// echo "string 2";die;
+			// echo "string 2";
 				// if (!empty($bast_before)) {
 				// 	// echo "string 2.1";die;
 				// 	$s_d = strtotime($bast_before['end_date']);
@@ -619,14 +635,15 @@ class Kontrak_model extends CI_Model
 						'supposed'			=> $supposed,
 						'entry_stamp'		=> date('Y-m-d H:i:s'),
 						'type'				=> 5,
-						'solid_start_date'		=> $data['end_date']
+						'solid_start_date'		=> $data['end_date'],
+						'denda'				=> 0
 					);
 
 					$return = $this->db->insert('tr_progress_kontrak',$arr);
 				// }
 		}
 		
-
+		// echo 'return'; print_r($return);
 		return $return;
 	}
 

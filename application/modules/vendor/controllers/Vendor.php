@@ -4,7 +4,9 @@ class Vendor extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		
+		if(!$this->session->userdata('user')&&!$this->session->userdata('admin')){
+			redirect(site_url());
+		}
 		$this->load->model('Vendor_model','vm');
 		$this->load->model('izin/izin_model','im');
 		$this->load->model('k3/K3_model','km');
@@ -286,7 +288,6 @@ class Vendor extends CI_Controller {
 
 	public function to_waiting_list(){
 		$user = $this->session->userdata('user');
-		// print_r($user);die;
 		if($this->vm->check_pic($user['id_user'])==0){
 			redirect(site_url('dashboard/pernyataan'));
 		}
@@ -311,7 +312,6 @@ class Vendor extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}else{
-
 			$_POST = $this->securities->clean_input($_POST,'save');
 			$admin = $this->session->userdata('admin');
 			$vld = 	array(
@@ -343,15 +343,14 @@ class Vendor extends CI_Controller {
 				);
 			$this->form_validation->set_rules($vld);
 			if($this->form_validation->run()==TRUE){
-				$_POST['id_sbu'] = $admin['id_sbu'];
+				$_POST['id_sbu'] = $admin['id_sbu'] ?: NULL;
 				$_POST['entry_stamp'] = date("Y-m-d H:i:s");
 				$_POST['data_status'] = 0;
 				$_POST['ever_blacklisted'] = 0;
 				$_POST['is_active'] = 1;
 				$_POST['password'] = $this->utility->password_generator();
-				
 
-				$res = $this->vm->add_vendor($this->input->post());
+				$res = $this->vm->add_vendor($_POST);
 
 				if($res){
 					$message = 'Perusahaan saudara telah terdaftar kedalam Sistem Aplikasi Kelogistikan PT Nusantara Regas.
@@ -365,10 +364,11 @@ class Vendor extends CI_Controller {
 					PT Nusantara Regas';
 					$this->mail($_POST['vendor_email'], $message);
 					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Data Telah Tersimpan. </br>Username: '.$_POST['vendor_email'].'</br>Password: '.$_POST['password'].'</p>');
+					redirect(site_url('admin/admin_vendor/daftar'));
 				}else{
-					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Data Telah Tersimpan. Anda telah mendaftarkan Penyedia Barang/Jasa Non-VMS</p>');
+					$this->session->set_flashdata('errorMsg','<p class="errorMsg">Gagal menambah data!</p>');
+					redirect(site_url('vendor/tambah'));
 				}
-				redirect(site_url('admin/admin_vendor/daftar'));
 			}
 		}
 
@@ -558,9 +558,7 @@ class Vendor extends CI_Controller {
 	}
 
 	function dpt_print($id){
-
 		$data['administrasi']	= $this->vm->get_administrasi_list($id,TRUE);
-		// $data['csms_limit']		= $this->vm->get_csms_limit($id,TRUE);
 		$data['pengurus']		= $this->vm->get_pengurus_list($id,TRUE);
 		$data['surat_izin']		= $this->im->get_izin_report($id,TRUE);
 		$data['situ']			= $this->im->get_situ_report($id,TRUE);
@@ -570,7 +568,6 @@ class Vendor extends CI_Controller {
 		$data['aspek_k3']		= $this->km->get_aspek_k3($id,TRUE);
 		$data['csms_limit']		= $this->km->get_k3_all_data($id);
 		$data['klasifikasi']	= array(1=>'non-Konstruksi', 2=>'non-Konstruksi',3=>'non-Konstruksi',4=>'Konstruksi',5=>'Konstruksi');
-
 
 		$layout['content']		= $this->load->view('admin/dpt/print_dpt',$data,TRUE);
 		$this->load->view('template_print',$layout);
@@ -582,8 +579,6 @@ class Vendor extends CI_Controller {
 		$this->email->from('vms-noreply@nusantararegas.com', 'VMS REGAS');
 		$this->email->to($to); 
 
-		// $this->email->cc('alicia.ordinary@gmail.com'); 
-		//$this->email->bcc('muarifgustiar@gmail.com'); 
 		$this->email->subject('Autentikasi Login Sistem Aplikasi Kelogistikan PT Nusantara Regas');
 		
 		$this->email->message($message);	
@@ -596,7 +591,6 @@ class Vendor extends CI_Controller {
 		$this->email->from('vms-noreply@nusantararegas.com', 'VMS REGAS');
 		$this->email->to('krisna@nusantararegas.com'); 
 
-		// $this->email->cc('alicia.ordinary@gmail.com'); 
 		$this->email->bcc('muarifgustiar@gmail.com'); 
 
 		$this->email->subject('Autentikasi Login Sistem Aplikasi Kelogistikan PT Nusantara Regas');

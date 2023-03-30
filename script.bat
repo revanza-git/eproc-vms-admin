@@ -1,1 +1,1 @@
-"C:\xampp\php\php.exe" -f "C:\xampp\htdocs\Eproc\cron_cek_expired.php"
+"C:\Program Files (x86)\PHP\v5.6\php.exe" -f "C:\inetpub\wwwroot\eproc_pengadaan\cron_cek_expired.php"

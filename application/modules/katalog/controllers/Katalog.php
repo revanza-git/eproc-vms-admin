@@ -37,14 +37,9 @@ class Katalog extends CI_Controller {
 			$filter[0]['filter'][] = array('table'=>'ms_material|for|get_for_jasa' ,'type'=>'dropdown','label'=> 'Pengguna Jasa');
 		}
 
-		// print_r($filter);die;
-
 		$data['filter_list'] = $this->filter->group_filter_post($filter);
-
 		$compare			= $this->session->userdata($category);
-
 		$barang_compare 	= $this->km->get_barang_compare($compare);
-
 
 		$data['category'] = $category;
 		$data['compare'] = $compare;

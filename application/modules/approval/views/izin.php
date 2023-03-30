@@ -36,7 +36,7 @@
 							<?php foreach($table[$surat] as $field =>$label){
 								if($field=='izin_file'){
 								?>
-								<td><a href="<?php echo BASE_LINK.('lampiran/izin_file/'.$value['izin_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
+								<td><a href="<?php echo BASE_LINK_EXTERNAL.('lampiran/izin_file/'.$value['izin_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
 								<?php }elseif($field=='no'){?>
 								<td><a href="<?php echo site_url('approval/bsb/'.$id_data.'/'.$value['id']);?>"><?php echo $value['no']?></a></td>
 								<?php }elseif($field=='issue_date'){?>

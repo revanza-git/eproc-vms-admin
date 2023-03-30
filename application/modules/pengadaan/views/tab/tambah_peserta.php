@@ -63,7 +63,7 @@
 			?>
 
 				<tr>
-
+					
 					<form action="<?php echo site_url('pengadaan/tambah_vendor/'.$id_pengadaan.'/'.$value['id'])?>" method="post">
 
 					<td><?php echo $value['name'];?> <?php if($value['is_vms']==0){ echo '(Non-VMS)';}?></td>

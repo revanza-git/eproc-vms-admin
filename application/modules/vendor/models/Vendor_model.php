@@ -322,8 +322,6 @@ class Vendor_model extends CI_Model
 			->join('tb_legal', 'tb_legal.id=mva.id_legal', 'LEFT')
 			->order_by('id', 'desc');
 
-
-
 		$query = $a->get('ms_vendor');
 		print_r($query->result_array());
 		// echo $this->db->last_query();
@@ -344,7 +342,6 @@ class Vendor_model extends CI_Model
 
 	function add_vendor($data)
 	{
-
 		$param = array();
 
 		$this->field_master = array(
@@ -356,6 +353,7 @@ class Vendor_model extends CI_Model
 			'entry_stamp',
 			'is_vms',
 		);
+
 		$sql = "INSERT INTO ms_vendor (
 							`id_sbu`,
 							`npwp_code`,
@@ -365,7 +363,6 @@ class Vendor_model extends CI_Model
 							`entry_stamp`,
 							`is_vms`) 
 				VALUES (?,?,?,?,?,?,?) ";
-
 
 		foreach ($this->field_master as $_param) $param[$_param] = $data[$_param];
 
@@ -379,6 +376,7 @@ class Vendor_model extends CI_Model
 			'vendor_email',
 			'entry_stamp'
 		);
+
 		$param_admin = array();
 		$data['id_vendor'] = $id;
 
@@ -390,7 +388,6 @@ class Vendor_model extends CI_Model
 							`entry_stamp`) 
 				VALUES (?,?,?,?,?)";
 
-		// echo print_r($data);
 		foreach ($this->field_admin as $_param) $param_admin[$_param] = $data[$_param];
 
 		$this->db->query($sql, $param_admin);
@@ -405,18 +402,18 @@ class Vendor_model extends CI_Model
 
 		$this->db->query($sql, array($id, $data['vendor_email'], $data['password'], 'user', $data['entry_stamp']));
 
-
 		return $id;
 	}
+	
 	function get_vendor_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
 	{
 		$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 
-		$this->db->select('*,ms_vendor.id id, ms_vendor.name name, tb_legal.name legal_name');
-		$this->db->where('((ms_vendor.del != 1 AND ms_login.type = "user") or ms_vendor.is_vms = 0)', null, false);
 		$this->db->join('ms_vendor_admistrasi', 'ms_vendor_admistrasi.id_vendor = ms_vendor.id', 'LEFT');
 		$this->db->join('ms_login', 'ms_login.id_user = ms_vendor.id', 'LEFT');
 		$this->db->join('tb_legal', 'tb_legal.id = ms_vendor_admistrasi.id_legal', 'LEFT');
+		$this->db->where('ms_vendor.del = 0', null, false);
+		$this->db->select('*,ms_vendor.id id, ms_vendor.name name, tb_legal.name legal_name');
 
 		$a = $this->filter->generate_query($this->db->group_by('ms_vendor.id'), $filter);
 

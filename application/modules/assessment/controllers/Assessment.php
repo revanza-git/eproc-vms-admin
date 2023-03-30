@@ -52,6 +52,7 @@ class Assessment extends CI_Controller {
 		
 		$data['year'] = $year;
 		$data['pengadaan_list']=$this->am->get_pengadaan_list($year, $search, $sort, $page, $per_page,TRUE);
+		// $data['pengadaan_list']=$this->am->getPengadaanNew($year, $search, $sort, $page, $per_page,TRUE);
 		$data['admin']			= $this->session->userdata('admin');
 		$data['filter_list'] = $this->filter->group_filter_post($this->get_field_pe());
 
@@ -153,7 +154,7 @@ class Assessment extends CI_Controller {
 					break;
 				
 				case 2:
-					$text 				= 'Data telah terkirim ke User Logistik';
+					$text 				= 'Data telah terkirim ke Admin Pengendalian';
 					$email['to']		= $this->am->get_mail(3);
 					$email['subject']	= "Penilaian (".$data['name'].") - Sistem Aplikasi Kelogistikan PT Nusantara Regas";
 					$email['msg']		= '

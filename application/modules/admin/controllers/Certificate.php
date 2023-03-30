@@ -568,7 +568,7 @@ class certificate extends CI_Controller{
 					</style>
 					<div class="pageDPT" id="first-page">
 						<div class="bg-img">
-							<img src="https://eproc.nusantararegas.com/custom-bg.jpg" class="bg">
+							<img src="'.base_url("assets/images/custom-bg.jpg").'" class="bg">
 						</div>
 						<div class="certificateWrap">
 							

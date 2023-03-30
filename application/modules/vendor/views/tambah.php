@@ -1,4 +1,4 @@
-<?php echo $this->session->flashdata('msgSuccess')?>
+<?php echo $this->session->flashdata('errorMsg')?>
 <div class="formDashboard">
 	<h1 class="formHeader">Tambah Penyedia Barang &amp; Jasa</h1>
 	<form method="POST" enctype="multipart/form-data">
@@ -24,8 +24,11 @@
 			<tr class="input-form">
 				<td></td>
 				<td>
-					<label><input type="hidden" name="is_vms" id="npwp" value="0"><input type="checkbox" name="is_vms" value="1" <?php echo set_checkbox('is_vms', '1'); ?> id="daftarvms"><span>Daftarkan ke VMS</span></label>
-					
+					<label>
+						<input type="hidden" name="is_vms" id="npwp" value="0">
+						<input type="checkbox" name="is_vms" value="1" <?php echo set_checkbox('is_vms', '1'); ?> id="daftarvms">
+						<span>Daftarkan ke VMS</span>
+					</label>
 				</td>
 			</tr>
 			<tr class="input-form">

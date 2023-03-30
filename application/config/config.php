@@ -17,11 +17,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-// $config['BASE_LINK.']	=  	"https://deveproc.nusantararegas.com/eproc_pengadaan/";
-// $config['base_app']		= 	"https://deveproc.nusantararegas.com/eproc_pengadaan/";
+// $config['BASE_LINK.']	=  	"https://eproc.nusantararegas.com/eproc_pengadaan/";
+// $config['base_app']		= 	"https://eproc.nusantararegas.com/eproc_pengadaan/";
 
 $config['BASE_LINK.']	=  	"";
-$config['base_app']	= 	"https://deveproc.nusantararegas.com/eproc_pengadaan/";
+$config['BASE_LINK_EXTERNAL.']	=  	"";
+$config['base_app']	= 	"https://eproc.nusantararegas.com/eproc_pengadaan/";
 
 /*
 |--------------------------------------------------------------------------
@@ -363,7 +364,7 @@ $config['encryption_key'] = 'pgn_vms';
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'regas';
+$config['sess_cookie_name'] = 'pengadaan_internal';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = FALSE;

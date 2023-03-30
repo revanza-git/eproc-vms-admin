@@ -439,7 +439,7 @@ form{
     text-decoration: none;
 }
 .btnBlue:hover {
-    background-color: #205bbb
+    background-color: #205bbb;
 	/*-webkit-transform: translateY(5px);
 	-ms-transform: translateY(5px);
 	-o-transform: translateY(5px);
@@ -870,7 +870,7 @@ tr.input-form td{
 	min-width: 100%;
 }
 .tableData td{
-	//white-space: nowrap;
+	/* white-space: nowrap; */
 }
 .tableData thead{
 	border-top: 2px solid #eceeef;
@@ -1566,14 +1566,13 @@ AUCTION STYLE
     text-decoration: none;
 }
 .auction-button:hover {
-    background-color: #205bbb
+    background-color: #205bbb;
 	/*-webkit-transform: translateY(5px);
 	-ms-transform: translateY(5px);
 	-o-transform: translateY(5px);
 	transform: translateY(5px);*/
 	-webkit-box-shadow: 0 4px 15px 1px rgba(0, 0, 255, 0.3);
 	box-shadow: 0 4px 15px 1px rgba(0, 0, 255, 0.3);
-}
 }
 #timer{
 	font-size: 46px;
@@ -2086,8 +2085,8 @@ a.filterBtn{
     table-layout: fixed;
     word-wrap: break-word;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    -ms-overflow-style: none;  // IE 10+
-    scrollbar-width: none;  // Firefox
+    -ms-overflow-style: none;  /* IE 10+ */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .container .sideArea .listMenu {
@@ -2110,13 +2109,8 @@ a.filterBtn{
 /* Optional: show position indicator in red */
 
 .container .sideArea .loginInfo {
-	-ms-overflow-style: none;  // IE 10+
-    scrollbar-width: none;  // Firefox
-}
-
-.container .sideArea .loginInfo {
-	-ms-overflow-style: none;  // IE 10+
-    scrollbar-width: none;  // Firefox
+	-ms-overflow-style: none;  /* IE 10+ */ 
+    scrollbar-width: none;  /* Firefox */ 
 }
 
 .sideArea .navMenu {
@@ -2208,7 +2202,6 @@ a.filterBtn{
 	color: #d63031;
 }
 
-,
 .sideArea .navMenu > li:hover > .navMenuDD,
 .sideArea .navMenu > li.active > .navMenuDD {
 	max-height: 850px;
@@ -2695,7 +2688,6 @@ input{
 	display: flex;
 	justify-content: center;
 	cursor: pointer;
-	background-color: 
 }
 
 .graphBarWp .graphBarLines .barLineText,

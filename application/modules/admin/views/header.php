@@ -4,21 +4,24 @@
     </div>
 </div>
 <div class="backButton">
-    <div class="search-bar">
-        <div class="search-barInner">
-            <input type="text" name="search" class="input" placeholder="Search..">
-            <span class="icon">
-                <i class="fa fa-search"></i>
-            </span>
-            <div class="result" style="z-index: 1;">
-                <div class="result-list-wrapper">
-                    <div class="scroll-wp" style="/*z-index: -1;">
-                       
+        <div class="search-bar">
+            <div style="display:block;">
+                <div class="search-barInner">
+                        <input type="text" name="search" class="input" placeholder="Search..">
+                            <span class="icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </input>
+                </div>
+                <div class="result">
+                    <div class="result-list-wrapper" style="background-color: white;">
+                        <div class="scroll-wp">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
     <div class="navbar-item account has-dropdown">
 
         <img src="<?php echo base_url('assets/images/man-avatar.png')?>" alt="" height="45px">
@@ -52,11 +55,9 @@
                 url : '<?php echo site_url('admin/search_bar') ?>/'+val,
                 method : 'post',
                 beforeSend : function() {
-                    // alert('Mohon Ditunggu');
                 },
                 success : function(xhr) {
-                    // alert(xhr);
-                    $('.scroll-wp').empty();
+                     $('.scroll-wp').empty();
 
                      if ($('[name="search"]').val() == '') {
                         $('.search-bar .result').removeClass('active');
@@ -73,10 +74,8 @@
                      });
 
                      $('.scroll-wp').append(res);
-
                      $('.scroll.info').on('click',function() {
                         id = $(this).data('id');
-                        // alert(id)
                         window.location.href = '<?php echo site_url('approval/administrasi') ?>/'+id; 
                      });
                 }

@@ -679,10 +679,9 @@ class Pengadaan extends CI_Controller {
 		
 		if($this->input->post('simpan')){
             unset($_POST['simpan']);
-            // print_r($this->input->post());die;
-			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menyimpan data!</p>');
-			
+            // echo 'penawaran:'; print_r($this->input->post());
 			$this->pm->save_penawaran($this->input->post());
+			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('pengadaan/view/'.$id.'/penawaran'.'#tabNav'));
 		}
 
@@ -743,7 +742,7 @@ class Pengadaan extends CI_Controller {
 			$save['id_proc'] = $id_pengadaan;
 			$save['value'] = preg_replace("/[,]/", "", $save['value']);
 			$save['fee'] = preg_replace("/[,]/", "", $save['fee']);
-			
+			// echo 'test save '; echo '<pre>'; print_r($save); echo '</pre>';
 			$res = $this->pm->save_negosiasi($save);
 			if($res){
 				$this->session->set_flashdata('msgSuccesss','<p class="msgSuccess">Sukses menambah data!</p>');
@@ -774,24 +773,40 @@ class Pengadaan extends CI_Controller {
 	}
 
 	public function tambah_vendor($id_proc,$id){
+		echo '<pre>';  print_r($id_proc); echo '</pre>';
+		echo '<pre>';  print_r($id); echo '</pre>';		
 		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
+			print_r('user admihn');
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
+		// $array = $this->pm->get_ijin_list($id_proc,$id);
+		// // 					// echo form_dropdown('id_surat', $array,null /*$this->form->get_temp_data('id_surat')*/);
+		// 					echo '<pre>';  print_r($array); echo '</pre>';		
+		// print_r('user bukan admin');
 		$form['id_proc'] 		= $id_proc;
 		$form['id_vendor'] 		= $id;
 		$form['entry_stamp'] 	= date('Y-m-d H:i:s');
 		$form['id_surat']		= $this->input->post('id_surat');
+		// $form['id_surat'] = 430;
+		// echo 'form: '.$form; 
+		echo '<pre>';  print_r($form); echo '</pre>';
+	
 		$result = $this->pm->save_peserta($form);
+		// echo '<pre>';  print_r($result); echo '</pre>';
 		if($result){
+			// echo 'succes sepertinya';
 			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah peserta!</p>');
-			redirect(site_url('pengadaan/view/'.$id_proc.'/peserta'.'#tabNav'));
 			
+			redirect(site_url('pengadaan/view/'.$id_proc.'/peserta'.'#tabNav'));	
 		}
+		// echo 'tidak succes sepertinya';
 	}
 	public function tambah_peserta($id){
 		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
+			print_r('user admin');
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
+		print_r('user bukan admin');
 		$admin = $this->session->userdata('admin');
 		$page = '';
 		$this->load->library('form');
@@ -1818,12 +1833,15 @@ class Pengadaan extends CI_Controller {
 				$form['nama_barang'] 	= $this->input->post('nama_barang');
 				$form['nilai_hps'] 		= preg_replace("/[,]/", "", $this->input->post('nilai_hps'));
 				$form['id_kurs'] 		= $this->input->post('id_kurs');
-				$form['id_material'] 	= $this->input->post('id_material');
-				$id_material 			= $form['id_material'];
-				$form['is_catalogue'] 	= ($id_material!=''||$id_material!=0) ? 1 : $this->input->post('is_catalogue');
+				// $form['id_material'] 	= $this->input->post('id_material');
+				$form['id_material'] 	= 0 ;
+				// $id_material 			= $form['id_material'];
+				// $id_material 			= 0 ; 
+				// $form['is_catalogue'] 	= ($id_material!=''||$id_material!=0) ? 1 : $this->input->post('is_catalogue');
+				$form['is_catalogue'] 	= ($id_material!=''||$id_material!=0) ? 1 : 0;
 				$form['category'] 		= $this->input->post('category');
 				$form['entry_stamp'] 	= date('Y-m-d H:i:s');
-				
+				echo 'form barang'; print_r($form);
 				$result = $this->pm->save_barang($form);
 				if($result){
 

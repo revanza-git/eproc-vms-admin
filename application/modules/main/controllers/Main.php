@@ -9,96 +9,66 @@ class Main extends CI_Controller {
 		}elseif($this->session->userdata('admin')){
 			redirect('admin');
 		}else{
-			/*$this->session->sess_destroy('form');
-			$item['header'] = '';
-			$item['content'] = $this->load->view('login',NULL,TRUE);
-			$this->load->view('template',$item);*/
-			header("Location: https://deveproc.nusantararegas.com/eproc_nusantararegas/main/logout");
+			header("Location: https://eproc.nusantararegas.com/eproc_nusantararegas/main/logout");
 		}
 	}
 	
 	public function login_user($name,$id_user,$id_sbu,$vendor_status,$is_active,$type,$app)
 	{
 		if($type == 'user'){
-
 			$set_session = array(
-
 				'id_user' 		=> 	$id_user,
-
 				'name'			=>	str_replace('%20', ' ', $name),
-
 				'id_sbu'		=>	$id_sbu,
-
 				'vendor_status'	=>	$vendor_status,
-
 				'is_active'		=>	$data['is_active'],
-
 				'app'			=>	'vms'
-
 			);
 
 			$this->session->set_userdata('user',$set_session);
 
 			$item['content'] 	= $this->load->view('redirect',$data,TRUE);
 			$this->load->view('template',$item);
-
 		}
 	}
 
-	public function login_admin($name,$id_user,$id_role,$role_name,$type,$app,$division,$id_division,$id_sbu="",$sbu_name="")
+	public function login_admin()
 	{
-		// echo 'Nama : '.$name.' <br> ID User : '.$id_user.'<br> ID Role : '.$id_role.'<br> Role Name : '.$role_name.'<br> Type : '.$type.' <br> App: '.$app.'<br> Division : '.$division.'<br> ID Division : '.$id_division.'<br> ID SBU : '.$id_sbu.'<br> SBU Name : '.$sbu_name;die;
-		if($type=='admin'){
+		$key = $this->input->get('key', TRUE);
 
-			$set_session = array(
-
-				'id_user' 		=> 	$id_user,
-
-				'name'			=>	str_replace('%20', ' ', $name),
-
-				'id_sbu'		=>	$id_sbu,
-
-				'id_role'		=>	$id_role,
-
-				'role_name'		=>	str_replace('%20', ' ', $role_name),
-
-				'sbu_name'		=>	str_replace('%20', ' ', $sbu_name),
-
-				'app'			=>	$app,
-
-				'division'		=>	str_replace('%20', ' ', $division),
-
-				'id_division'	=>	str_replace('%20', ' ', $id_division)
-
-			);
-
-			$this->session->set_userdata('admin',$set_session);
-			// print_r($this->session->userdata('admin'));die;
-			if($this->session->userdata('admin')['id_role']==6){
-
-				$admin = $this->session->userdata('admin');
-
-				$id_user 		= 	$admin['id_user'];
-				$name			=	$admin['name'];
-				$id_sbu			=	$admin['id_sbu'];
-				$id_role		=	$admin['id_role'];
-				$role_name		=	$admin['role_name'];
-				$sbu_name		=	$admin['sbu_name'];
-				$app			=	$admin['app'];
-				$division		=	$admin['division'];
-
-				header('Location:https://deveproc.nusantararegas.com/eproc_pengadaan/main/login_admin/'.$id_user.'/'.$name.'/'.$id_role.'/'.$role_name.'/'.$app.'/'.$id_sbu.'/'.$sbu_name.'/'.$division);
-				// header('Location:https://deveproc.nusantararegas.com/eproc');
-				// redirect(site_url('auction'));
-			}else{
-				redirect(site_url('admin'));
-			}
+		if (!$key) {
+			header("Location:https://eproc.nusantararegas.com/eproc_nusantararegas");
 		}
+
+		$data = $this->db->where('key', $key)->where('deleted_at', NULL)->get('ms_key_value')->row_array();
+
+		if (!$data) {
+			header("Location:https://eproc.nusantararegas.com/eproc_nusantararegas");
+		}
+
+		$value = json_decode($data['value']);
+
+		$set_session = array(
+			'id_user' 		=> 	$value->id_user,
+			'name'			=>	$value->name,
+			'id_sbu'		=>	$value->id_sbu,
+			'id_role'		=>	$value->id_role,
+			'role_name'		=>	$value->role_name,
+			'sbu_name'		=>	$value->sbu_name,
+			'app'			=>	$value->app,
+			'division'		=>	$value->division,
+			'id_division'	=>	$value->id_division
+		);
+
+		$this->session->set_userdata('admin',$set_session);
+
+		$this->db->where('key', $key)->update('ms_key_value', array('deleted_at' => date('Y-m-d H:i:s')));
+		
+		redirect(site_url('admin'));
 	}
 	
 	public function logout(){
 		$this->session->sess_destroy();
-		// redirect(site_url());
 		header('Location: http://10.10.10.3/eproc_nusantararegas/main/logout');
 	}
 	
@@ -211,7 +181,7 @@ class Main extends CI_Controller {
 	// 				$this->load->view('template',$item);
 	// 			}else if($this->session->userdata('admin')){
 	// 				if($this->session->userdata('admin')['id_role']==6){
-	// 					// header('Location:https://deveproc.nusantararegas.com/eproc');
+	// 					// header('Location:https://eproc.nusantararegas.com/eproc');
 	// 					redirect(site_url('auction'));
 	// 				}else{
 	// 					redirect(site_url('admin'));

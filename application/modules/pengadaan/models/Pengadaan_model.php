@@ -1170,33 +1170,40 @@ class Pengadaan_model extends CI_Model{
    	}
 	
    	function get_ijin_list($id,$vendor_id){
-
+		// echo '<pre>';  print_r($id); echo '</pre>';	
+		// echo '<pre>';  print_r($vendor_id); echo '</pre>';	
    		$id_bsb = array('id_bidang'=>array(),'id_sub_bidang'=>array());
    		foreach($this->get_bsb_procurement($id)->result_array() as $key => $val){
    			$id_bsb['id_bidang'][] = $val['id_bidang'];
    			$id_bsb['id_sub_bidang'][] = $val['id_sub_bidang'];
    		}
 
+		echo 'bidang'; echo '<pre>';  print_r($id_bsb); echo '</pre>';	
+
    		$id_vendor = $this->db->select('ms_ijin_usaha.id, ms_ijin_usaha.type type')
    		->join('ms_iu_bsb','ms_ijin_usaha.id=ms_iu_bsb.id_ijin_usaha');
 
    		if(count($id_bsb['id_bidang'])>0){
+			   echo 'yess';
    			$id_vendor->where_in('id_bidang',$id_bsb['id_bidang']);
    		}
 
    		if(count($id_bsb['id_sub_bidang'])>0){
+			   echo 'yess 2';
    			$id_vendor->where_in('id_sub_bidang',$id_bsb['id_sub_bidang']);
    		}
    		$vendor_list = $id_vendor->where('ms_ijin_usaha.id_vendor',$vendor_id)
    		->get('ms_ijin_usaha')->result_array();
    		
-
+		 echo 'vendor list ';  echo '<pre>';  print_r($vendor_list); echo '</pre>';
    		$res = array();
+		  
    		$name = array('siup'=>'SIUP','ijin_lain'=>'Surat Ijin Usaha Lainnya','asosiasi'=>'Sertifikat Asosiasi/Lainnya','siujk'=>'SIUJK','sbu'=>'SBU');
    		foreach($vendor_list as $key => $row){
    			$res[$row['id'].'|'.$row['type']] = $name[$row['type']];
    		}
-
+		   echo 'name vencdor ';  echo '<pre>';  print_r($name); echo '</pre>';   
+		   echo 'vendor list 2 ';  echo '<pre>';  print_r($res); echo '</pre>';   
    		return $res;
    	}
 	
@@ -1251,27 +1258,28 @@ class Pengadaan_model extends CI_Model{
 	function save_peserta($data){
 		$surat = $this->db->select('type')->where('id_vendor',$data['id_vendor'])->where('id',$data['id_surat'])->get('ms_ijin_usaha')->row_array();
 		$data['surat'] = $surat['type'];
-
 		$_param = array();
 		$sql = "INSERT INTO ms_procurement_peserta (
 							`id_proc`,
 							`id_vendor`,
 							`surat`,
 							`id_surat`,
-							
-							`entry_stamp`
+							`entry_stamp` 
 							) 
 				VALUES (?,?,?,?,?) ";/*,?,?,?*/
 							// -- `id_kurs`,
 							// -- `idr_value`,
 							// -- `kurs_value`,
 		
-		
+		print_r($sql);
+		print_r($param);
 		foreach($this->peserta as $_param) $param[$_param] = $data[$_param];
 		
 		$this->db->query($sql, $param);
+		// print_r($sql);
+		// print_r($param);
 		$id = $this->db->insert_id();
-		
+		// echo '<pre>'; print_r($id); echo '</pre>';
 		return $id;	
 	}
 
@@ -1387,10 +1395,23 @@ class Pengadaan_model extends CI_Model{
 	}
 
 	function get_winner_vendor($id_pengadaan){
+		// echo 'dd'; print_r($id_pengadaan);
 		return $this->db
 		->select('msp.*, msp.id_vendor id_winner,mv.name winner_name')
 		->where('id_proc',$id_pengadaan)
 		->where('is_winner',1)
+		// ->where('del',0)
+		->join('ms_vendor mv','mv.id=msp.id_vendor')
+		->get('ms_procurement_peserta msp')->row_array();
+	}
+
+	function get_winner_vendor_2($id_pengadaan){
+		// echo 'dd'; print_r($id_pengadaan);
+		return $this->db
+		->select('msp.*, msp.id_vendor id_winner,mv.name winner_name')
+		->where('id_proc',$id_pengadaan)
+		->where('is_winner',1)
+		->where('del',0)
 		->join('ms_vendor mv','mv.id=msp.id_vendor')
 		->get('ms_procurement_peserta msp')->row_array();
 	}
@@ -1601,7 +1622,7 @@ class Pengadaan_model extends CI_Model{
 
 
 	function save_barang($data){
-		
+		echo 'barang nama'; print_r($data);
 		$_param = array();
 		$sql = "INSERT INTO ms_procurement_barang(
 							`id_procurement`,
@@ -1611,9 +1632,11 @@ class Pengadaan_model extends CI_Model{
 							`id_kurs`,
 							`nilai_hps`,
 							`entry_stamp`,
-							`category`
+							`category`, 
+							`del`,
+							`volume`
 							) 
-				VALUES (?,?,?,?,?,?,?,?) ";
+				VALUES (?,?,?,?,?,?,?,?, 0, 0) ";
 		
 		
 		foreach($this->barang as $_param) $param[$_param] = $data[$_param];
@@ -1708,6 +1731,7 @@ class Pengadaan_model extends CI_Model{
    	}
 
    	function save_penawaran($post){
+		echo 'data penawaran'; print_r($post);
    		foreach($post['id'] as $key => $row){
    			$res = $this->db->where('id',$key)->update('ms_procurement_peserta',
    				array(
@@ -1719,17 +1743,21 @@ class Pengadaan_model extends CI_Model{
    					'remark'=>$post['remark'][$key],
    				)
 			);
+			echo 'responsen'; print_r($res);
    			if(!$res){
+				   echo 'false';
    				return false;
    			}
    		}
-
+		   echo 'true';
    		return true;
    	}
 		
 	public function save_negosiasi($data)
 	{
+		// echo 'data save '; echo '<pre>'; print_r($data); echo '</pre>';
 		$res = $this->db->insert('ms_procurement_negosiasi', $data);
+		// echo 'data res '; echo '<pre>'; print_r($res); echo '</pre>';
 		if($res){
 			return true;
 		}

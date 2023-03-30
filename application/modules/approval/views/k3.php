@@ -11,7 +11,7 @@
 		<?php if(isset($get_csms['csms_file'])){ ?>
 		<tr>
 			<td>
-				Lampiran Sertifikat CSMS : <?php echo (isset($get_csms['csms_file'])) ? '<a href="'.BASE_LINK.('lampiran/csms_file/')."/".$get_csms['csms_file'].'">Lampiran</a>': '-';?>
+				Lampiran Sertifikat CSMS : <?php echo (isset($get_csms['csms_file'])) ? '<a href="'.BASE_LINK_EXTERNAL.('lampiran/k3_files')."/".$get_csms['csms_file'].'">Lampiran</a>': '-';?>
 			</td>
 		</tr>
 		<tr>
@@ -32,7 +32,7 @@
 		</tr>
 	</table>
 	<form method="POST" enctype="multipart/form-data">
-		<?php if(!isset($get_csms['csms_file'])){ ?>
+		<!-- <?php if(!isset($get_csms['csms_file'])){ ?>
 		<div class="panel-group">
 			<table class="scoreTable">
 				<thead>
@@ -93,8 +93,6 @@
 									<?php echo $val_answer['value'];?>
 									<p><i>Jawaban : <?php 
 
-										//if(isset($data_k3[$key_answer]['value'])) { echo $data_k3[$key_answer]['value'];}else{echo '-';} 
-
 										switch ($val_answer['type']) {
 												default:
 												case 'text':
@@ -134,7 +132,7 @@
 												case 'file':
 													if(isset($data_k3[$val_answer['id']]['value'])){
 														if($data_k3[$val_answer['id']]['value']!=''){
-															echo '<p><a href="'.BASE_LINK.('lampiran/'.$field_quest[$val_answer['id']]['label'].'/'.$data_k3[$val_answer['id']]['value']).'" target="_blank">Lampiran</a></p>';
+															echo '<p><a href="'.BASE_LINK_EXTERNAL.('lampiran/'.$field_quest[$val_answer['id']]['label'].'/'.$data_k3[$val_answer['id']]['value']).'" target="_blank">Lampiran</a></p>';
 														}else{
 															echo '-';
 														}
@@ -237,7 +235,7 @@
 												case 'file':
 													if(isset($data_k3[$val_answer['id']]['value'])){
 														if($data_k3[$val_answer['id']]['value']!=''){
-															echo '<p><a href="'.BASE_LINK.('lampiran/'.$field_quest[$val_answer['id']]['label'].'/'.$data_k3[$val_answer['id']]['value']).'" target="_blank">Lampiran</a></p>';
+															echo '<p><a href="'.BASE_LINK_EXTERNAL.('lampiran/'.$field_quest[$val_answer['id']]['label'].'/'.$data_k3[$val_answer['id']]['value']).'" target="_blank">Lampiran</a></p>';
 														}else{
 															echo '-';
 														}
@@ -299,11 +297,11 @@
             </table>
 
 		</div>
-		<?php } ?>
+		<?php } ?> -->
 
 		<?php
-		$admin = $this->session->userdata('admin');
-		if ($admin['id_role'] == 1 || $admin['id_role'] == 10) {
+		// $admin = $this->session->userdata('admin');
+		// if ($admin['id_role'] == 1 || $admin['id_role'] == 10) {
 		?>
 		<div class="clearfix" style="text-align: right">
 			<div style="margin-bottom: 20px">Tanggal terbit CSMS : <?php echo $this->form->calendar(array('name'=>'start_date','value'=>($this->form->get_temp_data('start_date'))?$this->form->get_temp_data('start_date'):$get_csms['start_date']), false);?></div>
@@ -317,6 +315,7 @@
 		<div class="buttonRegBox clearfix">
 			<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 		</div>
-		<?php }?>
+		<?php?>
+		
 	</form>
 </div>

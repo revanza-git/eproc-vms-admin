@@ -81,6 +81,7 @@ class Approval extends CI_Controller
 
 		$this->load->view('template', $item);
 	}
+	
 	public function situ($id)
 	{
 		$this->load->model('situ/situ_model', 'sm');
@@ -96,7 +97,6 @@ class Approval extends CI_Controller
 		}
 		$data['id_data'] = $id;
 
-
 		$layout['content'] =  $this->load->view('situ', $data, TRUE);
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
 
@@ -107,6 +107,7 @@ class Approval extends CI_Controller
 
 		$this->load->view('template', $item);
 	}
+
 	public function tdp($id)
 	{
 		$this->load->model('tdp/tdp_model', 'sm');
@@ -122,7 +123,6 @@ class Approval extends CI_Controller
 		}
 		$data['id_data'] = $id;
 
-
 		$layout['content'] =  $this->load->view('tdp', $data, TRUE);
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
 
@@ -133,6 +133,7 @@ class Approval extends CI_Controller
 
 		$this->load->view('template', $item);
 	}
+
 	public function pengurus($id)
 	{
 		$this->load->model('pengurus/pengurus_model', 'pm');
@@ -157,6 +158,7 @@ class Approval extends CI_Controller
 
 		$this->load->view('template', $item);
 	}
+
 	public function pemilik($id)
 	{
 		$this->load->model('pemilik/pemilik_model', 'pm');
@@ -183,6 +185,7 @@ class Approval extends CI_Controller
 
 		$this->load->view('template', $item);
 	}
+
 	public function badan_usaha($id, $surat = 'siup')
 	{
 		$this->load->model('izin/izin_model', 'im');
@@ -191,7 +194,6 @@ class Approval extends CI_Controller
 		$data['dt_siu'] = array('siup' => 'SIUP', 'ijin_lain' => 'Surat Izin Usaha Lainnya', 'asosiasi' => 'Sertifikat Asosiasi/Lainnya', 'siujk' => 'SIUJK', 'sbu' => 'SBU');
 		$data['dt_dpt'] = $this->am->get_dpt_type();
 		$data['surat'] = $surat;
-
 
 		$table = array(
 			'siup' => array(
@@ -262,6 +264,7 @@ class Approval extends CI_Controller
 
 		$this->load->view('template', $item);
 	}
+
 	public function bsb($id_data, $id)
 	{
 		$this->load->model('izin/izin_model', 'im');
