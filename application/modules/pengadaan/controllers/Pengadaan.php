@@ -803,10 +803,10 @@ class Pengadaan extends CI_Controller {
 	}
 	public function tambah_peserta($id){
 		if($this->session->userdata('admin')['id_role']!=3 && $this->session->userdata('admin')['id_role']!=10){ 
-			print_r('user admin');
+			
 			redirect('pengadaan/view/'.$id.'/progress_pengerjaan');
 		}
-		print_r('user bukan admin');
+		
 		$admin = $this->session->userdata('admin');
 		$page = '';
 		$this->load->library('form');
@@ -1383,7 +1383,6 @@ class Pengadaan extends CI_Controller {
 		$data['progressNav'] = $this->progressNav;
 
 		$data_kontrak = $this->pm->get_kontrak($id);
-
 		$data['id_pengadaan'] = $id;
         #print_r($data);die;
 		if($this->input->post('simpan')){
@@ -1398,7 +1397,7 @@ class Pengadaan extends CI_Controller {
 					$file_ary[$key]['tmp_name'] = $_FILES['file_upload']['tmp_name'][$key];
 					$file_ary[$key]['error'] 	= $_FILES['file_upload']['error'][$key];
 				}
-			#print_r($file_ary);
+		
 			$result = true;
 			$last = count($this->input->post('progress'));
 			
@@ -1420,19 +1419,18 @@ class Pengadaan extends CI_Controller {
 			#if($result == true){
 				
 				foreach($file_ary as $key => $value){
-					#print_r($value);
+					
 					if($value['name'] != ''){
 						$_POST['file'][$key]=$this->do_upload_($value);
 					}
 				}
+
+					$res = $this->pm->save_progress_pengadaan($id);
 				
-				
-				#print_r($this->input->post());die;
-					$res 		= $this->pm->save_progress_pengadaan($id);
-					if($res){
+					// if($res){
 						$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Berhasil mengubah progress!</p>');
 						redirect(current_url().'#tabNav');
-					} 
+					// } 
 			#}
 		}
 		if ($this->input->post('done')) {
@@ -1480,9 +1478,9 @@ class Pengadaan extends CI_Controller {
 	}
 	
 	public function do_upload_($file){
-			$target_dir = "./lampiran/progress_pengadaan/";
-			$new_name 	= "progress_lampiran_".$this->utility->name_generator();
-			$target_file = $target_dir.$new_name;
+			$target_dir = "./lampiran/new_test/";
+			$new_name 	= "progress_lampiran_".$this->utility->name_generator($file);
+			$target_file = $target_dir.$new_name.'pdf';
 			if (!move_uploaded_file($file["tmp_name"], $target_file)) {
 				echo "Sorry, there was an error uploading your file.".$file["error"];
 			}

@@ -115,7 +115,7 @@
 		</table>
 		<?php
 		$admin = $this->session->userdata('admin');
-		if ($admin['id_role'] == 1 || $admin['id_role'] == 10) {
+		if ($admin['id_role'] == 1 || $admin['id_role'] == 10 || $admin['id_role'] == 3) {
 		?>
 		<div class="clearfix">
 			<label class="orangeAtt">

@@ -50,7 +50,7 @@
 
 		<?php
 		$admin = $this->session->userdata('admin');
-		if ($admin['id_role'] == 1 || $admin['id_role'] == 10) {
+		if ($admin['id_role'] == 1 || $admin['id_role'] == 10 || $admin['id_role'] == 3) {
 		?>
 <div class="buttonRegBox clearfix">
 	<input type="submit" value="Simpan" class="btnBlue" name="simpan">

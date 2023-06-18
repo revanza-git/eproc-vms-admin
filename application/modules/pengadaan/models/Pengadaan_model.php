@@ -470,27 +470,30 @@ class Pengadaan_model extends CI_Model{
    	}
 
    	function save_progress_pengadaan($id){
-		#print_r($this->input->post());die;
    		foreach($this->input->post('progress') as $key => $value){
    			$check = $this->db->where('id_proc',$id)->where('id_progress',$key)->get('tr_progress_pengadaan')->num_rows();
    			if($check>0){
+				   echo 'echoe 0';
    				if($this->input->post('file')[$key] != ''){
+					   echo 'yes papa';
 					$res = $this->db->where('id_proc',$id)
 									->where('id_progress',$key)
 									->update('tr_progress_pengadaan',array('value'=>$value, 'date'=>$this->input->post('date')[$key], 'file'=>$this->input->post('file')[$key]));
 				} else{
+					echo 'yes mama';
 					$res = $this->db->where('id_proc',$id)
 									->where('id_progress',$key)
 									->update('tr_progress_pengadaan',array('value'=>$value, 'date'=>$this->input->post('date')[$key]));
 				}
    				if(!$res) return false;
    			}else{
+				$name_file = $this->input->post('file')[$key].'pdf';
    				$res = $this->db->insert('tr_progress_pengadaan',array(
 																	'value'=>$value,
 																	'id_proc'=>$id,
 																	'id_progress'=>$key,
 																	'date'=>$this->input->post('date')[$key],
-																	'file'=>$this->input->post('file')[$key],
+																	'file'=>$name_file,
 																));
    				if(!$res) return false;
    			}
@@ -1284,7 +1287,8 @@ class Pengadaan_model extends CI_Model{
 	}
 
 	function proses_pemenang($id,$data){
-		// print_r($data);die;
+		echo 'dd'; print_r($data);
+		print_r($id);
 		$this->db->where('id_proc',$id);
 		$this->db->update('ms_procurement_peserta',array('is_winner'=>0));
 

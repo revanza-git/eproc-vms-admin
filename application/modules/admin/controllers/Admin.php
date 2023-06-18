@@ -59,11 +59,14 @@ class Admin extends CI_Controller {
 		$this->load->view('template',$item);
 	}
 
-	public function search_bar($q)
-	{
+	public function search_bar($q){
 		$data = $this->mm->search_bar($q);
 		echo json_encode($data);
+		// echo json_encode($this->mm->search_data($q));
 	}
+	// public function search_data(){
+	// 	echo json_encode($this->mm->search_data());
+	// }
 
 	public function logout(){
 		$this->session->sess_destroy();

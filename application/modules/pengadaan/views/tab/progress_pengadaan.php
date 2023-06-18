@@ -260,21 +260,21 @@
 										echo default_date($progress[$key]['date']);
 									}?>
 								</td>
-								<td width="70px">
+								<td width="100px">
 									<?php 
 									$lampiran = explode(";", $val['lampiran']);
 									$a = '<i class="fa fa-square-o"></i>';
 									foreach ($lampiran as $lampiran_) {
 										if ($lampiran_ != null) {
-											echo "<a style='margin-right: 5px' href='".base_url('lampiran/progress_pengadaan/file/')."/".$lampiran_."' title='".$lampiran_."'><i class='fa fa-download'></i></a>";
+											echo "<a style='margin-right: 100px' href='".base_url('lampiran/new_test/')."/".$lampiran_."' title='".$lampiran_."'><i class='fa fa-download'></i></a>";
 										}else{
 											echo "--";
 										}
 									}?>
 								</td>
-								<td width="162px">
+								<td width="200px">
 									<?php if (($progress[$key]['file'] != '')) {
-										echo "<a style='margin-right: 5px' href='".base_url('lampiran/progress_pengadaan/')."/".$progress[$key]['file']."' title='".$progress[$key]['file']."' target='_blank'><i class='fa fa-download'></i></a>";
+										echo "<a style='margin-right: 100px' href='".base_url('lampiran/new_test/')."/".$progress[$key]['file']."' title='".$progress[$key]['file']."' target='_blank'><i class='fa fa-download'></i></a>";
 									?>
 										<?php if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10) { ?>
 											<input type="file" name="file_upload[<?php echo $key;?>]">

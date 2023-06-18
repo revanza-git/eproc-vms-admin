@@ -13,10 +13,14 @@
                             </span>
                         </input>
                 </div>
+                <!-- <div class="search-result"><div class="sr-logo fppbj'">
+					<span class="icon"><i class="fas fa-file-alt"></i></span>
+				</div> -->
                 <div class="result">
                     <div class="result-list-wrapper" style="background-color: white;">
                         <div class="scroll-wp">
                         </div>
+                        <!-- <span class="icon"><i class="fas fa-file-alt"></i></span> -->
                     </div>
                 </div>
             </div>

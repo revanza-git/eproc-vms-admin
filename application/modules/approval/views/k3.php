@@ -300,8 +300,8 @@
 		<?php } ?> -->
 
 		<?php
-		// $admin = $this->session->userdata('admin');
-		// if ($admin['id_role'] == 1 || $admin['id_role'] == 10) {
+		$admin = $this->session->userdata('admin');
+		if ($admin['id_role'] == 1 || $admin['id_role'] == 10 || $admin['id_role'] == 3) {
 		?>
 		<div class="clearfix" style="text-align: right">
 			<div style="margin-bottom: 20px">Tanggal terbit CSMS : <?php echo $this->form->calendar(array('name'=>'start_date','value'=>($this->form->get_temp_data('start_date'))?$this->form->get_temp_data('start_date'):$get_csms['start_date']), false);?></div>
@@ -315,7 +315,7 @@
 		<div class="buttonRegBox clearfix">
 			<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 		</div>
-		<?php?>
+		<?php }?>
 		
 	</form>
 </div>
