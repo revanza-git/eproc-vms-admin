@@ -49,7 +49,7 @@
 								$border = "style='border-right:5px solid #27ae60;'"
 							?>
 							<li <?php echo 'class="'.$class.'"'; if($this->session->userdata('admin')['id_role']==2&&$val['id']==7){ echo $border;}?>>
-								<div class="fieldPanel <?php echo ($is_id||($this->session->userdata('admin')['id_role']==2&&$val['id']==7))?'':'questGrey';?>">
+								<div class="fieldPanel <?php echo ($is_id||($this->session->userdata('admin')['id_role']==2&&$val['id']==7)||($this->session->userdata('admin')['id_role']==2&&$val['id_role']==9))?'':'questGrey';?>">
 									<div class="questBox">
 										<p><?php echo $i.'. '.$val['value']; ?></p>
 									</div>
@@ -67,7 +67,7 @@
 
 												<input type="checkbox" value="1" name="is_approve[<?php echo $val['id']; ?>]" <?php echo ($data_approve[$val['id']]==1)?'checked':'';?> class="mandatoryCheck">Menyetujui
 											<?php }else{
-												if($is_id){ 
+												if($is_id||($this->session->userdata('admin')['id_role']==2&&$val['id_role']==9)){ 
 												?>
 												<select name="ass[<?php echo $val['id']; ?>]" class="selectAss<?php $h_n ?>">
 													<option value="">Belum Dinilai</option>
