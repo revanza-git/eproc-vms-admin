@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Tdp extends CI_Controller {
 
@@ -7,6 +7,7 @@ class Tdp extends CI_Controller {
 		if(!$this->session->userdata('user')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('tdp_model','tm');
 		$this->load->library('encrypt');
 		$this->load->library('utility');
@@ -35,6 +36,7 @@ class Tdp extends CI_Controller {
 		if($this->vm->check_pic($data['id_user'])==0){
 			redirect(site_url('dashboard/pernyataan'));
 		}
+  
 		$search = $this->input->get('q');
 		$page = '';
 		
@@ -94,6 +96,7 @@ class Tdp extends CI_Controller {
 		}else{
 			$_POST['extension_file'] = '';
 		}
+  
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			$_POST['id_vendor'] = $user['id_user'];
@@ -152,6 +155,7 @@ class Tdp extends CI_Controller {
 					'rules'=>'callback_do_upload[tdp_file]'
 					);
 		}
+  
 		if(!empty($_FILES['extension_file']['name'])){
 			$vld[] = array(
 					'field'=>'extension_file',
@@ -161,6 +165,7 @@ class Tdp extends CI_Controller {
 		}else{
 			$_POST['extension_file'] = '';
 		}
+  
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			$_POST['edit_stamp'] = date("Y-m-d H:i:s");
@@ -184,6 +189,7 @@ class Tdp extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function hapus($id){
 		if($this->tm->delete($id)){
 			$this->dpt->non_iu_change($user['id_user']);
@@ -194,6 +200,7 @@ class Tdp extends CI_Controller {
 			redirect(site_url('tdp'));
 		}
 	}
+ 
 	public function do_upload($field, $db_name = ''){	
 		
 		$file_name = $_FILES[$db_name]['name'] = $db_name.'_'.$this->utility->name_generator($_FILES[$db_name]['name']);
@@ -209,9 +216,9 @@ class Tdp extends CI_Controller {
 			$_POST[$db_name] = $file_name;
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 }

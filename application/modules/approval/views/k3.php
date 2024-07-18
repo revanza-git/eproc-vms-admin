@@ -19,7 +19,8 @@
 				Masa Berlaku : <?php echo default_date($get_csms['expiry_date']);?>
 			</td>
 		</tr>
-		<?php } ?>
+		<?php }
+ ?>
 		<tr>
 			<td>
 				Skor : <?php echo $get_csms['score'];?>
@@ -84,11 +85,11 @@
 					</tr>
 					<?php 
 					
-					foreach($val_ev as $key_quest => $val_quest){
+					foreach($val_ev as $val_quest){
 						?>
 						<tr class="borderQuest">
 							<td class="textQuestLv2">
-							<?php foreach($val_quest as $key_answer => $val_answer){
+							<?php foreach($val_quest as $val_answer){
 								 ?>
 									<?php echo $val_answer['value'];?>
 									<p><i>Jawaban : <?php 
@@ -114,20 +115,19 @@
 													foreach($checkbox as $key => $row){
 
 														if(isset($data_k3[$val_answer['id']]['value'])){
-															if($data_k3[$val_answer['id']]['value']==''){
-																echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
-															}else{
-																if($key == $data_k3[$val_answer['id']]['value']){
-																	echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
-																}else{
+															if ($data_k3[$val_answer['id']]['value']=='') {
+                   echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
+               } elseif ($key == $data_k3[$val_answer['id']]['value']) {
+                   echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
+               } else{
 																	echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 																}
-															}
 															
 														}else{
 															echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 														}
 													}
+             
 													break;
 												case 'file':
 													if(isset($data_k3[$val_answer['id']]['value'])){
@@ -139,24 +139,27 @@
 													}else{
 														echo '-';
 													}
+             
 												break;
 											}
 
 									?></i></p>
 
 							<?php 	
-							}?>
+							}
+      ?>
 							</td>
 							<?php echo $this->utility->generate_checked_k3($key_ev,$evaluasi_list,isset($value_k3[$key_ev]) ? $value_k3[$key_ev] : NULL,TRUE); ?>
 						</tr>
 
-						<?php 
+<?php 
 						
 					} 
 
 					$subtotal += isset($value_k3[$key_ev]) ? $value_k3[$key_ev] : NULL;
 
-					}?>
+					}
+     ?>
 					<tr class="subTotalQuest">
 						<td colspan="5">
 							Subtotal
@@ -175,7 +178,7 @@
 							?>
 						</td>
 					</tr>
-				<?php }else{ 
+<?php }else{ 
 
 					$subtotal = 0;
 					$total_data = count($value_ms);
@@ -187,10 +190,10 @@
 
 					<?php 
 					
-					foreach($val_ev as $key_quest => $val_quest){ ?>
+					foreach($val_ev as $val_quest){ ?>
 						<tr class="borderQuest">
 							<td class="textQuestLv2">
-							<?php foreach($val_quest as $key_answer => $val_answer){
+							<?php foreach($val_quest as $val_answer){
 							?>
 							
 								<?php echo $val_answer['value'];?>
@@ -217,20 +220,19 @@
 													foreach($checkbox as $key => $row){
 
 														if(isset($data_k3[$val_answer['id']]['value'])){
-															if($data_k3[$val_answer['id']]['value']==''){
-																echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
-															}else{
-																if($key == $data_k3[$val_answer['id']]['value']){
-																	echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
-																}else{
+															if ($data_k3[$val_answer['id']]['value']=='') {
+                   echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
+               } elseif ($key == $data_k3[$val_answer['id']]['value']) {
+                   echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
+               } else{
 																	echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 																}
-															}
 															
 														}else{
 															echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 														}
 													}
+             
 													break;
 												case 'file':
 													if(isset($data_k3[$val_answer['id']]['value'])){
@@ -242,20 +244,24 @@
 													}else{
 														echo '-';
 													}
+             
 												break;
 											}
+        
 								?></i></p>
 								
 								
 							
-							<?php 	
-								} ?>
+<?php 	
+								}
+      ?>
 							</td>
 							<?php echo $this->utility->generate_checked_k3($key_ev,$evaluasi_list,$value_k3[$key_ev],TRUE); ?>
 						</tr>
-					<?php 
+<?php 
 
 						}
+     
 						// echo $subtotal;  
 						$subtotal += $value_k3[$key_ev];
 					}
@@ -281,7 +287,8 @@
 					<?php
 				}
 				
-			} ?>
+			}
+    ?>
 					<tr class="totalAllQuest">
 						<td colspan="5"><p>Nilai numerik di samping ini adalah rating pemberatan yang dihitung di atas. Totalnya mewakili angka keseluruhan untuk kontraktor.</p></td>
 						<td colspan="2"><b>Total</b></td>
@@ -297,7 +304,7 @@
             </table>
 
 		</div>
-		<?php } ?> -->
+<?php } ?> -->
 
 		<?php
 		$admin = $this->session->userdata('admin');
@@ -315,7 +322,8 @@
 		<div class="buttonRegBox clearfix">
 			<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 		</div>
-		<?php }?>
+		<?php }
+  ?>
 		
 	</form>
 </div>

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 
 
@@ -239,9 +239,9 @@ class Custom_report extends CI_Controller{
 
 		foreach($_POST['field'] as $index => $detail){			
 
-			if($index == 'hps_value' or $index == "nilai_kontrak")
-
-				$return .= '<td style="background: #8db4e2; font-weight: bold; vertical-align: middle; text-align:center;">Rupiah</td><td style="background: #8db4e2; font-weight: bold; vertical-align: middle; text-align:center;">Kurs</td>';
+			if ($index == 'hps_value' || $index == "nilai_kontrak") {
+       $return .= '<td style="background: #8db4e2; font-weight: bold; vertical-align: middle; text-align:center;">Rupiah</td><td style="background: #8db4e2; font-weight: bold; vertical-align: middle; text-align:center;">Kurs</td>';
+   }
 
 		}
 
@@ -263,135 +263,77 @@ class Custom_report extends CI_Controller{
 
 				
 
-				if($index == 'hps_value'){
+				if ($index == 'hps_value') {
+        $return .= '<td style="vertical-align: middle; text-align:left;">Rp. '.$data->idr_value.'</td>'.
+   
+   							   '<td style="vertical-align: middle; text-align:left;">'.$data->symbol.' '.$data->kurs_value.'</td>';
+    } elseif ($index == 'efisiensi') {
+        $return .= '<td style="vertical-align: middle; text-align:left;">'.number_format((($data->idr_value - $data->contract_price) / ($data->idr_value)) * 0.1, 2).'%</td>'.
+   
+   							   '<td style="vertical-align: middle; text-align:left;">'.number_format((($data->kurs_value - $data->contract_price_kurs) / ($data->kurs_value)) * 0.1, 2).'%</td>';
+    } elseif ($index == 'nilai_kontrak') {
+        $return .= '<td style="vertical-align: middle; text-align:left;">Rp. '.$data->contract_price.'</td>'.
+   
+   							   '<td style="vertical-align: middle; text-align:left;">'.$data->symbol_contract.' '.$data->contract_price_kurs.'</td>';
+    } elseif ($index == 'kontrak_period') {
+        $start_contract = '';
+        $end_contract = '';
+        if ($data->start_contract) {
+            $start_contract = date("d/m/Y", strtotime($data->start_contract));
+        }
 
-					$return .= '<td style="vertical-align: middle; text-align:left;">Rp. '.$data->idr_value.'</td>'.
+        if ($data->end_contract) {
+            $end_contract = " - ".date("d/m/Y", strtotime($data->end_contract));
+        }
 
-							   '<td style="vertical-align: middle; text-align:left;">'.$data->symbol.' '.$data->kurs_value.'</td>';
+        $return .= '<td style="vertical-align: middle; text-align:left;">'.$start_contract.$end_contract.'</td>';
+    } elseif ($index == 'barang') {
+        $return .= '<td style="vertical-align: middle; text-align:left;"><ol>';
+        $sql = $this->crm->get_barang($data->id);
+        foreach($sql->result() as $barang)
 
-				}
-
-				else if($index == 'efisiensi'){
-
-					$return .= '<td style="vertical-align: middle; text-align:left;">'.number_format((($data->idr_value - $data->contract_price) / ($data->idr_value)) * 0.1, 2).'%</td>'.
-
-							   '<td style="vertical-align: middle; text-align:left;">'.number_format((($data->kurs_value - $data->contract_price_kurs) / ($data->kurs_value)) * 0.1, 2).'%</td>';
-
-				}
-
-				else if($index == 'nilai_kontrak'){
-
-					$return .= '<td style="vertical-align: middle; text-align:left;">Rp. '.$data->contract_price.'</td>'.
-
-							   '<td style="vertical-align: middle; text-align:left;">'.$data->symbol_contract.' '.$data->contract_price_kurs.'</td>';
-
-				}
-
-				else if($index == 'kontrak_period'){
-
-					$start_contract = $end_contract = '';
-
-
-
-					if($data->start_contract) 	$start_contract = date("d/m/Y", strtotime($data->start_contract));
-
-					if($data->end_contract) 	$end_contract = " - ".date("d/m/Y", strtotime($data->end_contract));
-
-
-
-					$return .= '<td style="vertical-align: middle; text-align:left;">'.$start_contract.$end_contract.'</td>';
-
-				}
-
-				else if($index == 'barang'){
-
-					$return .= '<td style="vertical-align: middle; text-align:left;">'.
-
-							   		'<ol>';
-
-							   		
-
-						   	   $sql = $this->crm->get_barang($data->id);
-
-						   	   foreach($sql->result() as $barang)
-
-							   $return .= '<li>'.
-
-							   				'<div>Nama Barang : '.$barang->nama_barang.'</div>'.
+							   $return .= '<li><div>Nama Barang : '.$barang->nama_barang.'</div>'.
 
 							   				'<div>HPS : '.$barang->symbol.' '.$barang->nilai_hps.'</div>'.
 
 				   						  '</li>';
 
-
-
-					$return .=		'</ol>'.
-
-							   '</td>';
-
-				}
-
-				else if($index == 'peserta'){
-
-					$return .= '<td style="vertical-align: middle;  text-align:left;">'.
-
-							   		'<ol>';
-
-							   		
-
-						   	   $sql = $this->crm->get_peserta($data->id);
-
-						   	   foreach($sql->result() as $peserta)
+        $return .=		'</ol></td>';
+    } elseif ($index == 'peserta') {
+        $return .= '<td style="vertical-align: middle;  text-align:left;"><ol>';
+        $sql = $this->crm->get_peserta($data->id);
+        foreach($sql->result() as $peserta)
 
 							   $return .= '<li>'.$peserta->name.'</li>';
 
-
-
-					$return .=		'</ol>'.
-
-							   '</td>';
-
-				}
-
-				else if($index == 'proses_pengadaan'){
-
-					foreach($step->result() as $_step){
-
-						$step_date = $this->crm->get_step_date($data->id, $_step->id);
-
-						if($step_date) $step_date = date("d/m/Y", strtotime($step_date));
-
-						else $step_date = ' - '; 
-
-
-
-						$return .= '<td style="vertical-align: middle; text-align:left;">'.$step_date.'</td>';
-
-					}
-
-				}
-
-				else if($index == 'proses_pengadaan'){
-
-					foreach($step->result() as $_step){
-
-						$step_date = $this->crm->get_step_date($data->id, $_step->id);
-
-						if($step_date) $step_date = date("d/m/Y", strtotime($step_date));
-
-						else $step_date = ' - '; 
-
-
-
-						$return .= '<td style="vertical-align: middle; text-align:left;">'.$step_date.'</td>';
-
-					}
-
-				}
-
-				else
-
-					$return .= '<td style="vertical-align: middle; text-align:left;">'.$data->{$index}.'</td>';
+        $return .=		'</ol></td>';
+    } elseif ($index == 'proses_pengadaan') {
+        foreach($step->result() as $_step){
+   
+   						$step_date = $this->crm->get_step_date($data->id, $_step->id);
+   
+   						$step_date = $step_date ? date("d/m/Y", strtotime($step_date)) : ' - '; 
+   
+   
+   
+   						$return .= '<td style="vertical-align: middle; text-align:left;">'.$step_date.'</td>';
+   
+   					}
+    } elseif ($index == 'proses_pengadaan') {
+        foreach($step->result() as $_step){
+   
+   						$step_date = $this->crm->get_step_date($data->id, $_step->id);
+   
+   						$step_date = $step_date ? date("d/m/Y", strtotime($step_date)) : ' - '; 
+   
+   
+   
+   						$return .= '<td style="vertical-align: middle; text-align:left;">'.$step_date.'</td>';
+   
+   					}
+    } else {
+        $return .= '<td style="vertical-align: middle; text-align:left;">'.$data->{$index}.'</td>';
+    }
 
 			
 

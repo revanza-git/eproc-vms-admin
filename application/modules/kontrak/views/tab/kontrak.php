@@ -8,9 +8,11 @@
 
 		<?php if (count($list) == 0) { ?>
 				<a href="<?php echo site_url('kontrak/tambah_kontrak/'.$id);?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
-		<?php } ?>
+		<?php }
+ ?>
 	</div>
-	<?php } ?>
+<?php }
+ ?>
 
 	<legend>
 		<p>Keterangan :</p>
@@ -30,26 +32,26 @@
 			foreach ($graph['data'] as $key => $value) { 
 				// print_r($value);die;
 				if ($value['type'] == 6 && in_array("3", $value['type'])) {
-					$width = 'calc(50% - 5px)';
-				} else if ($value['type'] == 6 && !in_array("3", $value['type'])) {
-					$width = 'calc(100% - 5px)';
-				} else {
+        $width = 'calc(50% - 5px)';
+    } elseif ($value['type'] == 6 && !in_array("3", $value['type'])) {
+        $width = 'calc(100% - 5px)';
+    } else {
 					$width = 'calc(50% - 5px)';
 				}
 				
 				if ($value['type'] == '6') {
-					$class = 'active';
-				} else if ($value['type'] == '4') {
-					$class = 'denda';
-				} else if ($value['type'] == '5') {
-					$class = 'bast';
-				}else if ($value['type'] == '3') {
-					$class = 'amandemen';
-				} else if ($value['type'] == '2') {
-					$class = 'abutua';
-				} else if ($value['type'] == '1') {
-					$class = '';
-				}
+        $class = 'active';
+    } elseif ($value['type'] == '4') {
+        $class = 'denda';
+    } elseif ($value['type'] == '5') {
+        $class = 'bast';
+    } elseif ($value['type'] == '3') {
+        $class = 'amandemen';
+    } elseif ($value['type'] == '2') {
+        $class = 'abutua';
+    } elseif ($value['type'] == '1') {
+        $class = '';
+    }
 			?>
 				<?php if($key == $last_key && $value['type'] == '5'){ ?>
 					<span class="barLine <?php echo $class; ?>" style="width:<?php echo $width; ?>;" title="<?php echo $value['label']; ?>"></span>
@@ -59,9 +61,10 @@
 					<span class="barLine" style="width:calc(50% - 5px);" title=""></span>
 				<?php }  else { ?>
 					<span class="barLine <?php echo $class; ?>" style="width:<?php echo $width; ?>;" title="<?php echo $value['label']; ?>"></span>
-				<?php } ?>
+				<?php }
+    ?>
 
-			<?php } ?>			
+<?php } ?>			
 				
 		</div>
 	</div>
@@ -81,13 +84,14 @@
 
 					<?php if($this->session->userdata('admin')['id_role']==3){ ?>
 						<td class="actionPanel">Action</td>
-					<?php } ?>
+					<?php }
+    ?>
 				</tr>
 			</thead>
 			<tbody>
 			<?php 
-			if(count($list)){
-				foreach($list as $row => $value){
+			if(count($list) > 0){
+				foreach($list as $value){
 					// print_r($value);die;
 				?>
 					<tr>
@@ -102,6 +106,7 @@
 								} else{
 									$file = '<a href="'.site_url('lampiran/po_file/'.$value['po_file']).'" target="blank">'.$value['po_file'].'</a>';
 								}
+        
 								echo $file;
 							?>
 						</td>
@@ -111,9 +116,10 @@
 
 							<a style="top: -4px" href="<?php echo site_url('kontrak/hapus_kontrak/'.$value['id'].'/'.$id)?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
 						</td>
-						<?php } ?>
+						<?php }
+        ?>
 					</tr>
-				<?php 
+<?php 
 				}
 			}else{?>
 				<tr>

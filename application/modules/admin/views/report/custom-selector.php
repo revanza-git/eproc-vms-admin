@@ -41,7 +41,8 @@
 		</div>
 	</form>
 </div>
-<?php } ?>
+<?php }
+ ?>
 
 
 <!-- <form method="POST">
@@ -63,13 +64,14 @@
 		
 		<?php if(count($pengadaan)>0){
 			// print_r($pengadaan);die;
-			foreach($pengadaan as $row => $value){
+			foreach($pengadaan as $value){
 				// print_r($value);die;
 				$prog = end($value['progress']);
 				$p = 0;
-				foreach ($value['progress'] as $k => $v) {
+				foreach ($value['progress'] as $v) {
 					$p += $v['percent'];
 				}
+    
 			?>	
 				<tr>
 					<td rowspan="2"><?php echo $value['name'];?></td>
@@ -82,19 +84,21 @@
 									<span class="barLineText"><?php echo $prog['value'].' '.default_date($prog['date']) ?></span>
 								</div>
 							</div>
-						<?php } ?>
+						<?php }
+    ?>
 					</td>
 				</tr>
 				<tr>
 					
 				</tr>
-			<?php 
+<?php 
 			}
 		}else{?>
 			<tr>
 				<td colspan="11" class="noData">Data tidak ada</td>
 			</tr>
-		<?php }?>
+		<?php }
+?>
 
 
 

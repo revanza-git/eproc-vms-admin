@@ -1,20 +1,20 @@
 <?php
 class Auction_sbu extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 		$this->load->model('auction_package/sbu_model');
 	}
 	
-	function index($id_lelang = ''){
+	public function index($id_lelang = ''){
 		$data['id_lelang'] = $id_lelang;
 		$data['query'] = $this->sbu_model->get_data($id_lelang);
 
 		$this->load->view('content/auction_package/auction_sbu', $data);
 	}
 	
-	function form($id_lelang = '', $id = ''){
+	public function form($id_lelang = '', $id = ''){
 		$data['content'] = "form/auction_package/auction_sbu";
 		$data['width'] = 700;
 		
@@ -30,7 +30,7 @@ class Auction_sbu extends CI_Controller{
 		$this->load->view("jc-table/form/jc-form", $data);
 	}
 	
-	function save(){
+	public function save(){
 		$param = array(
 			'id_sbu' => $_POST['id_sbu'],
 			'id_lelang' => $_POST['id_lelang'],
@@ -45,7 +45,7 @@ class Auction_sbu extends CI_Controller{
 		die(json_encode($json));
 	}
 	
-	function delete($id = ''){
+	public function delete($id = ''){
 		$this->sbu_model->delete_data($id);
 		
 		$json = array(

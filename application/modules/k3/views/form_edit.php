@@ -30,17 +30,18 @@ CHECKLIST SISTEM RATING PRA KUALIFIKASI
 
 						if($k!=''){ 
 
-							$sValue = (count($field)) ? '.'.$sub_quest[$k]['id_order'].' ' : ' ';
+							$sValue = (count($field) > 0) ? '.'.$sub_quest[$k]['id_order'].' ' : ' ';
 
 						?>
 
 						<h4 class="panel-title"><?php echo $key.$sValue.$sub_quest[$k]['question']; ?></h4>
 
-						<?php } ?>
+						<?php }
+       ?>
 
 						<ol type="a">
 
-							<?php foreach ($field as $q_key => $q_list) { ?>
+							<?php foreach ($field as $q_list) { ?>
 
 								<li>
 
@@ -72,23 +73,15 @@ CHECKLIST SISTEM RATING PRA KUALIFIKASI
 
 														if(isset($data_k3[$key_label]['value'])){
 
-															if($data_k3[$key_label]['value']==''){
-
-																echo '<label><input type="checkbox" name="quest['.$q_data['id'].']" value="'. $key.'" >'. $row.'</label>';
-
-															}else{
-
-																if($key == $data_k3[$key_label]['value']){
-
-																	echo '<label><input type="checkbox" name="quest['.$q_data['id'].']" value="'. $key.'" checked>'. $row.'</label>';
-
-																}else{
+															if ($data_k3[$key_label]['value']=='') {
+                   echo '<label><input type="checkbox" name="quest['.$q_data['id'].']" value="'. $key.'" >'. $row.'</label>';
+               } elseif ($key == $data_k3[$key_label]['value']) {
+                   echo '<label><input type="checkbox" name="quest['.$q_data['id'].']" value="'. $key.'" checked>'. $row.'</label>';
+               } else{
 
 																	echo '<label><input type="checkbox" name="quest['.$q_data['id'].']" value="'. $key.'" >'. $row.'</label>';
 
 																}
-
-															}
 
 														}else{
 
@@ -110,23 +103,15 @@ CHECKLIST SISTEM RATING PRA KUALIFIKASI
 
 														if(isset($data_k3[$key_label]['value'])){
 
-															if($data_k3[$key_label]['value']==''){
-
-																echo '<label><input type="radio" name="quest['.$q_data['id'].']" value="'. $key.'" >'. $row.'</label>';
-
-															}else{
-
-																if($key == $data_k3[$key_label]['value']){
-
-																	echo '<label><input type="radio" name="quest['.$q_data['id'].']" value="'. $key.'" checked>'. $row.'</label>';
-
-																}else{
+															if ($data_k3[$key_label]['value']=='') {
+                   echo '<label><input type="radio" name="quest['.$q_data['id'].']" value="'. $key.'" >'. $row.'</label>';
+               } elseif ($key == $data_k3[$key_label]['value']) {
+                   echo '<label><input type="radio" name="quest['.$q_data['id'].']" value="'. $key.'" checked>'. $row.'</label>';
+               } else{
 
 																	echo '<label><input type="radio" name="quest['.$q_data['id'].']" value="'. $key.'" >'. $row.'</label>';
 
 																}
-
-															}
 
 														}else{
 
@@ -163,7 +148,8 @@ CHECKLIST SISTEM RATING PRA KUALIFIKASI
 
 										}
 
-									}?>
+									}
+      ?>
 
 									</div>
 
@@ -171,11 +157,13 @@ CHECKLIST SISTEM RATING PRA KUALIFIKASI
 
 								
 
-							<?php } ?>
+<?php }
+       ?>
 
 						</ol>
 
-					<?php } ?>
+<?php }
+ ?>
 
 					
 
@@ -185,7 +173,8 @@ CHECKLIST SISTEM RATING PRA KUALIFIKASI
 
 	        </div>
 
-			<?php } ?>
+<?php }
+ ?>
 
               	
 

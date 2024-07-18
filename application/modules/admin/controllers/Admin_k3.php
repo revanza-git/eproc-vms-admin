@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class admin_k3 extends CI_Controller {
 	public function __construct(){
@@ -6,16 +6,14 @@ class admin_k3 extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('k3/k3_model','km');
 	}
+ 
 	public function index(){	
-		$search 	= $this->input->get('q');
-		$page 		= '';
-		$per_page	= 10;
-		$sort 		= $this->utility->generateSort(array('id_bidang','name'));
-
-
-		$data['ms_quest']		= $this->km->get_header_list();
+		$this->input->get('q');
+  $this->utility->generateSort(array('id_bidang','name'));
+  $data['ms_quest']		= $this->km->get_header_list();
 		$data['sub_quest']		= $this->km->get_sub_quest_list();
 		$data['data_quest']		= $this->km->get_quest_list();
 		$data['data_field']		= $this->km->get_data_field();
@@ -34,12 +32,13 @@ class admin_k3 extends CI_Controller {
 			}
 		}
 
-		foreach($data['data_quest'] as $key_quest => $val_quest){
+		foreach($data['data_quest'] as $val_quest){
 			$data['quest_all'][$val_quest['id_ms_header']]['data'][$val_quest['id_sub_header']]['data'][$val_quest['id']] = array();
 		}
+  
 		// foreach()
 
-		foreach ($data['data_field'] as $key_data => $value_data) {
+		foreach ($data['data_field'] as $value_data) {
 			$data['quest_all'][$value_data['id_ms_header']]['data'][$value_data['id_sub_header']]['data'][$value_data['id_question']][$value_data['id']] = $value_data;	
 		}
 
@@ -63,6 +62,7 @@ class admin_k3 extends CI_Controller {
 				redirect(site_url('admin/admin_k3'));
 			}
 		}
+  
 		// echo print_r($data['quest_all']);
 		$layout['content']	= $this->load->view('k3/content',$data,TRUE);
 
@@ -70,6 +70,7 @@ class admin_k3 extends CI_Controller {
 		$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	###################################################
 	################  		K3		 	###############
 	###################################################
@@ -231,6 +232,7 @@ class admin_k3 extends CI_Controller {
 			redirect(site_url('admin/admin_k3'));
 		}
 	}
+ 
 	public function hapus_quest($id){
 		if($this->km->hapus_quest($id)){
 			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menghapus data!</p>');
@@ -360,6 +362,7 @@ class admin_k3 extends CI_Controller {
 				redirect(site_url('admin/admin_k3'));
 			}
 		}
+  
 			// print_r($this->input->post());
 
 
@@ -371,7 +374,7 @@ class admin_k3 extends CI_Controller {
 
 	public function tambah_group_quest($idh, $idsh=0){
 		// $_POST	= $this->securities->clean_input($_POST,'save');
-		$admin 	= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 
 			unset($_POST['Simpan']);
 			$_POST['entry_stamp'] 		= date("Y-m-d H:i:s");

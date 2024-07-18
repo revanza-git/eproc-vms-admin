@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Admin_assessment extends CI_Controller {
 	public function __construct(){
@@ -6,10 +6,12 @@ class Admin_assessment extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('assessment/admin_assessment_model','aam');	
 		$this->load->model('pengadaan/pengadaan_model','pm');
 		$this->load->model('user/admin_user_model','aum');
 	}
+ 
 	public function index(){	
 		$search 	= $this->input->get('q');
 		$page 		= '';
@@ -30,6 +32,7 @@ class Admin_assessment extends CI_Controller {
 		$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	//#####################################################
 	//################  	SUB BIDANG		 ##############
 	//#####################################################
@@ -146,6 +149,7 @@ class Admin_assessment extends CI_Controller {
 				redirect(site_url('admin/admin_assessment'));
 			}
 		}
+  
 		$data['role'] = $this->aum->get_role();
 		$layout['content']= $this->load->view('assessment/edit',$data,TRUE);
 		$layout['script']	= $this->load->view('assessment/content_js',NULL,TRUE);

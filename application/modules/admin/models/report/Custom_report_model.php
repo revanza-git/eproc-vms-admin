@@ -69,10 +69,10 @@ class Custom_report_model extends CI_Model{
 		return $this->db->query($sql, $id_procurement);
 	}
 
-	 function get_pengadaan_progress($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()) 
+	 public function get_pengadaan_progress($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()) 
     {
     	// $this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
-    	$user = $this->session->userdata('user');
+    	$this->session->userdata('user');
     	$admin = $this->session->userdata('admin');
 		$this->db->select(' ms_procurement.id id, ms_procurement.name name,ms_procurement.del del');
 		$this->db->where('ms_procurement.del',0);
@@ -80,9 +80,11 @@ class Custom_report_model extends CI_Model{
 		if($this->session->userdata('admin')['id_role']==4){
 			$this->db->where('ms_procurement.status_procurement=',1);
 		}
+  
 		if($this->session->userdata('admin')['id_role']==9){
 			$this->db->where('ms_procurement.id_division=',$admin['id_division']);
 		}
+  
 		$this->db->join('ms_procurement_peserta','ms_procurement_peserta.id_proc=ms_procurement.id','LEFT');
 		$this->db->join('ms_vendor','ms_procurement_peserta.id=ms_vendor.id','LEFT');
 		
@@ -98,6 +100,7 @@ class Custom_report_model extends CI_Model{
 
 			$this->db->order_by('ms_procurement.id','DESC');
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
@@ -110,10 +113,11 @@ class Custom_report_model extends CI_Model{
 		
 		return $query->result_array();
     }
-     function get_pengadaan_progress_by_id($id) 
+  
+     public function get_pengadaan_progress_by_id($id) 
     {
     	// $this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
-    	$user = $this->session->userdata('user');
+    	$this->session->userdata('user');
     	$admin = $this->session->userdata('admin');
 		$this->db->select(' ms_procurement.id id, ms_procurement.name name,ms_procurement.del del');
 		$this->db->where('ms_procurement.del',0);
@@ -122,9 +126,11 @@ class Custom_report_model extends CI_Model{
 		if($this->session->userdata('admin')['id_role']==4){
 			$this->db->where('ms_procurement.status_procurement=',1);
 		}
+  
 		if($this->session->userdata('admin')['id_role']==9){
 			$this->db->where('ms_procurement.id_division=',$admin['id_division']);
 		}
+  
 		$this->db->join('ms_procurement_peserta','ms_procurement_peserta.id_proc=ms_procurement.id','LEFT');
 		$this->db->join('ms_vendor','ms_procurement_peserta.id=ms_vendor.id','LEFT');
 		
@@ -138,12 +144,14 @@ class Custom_report_model extends CI_Model{
 		
 		return $query->result_array();
     }
-	function get_contract_progress($id){
-   		$arr = $this->db->select('*')->where('id_contract',$id)->where('del',0)->get('tr_progress_kontrak')->result_array();
-   		return $arr;
+     
+	public function get_contract_progress($id){
+   		return $this->db->select('*')->where('id_contract',$id)->where('del',0)->get('tr_progress_kontrak')->result_array();
    	}
-   	function get_kontrak($id){
-   		$arr = $this->db->select('ms_contract.*,ms_contract.id id,tb_legal.name legal_name, ms_vendor.name vendor_name, tb_kurs.symbol kurs_name')
+ 
+   	public function get_kontrak($id){
+   		// echo $this->db->last_query();
+		return $this->db->select('ms_contract.*,ms_contract.id id,tb_legal.name legal_name, ms_vendor.name vendor_name, tb_kurs.symbol kurs_name')
 						->join('ms_vendor','ms_vendor.id=ms_contract.id_vendor')
 				   		->join('ms_vendor_admistrasi','ms_vendor.id=ms_vendor_admistrasi.id_vendor','LEFT')
 				   		->join('tb_legal','ms_vendor_admistrasi.id_legal=tb_legal.id','LEFT')
@@ -151,30 +159,32 @@ class Custom_report_model extends CI_Model{
 				   		->where('id_procurement',$id)
 				   		->where('ms_contract.del',0)
 				   		->get('ms_contract')->row_array();
-   		// echo $this->db->last_query();
-		return $arr;
    	}
-   	function get_denda_day($id){
+    
+   	public function get_denda_day($id){
    		$data = $this->db->where('id_procurement',$id)->get('tr_denda')->row_array();
    		// echo $this->db->last_query();
    		if($data['end_date']!='' && $data['end_date']!='') {
    			return (ceil(strtotime($data['end_date']) - strtotime($data['start_date']))/86400)+1;
-   		}else{
-   			return 0;
    		}
+
+     return 0;
    	}
-    function get_graph($id,$id_procurement){
+    
+    public function get_graph($id,$id_procurement){
     	
    		$data 			= $this->get_contract_progress($id);
    		$data_kontrak 	= $this->get_kontrak($id_procurement);
 
    		$result 		= array();
-   		$total_supposed = $total_realization = 0;
-   		$color 			= $this->config->item('color');
-   		$basecolor 		= $this->config->item('basecolor');
+     $total_supposed = 0;
+     $total_realization = 0;
+     $this->config->item('color');
+     $this->config->item('basecolor');
+     
    		$row 			= 0;
 
-   		foreach( $data as $key => $val){
+   		foreach( $data as $val){
    			$date = ceil((abs(strtotime($val['end_date'])-strtotime($val['start_date'])))/86400)+1;
    			$denda = ($data_kontrak['contract_price']/1000)*$date;
    		

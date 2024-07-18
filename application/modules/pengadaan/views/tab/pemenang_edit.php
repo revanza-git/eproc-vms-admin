@@ -9,15 +9,17 @@
 					<td><label>Pemenang</label></td>
 					<td><?php 
 						$res = array();
-						foreach ($list as $key => $value) {
+						foreach ($list as $value) {
 							$res[$value['id_vendor']] = $value['name'];
 						}
+      
 						echo form_dropdown('pemenang', $res, ($this->form->get_temp_data('pemenang'))?$this->form->get_temp_data('pemenang'):$data['name'],'');?>
 						<?php echo form_error('pemenang'); ?>
 						
 							<!--
 							<label class="<?php echo ($value['is_winner']==1?'winner':'');?>">
-								<?php if($this->session->userdata('admin')['id_role']==3){ ?><input type="radio" name="pemenang" value="<?php echo $value['id']?>" <?php echo ($value['is_winner']==1?'checked':'')?>><?php } ?>
+								<?php if($this->session->userdata('admin')['id_role']==3){ ?><input type="radio" name="pemenang" value="<?php echo $value['id']?>" <?php echo ($value['is_winner']==1?'checked':'')?>><?php }
+       ?>
 								</div>&nbsp;<?php echo ($value['is_winner']==1?'<i class="fa fa-trophy"></i>':'')?></label>
 							-->
 					</td>
@@ -47,7 +49,8 @@
 			<div class="buttonRegBox clearfix">
 				<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 			</div>
-			<?php } ?>
+			<?php }
+       ?>
 			</div>
 		</form>
 		

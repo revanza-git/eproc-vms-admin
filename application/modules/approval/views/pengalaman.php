@@ -17,8 +17,8 @@
 			</thead>
 			<tbody>
 			<?php 
-			if(count($pengalaman_list)){
-				foreach($pengalaman_list as $row => $value){
+			if(count($pengalaman_list) > 0){
+				foreach($pengalaman_list as $value){
 				?>
 					<tr>
 						<td><a href="<?php echo site_url('approval/pengalaman_detail/'.$id_data.'/'.$value['id']); ?>"><?php echo $value['job_name'];?></a></td>
@@ -53,5 +53,6 @@
 	<div class="buttonRegBox clearfix">
 		<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 	</div>
-	<?php }?>
+	<?php }
+  ?>
 </form>

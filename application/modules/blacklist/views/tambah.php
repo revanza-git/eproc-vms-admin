@@ -12,7 +12,8 @@
 					<?php echo $vendor['poin'];?>
 				</td>
 			</tr>
-			<?php } ?>
+			<?php }
+ ?>
 			<tr class="input-form">
 				<td><label>Nama Penyedia Barang &amp; Jasa*</label></td>
 				<td>
@@ -40,7 +41,8 @@
 					 }else{ ?>
 					Selamanya
 					<input type="hidden" value="lifetime" name="end_date">
-					<?php } ?>
+					<?php }
+      ?>
 				</td>
 			</tr>
 			<tr class="input-form">
@@ -70,12 +72,13 @@
 	<div id="listDefault" style="float:left;">
 		<h4>Pilih Keterangan</h4>
 		<ul>
-			<?php foreach ($remark_list as $key => $value) {?>
+			<?php foreach ($remark_list as $value) {?>
 			<li>
 				<?php $id = 'class=option id=option'.$value['id'];?>
 				<?php echo form_checkbox('remarkOption', $value['remark'],FALSE, $id); echo '<p>'.$value['remark'].'</p>';?>
 			</li>
-			<?php }?>
+			<?php }
+      ?>
 		</ul>
 	</div>
 </div>

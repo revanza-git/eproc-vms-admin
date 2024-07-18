@@ -6,9 +6,21 @@
 <script type="text/javascript">
 	var _setTimeout = [];
 	var id_lelang		= "<?php echo $id_lelang; ?>";
-	var is_started		= <?php if($fill['is_started']) 	echo "true"; else echo "false"; ?>;
-	var is_suspended	= <?php if($fill['is_suspended']) 	echo "true"; else echo "false"; ?>;
-	var is_finished		= <?php if($fill['is_finished']) 	echo "true"; else echo "false"; ?>;
+	var is_started		= <?php if ($fill['is_started']) {
+    echo "true";
+} else {
+    echo "false";
+} ?>;
+	var is_suspended	= <?php if ($fill['is_suspended']) {
+    echo "true";
+} else {
+    echo "false";
+} ?>;
+	var is_finished		= <?php if ($fill['is_finished']) {
+    echo "true";
+} else {
+    echo "false";
+} ?>;
 	var timeLimit		= new Date("<?php echo $fill['time_limit']; ?>");
 	var typeLelang		= "<?php echo $fill['auction_type']; ?>";
 	var barang			= [];

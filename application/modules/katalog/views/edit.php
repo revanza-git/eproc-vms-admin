@@ -39,7 +39,8 @@
 					<select name="for" id="">
 						<?php foreach ($for as $key => $value) { ?>
 							<option value="<?php echo $key; ?>" <?php $_for = (($v_for == $key) ? 'selected' : ''); echo $_for; ?>><?php echo $value; ?></option>
-						<?php } ?>
+						<?php }
+      ?>
 					</select>
 				</td>
 			</tr>

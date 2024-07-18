@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Admin extends CI_Controller {
 	public function __construct(){
@@ -24,7 +24,7 @@ class Admin extends CI_Controller {
 										'dt_non_aktif'			=>	$this->mm->dt(0)
 									);
 
-			if(count($_POST['nomorBtn'])){
+			if(count($_POST['nomorBtn']) > 0){
 				unset($_POST['nomorBtn']);
 				// $_POST['entry_stamp'] = date("Y-m-d H:i:s");
 
@@ -37,7 +37,7 @@ class Admin extends CI_Controller {
 				// echo $this->session->userdata('nomor');
 				// print_r($this->input->post());die;
 				redirect(site_url('admin/certificate/dpt/'.$this->input->post('id').'/'));
-			}elseif(count($_POST['nomorBtnCSMS'])){
+			}elseif(count($_POST['nomorBtnCSMS']) > 0){
 				unset($_POST['nomorBtnCSMS']);
 				// $_POST['entry_stamp'] = date("Y-m-d H:i:s");
 
@@ -64,6 +64,7 @@ class Admin extends CI_Controller {
 		echo json_encode($data);
 		// echo json_encode($this->mm->search_data($q));
 	}
+ 
 	// public function search_data(){
 	// 	echo json_encode($this->mm->search_data());
 	// }
@@ -74,7 +75,7 @@ class Admin extends CI_Controller {
 	}
 
 
-	function get_dpt_list(){
+	public function get_dpt_list(){
 		$this->load->library('datatables');
 
 		$this->datatables	->select('tb_legal.name as legal_name, ms_vendor.name as vendor_name, ms_vendor.edit_stamp as last_activity')

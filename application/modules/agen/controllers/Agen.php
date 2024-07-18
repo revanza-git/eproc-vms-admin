@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Agen extends CI_Controller {
 
@@ -7,6 +7,7 @@ class Agen extends CI_Controller {
 		if(!$this->session->userdata('user')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('Agen_model','am');
 		$this->load->library('encrypt');
 		$this->load->library('utility');
@@ -32,6 +33,7 @@ class Agen extends CI_Controller {
 		if($this->vm->check_pic($data['id_user'])==0){
 			redirect(site_url('dashboard/pernyataan'));
 		}
+  
 		$search = $this->input->get('q');
 		$page = '';
 		
@@ -56,9 +58,9 @@ class Agen extends CI_Controller {
 	public function tambah(){
 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		
 		$layout['form'] = $form;
@@ -101,25 +103,23 @@ class Agen extends CI_Controller {
 						'rules'=>'callback_do_upload[agen_file]'
 					);
 		}
+  
 		$this->form_validation->set_rules($vld);
-		if($this->input->post('simpan')){
-			if($this->form_validation->run()==TRUE){
-				unset($_POST['simpan']);
-
-				$form['id_vendor'] = $user['id_user'];
-				$form['entry_stamp'] = date('Y-m-d H:i:s');
-				$this->session->set_userdata('form',array_merge($form,$this->input->post()));
-				
-				$result = $this->am->save_data($this->session->userdata('form'));
-				if($result){
-					$this->dpt->set_email_blast($result,'ms_agen','Akta Agen',$_POST['expire_date']);
-					$this->dpt->non_iu_change($user['id_user']);	
-					$this->session->unset_userdata('form');
-					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah data!</p>');
-					redirect(site_url('agen'));
-				}
-			}
-		}
+		if ($this->input->post('simpan') && $this->form_validation->run()==TRUE) {
+      unset($_POST['simpan']);
+      $form['id_vendor'] = $user['id_user'];
+      $form['entry_stamp'] = date('Y-m-d H:i:s');
+      $this->session->set_userdata('form',array_merge($form,$this->input->post()));
+      $result = $this->am->save_data($this->session->userdata('form'));
+      if($result){
+  					$this->dpt->set_email_blast($result,'ms_agen','Akta Agen',$_POST['expire_date']);
+  					$this->dpt->non_iu_change($user['id_user']);	
+  					$this->session->unset_userdata('form');
+  					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah data!</p>');
+  					redirect(site_url('agen'));
+  				}
+  }
+  
 		$layout['pabrik'] = array(
 			'Pabrikan'=> 'Pabrikan',
 			'Agen Tunggal'=> 'Agen Tunggal',
@@ -132,6 +132,7 @@ class Agen extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function edit($id){
 		$data = $this->am->get_data($id);
 
@@ -182,6 +183,7 @@ class Agen extends CI_Controller {
 
 			redirect(site_url('agen'));
 		}
+  
 		$data['pabrik'] = array(
 			'Pabrikan'=> 'Pabrikan',
 			'Agen Tunggal'=> 'Agen Tunggal',
@@ -206,6 +208,7 @@ class Agen extends CI_Controller {
 			redirect(site_url('agen'));
 		}
 	}
+ 
 	public function do_upload($field, $db_name = ''){	
 		
 		$file_name = $_FILES[$db_name]['name'] = $db_name.'_'.$this->utility->name_generator($_FILES[$db_name]['name']);
@@ -221,10 +224,10 @@ class Agen extends CI_Controller {
 			$_POST[$db_name] = $file_name;
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 
 	public function bsb($id){
@@ -251,9 +254,9 @@ class Agen extends CI_Controller {
 
 	public function formBidang($id){
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		$data_izin = $this->am->get_dpt_agen($id);
 
@@ -265,14 +268,10 @@ class Agen extends CI_Controller {
 					)
 				);
 		$this->form_validation->set_rules($vld);
-		if($this->input->post('next')){
-			if($this->form_validation->run()==TRUE){
-				
-				$this->session->set_userdata('form',array_merge($form,$this->input->post()));
-				redirect(site_url('agen/formSubBidang/'.$id));
-			
-			}
-		}
+		if ($this->input->post('next') && $this->form_validation->run()==TRUE) {
+      $this->session->set_userdata('form',array_merge($form,$this->input->post()));
+      redirect(site_url('agen/formSubBidang/'.$id));
+  }
 
 		$data['id_bidang'] = $this->am->get_bidang($data_izin['id_dpt_type']);
 
@@ -283,12 +282,13 @@ class Agen extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function formSubBidang($id){
 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		
 
@@ -341,8 +341,9 @@ class Agen extends CI_Controller {
 	public function formEditBidang($bsb,$id){
 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):$this->am->get_bsb_data($id);
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		
 		$vld = 	array(
@@ -353,14 +354,12 @@ class Agen extends CI_Controller {
 					)
 				);
 		$this->form_validation->set_rules($vld);
-		if($this->input->post('next')){
-			if($this->form_validation->run()==TRUE){
-				unset($_POST['next']);
-				$this->session->set_userdata('form',array_merge($form,$this->input->post()));
-				redirect(site_url('agen/formEditSubBidang/'.$bsb.'/'.$id));
-			
-			}
-		}
+		if ($this->input->post('next') && $this->form_validation->run()==TRUE) {
+      unset($_POST['next']);
+      $this->session->set_userdata('form',array_merge($form,$this->input->post()));
+      redirect(site_url('agen/formEditSubBidang/'.$bsb.'/'.$id));
+  }
+  
 		$data['id_bidang'] = $this->am->get_bidang($form['id_bidang']);
 		$data['form'] = $form;
 		$layout['content']= $this->load->view('form_bidang_edit',$data,TRUE);
@@ -373,9 +372,9 @@ class Agen extends CI_Controller {
 	public function formEditSubBidang($bsb,$id){
 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):$this->am->get_bsb_data($id);
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		
 
@@ -421,6 +420,7 @@ class Agen extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function bsb_hapus($bsb,$id){
 		if($this->am->delete_bsb($id)){
 			$this->dpt->non_iu_change($user['id_user']);
@@ -431,6 +431,7 @@ class Agen extends CI_Controller {
 			redirect(site_url('izin/bsb/'.$bsb));
 		}
 	}
+ 
 	/*Edit Sub bidang*/
 
 
@@ -458,11 +459,14 @@ class Agen extends CI_Controller {
 	}
 
 	public function formProduk($id){
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
-		$user = $this->session->userdata('user');
+		if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
+
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
+  $user = $this->session->userdata('user');
 
 		$vld = 	array(
 					array(
@@ -477,17 +481,16 @@ class Agen extends CI_Controller {
 					),
 				);
 		$this->form_validation->set_rules($vld);
-		if($this->input->post('simpan')){
-			if($this->form_validation->run()==TRUE){
-				$_POST['id_agen'] = $id;
-				$result = $this->am->save_produk($this->input->post());
-				if($result){
-					$this->dpt->non_iu_change($user['id_user']);	
-					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah data bidang!</p>');
-					redirect(site_url('agen/produk/'.$id));
-				}
-			}
-		}
+		if ($this->input->post('simpan') && $this->form_validation->run()==TRUE) {
+      $_POST['id_agen'] = $id;
+      $result = $this->am->save_produk($this->input->post());
+      if($result){
+  					$this->dpt->non_iu_change($user['id_user']);	
+  					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah data bidang!</p>');
+  					redirect(site_url('agen/produk/'.$id));
+  				}
+  }
+  
 		$layout['content']= $this->load->view('form_produk',NULL,TRUE);
 
 		$item['header'] = $this->load->view('dashboard/header',$user,TRUE);
@@ -523,6 +526,7 @@ class Agen extends CI_Controller {
 			if($result){
 				$this->dpt->non_iu_change($user['id_user']);
 			}
+   
 			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses mengubah data!</p>');
 
 			redirect(site_url('agen/produk/'.$produk));
@@ -537,6 +541,7 @@ class Agen extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function produk_hapus($bsb,$id){
 		if($this->am->delete_produk($id)){
 			$this->dpt->non_iu_change($user['id_user']);

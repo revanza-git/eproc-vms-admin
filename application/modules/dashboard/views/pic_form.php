@@ -30,11 +30,12 @@
 
 				<td rowspan="9" style="padding-left: 10px; list-style: inherit !important;">
 
-					<?php foreach ($pernyataan as $key => $value) {?>
+					<?php foreach ($pernyataan as $value) {?>
 
 					<?php echo $value['value'];?>
 
-					<?php } ?>
+					<?php }
+ ?>
 
 				</td>
 

@@ -11,7 +11,8 @@
 		<div class="btns">
 			<?php if($this->session->userdata('admin')['id_role']==3 || $this->session->userdata('admin')['id_role']==10){?>
 				<a href="<?php echo site_url('pengadaan/tambah');?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
-			<?php } ?>
+			<?php }
+ ?>
 			<?php //if ($admin['id_role'] != 3) { ?>
 				<!-- <a href="<?php echo site_url('pengadaan/import_pengadaan');?>" class="btnBlue exportBtn" style="margin-top: -8px; margin-right: 10px"><i class="fa fa-download"></i> Tambah Pengadaan Dari Perencanaan</a> -->
 			<?php //} ?>
@@ -36,19 +37,16 @@
 				<td style="width: 50px"><a href="?<?php echo $this->utility->generateLink('sort','desc')?>&sort=<?php echo ($sort['ms_procurement.name'] == 'asc') ? 'desc' : 'asc'; ?>&by=ms_procurement.budget_year">Tahun<i class="fa fa-sort-<?php echo ($sort['ms_procurement.budget_year'] == 'asc') ? 'desc' : 'asc'; ?>"></i></a></td>
 				<?php if ($admin['id_role'] == 8) { ?>	
 				<td>Last Edited</td>
-				<?php }?>
+				<?php }
+?>
 				<td class="actionPanel" style="width: 130px">Action</td>
 			</tr>
 		</thead>
 		<tbody>
 		<?php 
-		if(count($pengadaan_list)){
-			foreach($pengadaan_list as $row => $value){
-				if ($value['symbol'] == null || $value['symbol'] == 'IDR') {
-					$symbol = 'Rp. ';
-				} else {
-					$symbol = $value['symbol'].' ';
-				}
+		if(count($pengadaan_list) > 0){
+			foreach($pengadaan_list as $value){
+				$symbol = $value['symbol'] == null || $value['symbol'] == 'IDR' ? 'Rp. ' : $value['symbol'].' ';
 		?>
 				<tr>
 					<td><?php echo $value['name'];?></td>
@@ -59,22 +57,25 @@
 					<td><?php echo $symbol.number_format($value['contract_price']);?></td>	
 					<?php } else {?>
 					<td><?php echo $symbol.number_format($value['nilai']).' (Nilai HPS)';?></td>
-					<?php } ?>
+					<?php }
+   ?>
 					<td><?php echo $value['status'];?></td>
 					<td><?php echo $value['budget_year'];?></td>
 					
 					<?php if ($admin['id_role'] == 8) { ?>
 					<td><?php echo $value['last_edited'];?></td>					
-					<?php }?>
+					<?php }
+  ?>
 
 					<td class="actionBlock">
 						<a href="<?php echo site_url('pengadaan/view/'.$value['id'])?>" class="editBtn lihatData"><i class="fa fa-search"></i>&nbsp;Lihat data</a>
 						<?php if($this->session->userdata('admin')['id_role']==3 || $this->session->userdata('admin')['id_role']==10){?>
 						<a href="<?php echo site_url('pengadaan/hapus_pengadaan/'.$value['id'])?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
-						<?php }?>
+						<?php }
+  ?>
 					</td>
 				</tr>
-			<?php 
+<?php 
 			}
 		}else{?>
 			<tr>

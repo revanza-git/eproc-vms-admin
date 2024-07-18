@@ -42,9 +42,9 @@
 
 			<?php 
 
-			if(count($situ_list)){
+			if(count($situ_list) > 0){
 
-				foreach($situ_list as $row => $value){
+				foreach($situ_list as $value){
 
 				?>
 
@@ -112,6 +112,7 @@
 	<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 
 </div>
-<?php }?>
+<?php }
+  ?>
 
 </form>

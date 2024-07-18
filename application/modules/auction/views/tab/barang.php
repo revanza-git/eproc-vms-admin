@@ -6,15 +6,14 @@
 	<div class="btnTopGroup clearfix">
 		<?php 
 			$show	= "";
-			if(isset($list[0]['status'])){
-				if ($list[0]['status']=="lump_sump" && count($list)) {
-					$show="style='display:none;'";
-				}
+			if(isset($list[0]['status']) && ($list[0]['status']=="lump_sump" && count($list))){
+				$show="style='display:none;'";
 			}
 		?>
 		<a href="<?php echo site_url('auction/tambah_barang/'.$id);?>" class="btnBlue" <?php echo $show; ?>><i class="fa fa-plus"></i>Tambah</a>
 	</div>
-	<?php } ?>
+	<?php }
+ ?>
 		<table class="tableData">
 			<thead>
 				<tr>
@@ -22,13 +21,14 @@
 					<td><a href="?<?php echo $this->utility->generateLink('sort','desc')?>&sort=<?php echo ($sort['ms_procurement_barang.id_kurs'] == 'asc') ? 'desc' : 'asc'; ?>&by=ms_procurement_barang.id_kurs">Mata Uang<i class="fa fa-sort-<?php echo ($sort['ms_procurement_barang.id_kurs'] == 'asc') ? 'desc' : 'asc'; ?>"></i></a></td>
 					<td><a href="?<?php echo $this->utility->generateLink('sort','desc')?>&sort=<?php echo ($sort['nilai_hps'] == 'asc') ? 'desc' : 'asc'; ?>&by=nilai_hps">Nilai Kontrak<i class="fa fa-sort-<?php echo ($sort['nilai_hps'] == 'asc') ? 'desc' : 'asc'; ?>"></i></a></td>
 					<td><a href="?<?php echo $this->utility->generateLink('sort','desc')?>&sort=<?php echo ($sort['volume'] == 'asc') ? 'desc' : 'asc'; ?>&by=volume">Volume<i class="fa fa-sort-<?php echo ($sort['volume'] == 'asc') ? 'desc' : 'asc'; ?>"></i></a></td>
-					<?php if($this->session->userdata('admin')['id_role']==6|7){ ?><td class="actionPanel">Action</td><?php } ?>
+					<?php if(($this->session->userdata('admin')['id_role']==6|7) !== 0){ ?><td class="actionPanel">Action</td><?php }
+   ?>
 				</tr>
 			</thead>
 			<tbody>
 			<?php 
-			if(count($list)){
-				foreach($list as $row => $value){
+			if(count($list) > 0){
+				foreach($list as $value){
 				?>
 					<tr>
 						<td><?php echo $value['nama_barang'];?></td>
@@ -40,9 +40,10 @@
 							<a href="<?php echo site_url('auction/edit_barang/'.$value['id'].'/'.$id)?>"><i class="fa fa-cog"></i>&nbsp;Edit</a> | 
 							<a href="<?php echo site_url('auction/hapus_barang/'.$value['id'].'/'.$id)?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
 						</td>
-						<?php } ?>
+						<?php }
+     ?>
 					</tr>
-				<?php 
+<?php 
 				}
 			}else{?>
 				<tr>

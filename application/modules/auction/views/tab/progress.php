@@ -1,15 +1,16 @@
 <div class="tab procView">
 	<?php echo $this->utility->tabNav($tabNav,'submit');?>
 	<div class="tableWrapper" style="margin-bottom: 20px;padding-left: 20px;">
-		<?php 	if($this->session->userdata('admin')['id_role']==4){ 
-					if($status_procurement==4){ 
-			?>
+		<?php 	if ($this->session->userdata('admin')['id_role'] == 4 && $status_procurement==4) {
+    ?>
 		<div class="btnTopGroup clearfix">
-			<a href="<?php echo site_url('pengadaan/view/'.$id_pengadaan.'/tambah_progress');?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
+			<a href="<?php 
+    echo site_url('pengadaan/view/'.$id_pengadaan.'/tambah_progress');
+    ?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
 		</div>
 		<?php 
-					}
-				} ?>
+}
+ ?>
 		<?php if(isset($graph['supposed']['percentage'])||isset($graph['realization']['percentage'])){ ?>
 		<p>Grafik Progress</p>
 		<div class="graphBar clearfix">
@@ -21,21 +22,26 @@
 						?>
 						<div class="graph" style="width: <?php echo $row;?>%;background: <?php echo 'rgba('.$graph['supposed']['color'][$key].',0.5)';?>;border-left-color: <?php echo 'rgba('.$graph['supposed']['color'][$key].',1)'?>;border-right-color: <?php echo 'rgba('.$graph['supposed']['color'][$key].',1)';?>"></div>
 						<?php
-					}?>
+					}
+    ?>
 				</div>
-				<?php } 
+<?php }
+     
 				 if(isset($graph['realization']['percentage'])){ ?>
 				<div class="graphWrapLine">
 					<?php foreach($graph['realization']['percentage'] as $key => $row){
 						?>
 						<div class="graph" style="width: <?php echo $row;?>%;background: <?php echo 'rgba('.$graph['realization']['color'][$key].',1)'?>;border-left-color: <?php echo 'rgba('.$graph['realization']['color'][$key].',1)'?>;border-right-color: <?php echo 'rgba('.$graph['realization']['color'][$key].',1)'?>"></div>
 						<?php
-					}?>
+					}
+     ?>
 				</div>
-				<?php } ?>
+<?php }
+      ?>
 			</div>
 		</div>
-		<?php } ?>
+<?php }
+     ?>
 		
 		
 		<table class="tableData">
@@ -52,9 +58,9 @@
 			$total_supposed = 0;
 			$total_realization = 0;
 
-			if(count($contract)){
+			if(count($contract) > 0){
 				$key = 0;
-				foreach($contract as $row => $value){
+				foreach($contract as $value){
 				?>
 					<tr>
 						<td>

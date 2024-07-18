@@ -85,10 +85,10 @@
 				<td>
 					<div class="clearfix">
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'budget_source'),'perusahaan',(set_radio('budget_source','perusahaan')||((isset($budget_source)?$budget_source:$this->form->get_temp_data('budget_source'))=='perusahaan'))?TRUE:FALSE)?>Perusahaan 
+							<?php echo form_radio(array('name'=>'budget_source'),'perusahaan',set_radio('budget_source','perusahaan')||((isset($budget_source)?$budget_source:$this->form->get_temp_data('budget_source'))=='perusahaan'))?>Perusahaan 
 						</label>
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'budget_source'),'non_perusahaan',(set_radio('budget_source','non_perusahaan')||((isset($budget_source)?$budget_source:$this->form->get_temp_data('budget_source'))=='non_perusahaan'))?TRUE:FALSE)?>Non-Perusahaan
+							<?php echo form_radio(array('name'=>'budget_source'),'non_perusahaan',set_radio('budget_source','non_perusahaan')||((isset($budget_source)?$budget_source:$this->form->get_temp_data('budget_source'))=='non_perusahaan'))?>Non-Perusahaan
 						</label>
 					</div>
 					<?php echo form_error('budget_source'); ?>

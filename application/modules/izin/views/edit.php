@@ -14,7 +14,8 @@
 					<?php echo form_error('authorize_by'); ?>
 				</td>
 			</tr>
-			<?php } ?>
+			<?php }
+ ?>
 			<tr class="input-form">
 				<td><label>Nomor*</label></td>
 				<td>
@@ -40,7 +41,8 @@
 					<?php echo form_error('grade'); ?>
 				</td>
 			</tr>
-			<?php }?>
+			<?php }
+     ?>
 			<tr class="input-form">
 				<td><label>Tanggal</label></td>
 				<td>
@@ -53,18 +55,19 @@
 				<td><label>Kualifikasi</label></td>
 				<td>
 					<label class="lbform">
-						<?php echo form_radio(array('name'=>'qualification'),'kecil',(set_radio('qualification','kecil')||((($this->form->get_temp_data('qualification'))?$this->form->get_temp_data('qualification'):$qualification)=='kecil'))?TRUE:FALSE)?>Kecil
+						<?php echo form_radio(array('name'=>'qualification'),'kecil',set_radio('qualification','kecil')||((($this->form->get_temp_data('qualification'))?$this->form->get_temp_data('qualification'):$qualification)=='kecil'))?>Kecil
 					</label>
 					<label class="lbform">
-						<?php echo form_radio(array('name'=>'qualification'),'menengah',(set_radio('qualification','menengah')||((($this->form->get_temp_data('qualification'))?$this->form->get_temp_data('qualification'):$qualification)=='menengah'))?TRUE:FALSE)?>Menengah
+						<?php echo form_radio(array('name'=>'qualification'),'menengah',set_radio('qualification','menengah')||((($this->form->get_temp_data('qualification'))?$this->form->get_temp_data('qualification'):$qualification)=='menengah'))?>Menengah
 					</label>
 					<label class="lbform">
-						<?php echo form_radio(array('name'=>'qualification'),'besar',(set_radio('qualification','besar')||((($this->form->get_temp_data('qualification'))?$this->form->get_temp_data('qualification'):$qualification)=='besar'))?TRUE:FALSE)?>Besar
+						<?php echo form_radio(array('name'=>'qualification'),'besar',set_radio('qualification','besar')||((($this->form->get_temp_data('qualification'))?$this->form->get_temp_data('qualification'):$qualification)=='besar'))?>Besar
 					</label>
 					<?php echo form_error('qualification'); ?>
 				</td>
 			</tr>
-			<?php } ?>
+			<?php }
+     ?>
 			<tr class="input-form">
 				<td><label>Masa Berlaku*</label></td>
 				<td>

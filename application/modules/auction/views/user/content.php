@@ -12,8 +12,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($auction_list)){
-			foreach($auction_list as $row => $value){
+		if(count($auction_list) > 0){
+			foreach($auction_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['name'];?></td>

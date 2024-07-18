@@ -2,15 +2,7 @@
 
 class Auction_package extends CI_Controller{
 
-	protected $table_setting;
-	
-
-	function __construct(){
-		parent::__construct();
-	
-		$this->load->model('auction_package/auction_model');
-		
-		$this->table_setting = array(
+	protected $table_setting = array(
 			"param" => array(
 				'nama' => array(
 					'name' => 'Nama Paket',
@@ -53,31 +45,42 @@ class Auction_package extends CI_Controller{
 				'export'		=> false
 			)		
 		);
+	
+
+	public function __construct(){
+		parent::__construct();
+	
+		$this->load->model('auction_package/auction_model');
 	}
 	
 	
-	function index($mode = ''){
-		if($mode) $_SESSION['auction_pgn_beranda_selector'] = $mode;
+	public function index($mode = ''){
+		if ($mode) {
+      $_SESSION['auction_pgn_beranda_selector'] = $mode;
+  }
 		
-		if($mode == "finish" or $mode == "all")
-			unset($this->table_setting['setting']['add']);
+		if ($mode == "finish" || $mode == "all") {
+      unset($this->table_setting['setting']['add']);
+  }
 		
-		if($mode == "all")
-			unset($this->table_setting['setting']['duplicate']);
+		if ($mode == "all") {
+      unset($this->table_setting['setting']['duplicate']);
+  }
 			
 		$data['table_setting'] = $this->table_setting;
 		
 		$this->load->view('template/table_master', $data);
 	}
 	
-	function table(){
-		if($_SESSION['auction_pgn_beranda_selector'] == "all")
-			unset($this->table_setting['setting']['duplicate']);
+	public function table(){
+		if ($_SESSION['auction_pgn_beranda_selector'] == "all") {
+      unset($this->table_setting['setting']['duplicate']);
+  }
 			
 		$this->jctable->generate_table($this->table_setting);
 	}
 
-	function form_duplicate($id = ''){
+	public function form_duplicate($id = ''){
 		$data['content'] = "form/auction_package/auction_duplicate";
 		$data['width'] = "400";
 		
@@ -87,7 +90,7 @@ class Auction_package extends CI_Controller{
 		$this->load->view("jc-table/form/jc-form", $data);
 	}
 	
-	function duplicate_auction(){
+	public function duplicate_auction(){
 		$total = $_POST['total'];
 		$id = $_POST['id'];
 		
@@ -100,7 +103,7 @@ class Auction_package extends CI_Controller{
 		die(json_encode($json));
 	}
 	
-	function view($id = ''){
+	public function view($id = ''){
 		$data['fill'] = $fill = $this->auction_model->select_data($id);
 		$data['multi_tab'] = array(
 			array(
@@ -132,7 +135,7 @@ class Auction_package extends CI_Controller{
 		$this->load->view("content/auction_package/master", $data);
 	}
 	
-	function form($id = ''){
+	public function form($id = ''){
 		$data['action'] = "save";
 		if($id){
 			$data['action'] = "edit";	
@@ -210,11 +213,16 @@ class Auction_package extends CI_Controller{
 		$this->load->view('jc-table/form/jc-form', $data);
 	}
 	
-	function save(){
-		if($_POST['sumber_anggaran_apgn']) $_POST['sumber_anggaran'] = $_POST['sumber_anggaran_apgn'];
-		if($_POST['sumber_anggaran_non_apgn']) $_POST['sumber_anggaran'] = $_POST['sumber_anggaran_non_apgn'];
-		
-		$param = array(
+	public function save(){
+		if ($_POST['sumber_anggaran_apgn']) {
+      $_POST['sumber_anggaran'] = $_POST['sumber_anggaran_apgn'];
+  }
+
+  if ($_POST['sumber_anggaran_non_apgn']) {
+      $_POST['sumber_anggaran'] = $_POST['sumber_anggaran_non_apgn'];
+  }
+
+  $param = array(
 			'nama' => $_POST['nama'],
 			'tahun_anggaran' => $_POST['tahun_anggaran'],
 			'anggaran' => $_POST['anggaran'],
@@ -246,7 +254,7 @@ class Auction_package extends CI_Controller{
 		die(json_encode($json));
 	}
 	
-	function edit(){
+	public function edit(){
 		$param = array(
 			'nama' => $_POST['nama'],
 			'tahun_anggaran' => $_POST['tahun_anggaran'],
@@ -266,7 +274,7 @@ class Auction_package extends CI_Controller{
 			'edit_stamp' => date("Y-m-d H:i:s"),
 			'id' => $_POST['id']
 		);
-		$id = $this->auction_model->edit_data($param);
+		$this->auction_model->edit_data($param);
 		
 		$json = array(
 			'status' => 'success',
@@ -276,16 +284,16 @@ class Auction_package extends CI_Controller{
 		die(json_encode($json));
 	}
 
-	function post(){
+	public function post(){
 		$this->load->view('content/auction_package/post', $data);
 	}
 	
-	function reset($id_lelang = ""){
+	public function reset($id_lelang = ""){
 		$this->auction_model->reset_penawaran($id_lelang);
 		die(json_encode(array('status' => 'success')));
 	}
 	
-	function delete($id = ''){
+	public function delete($id = ''){
 		$this->auction_model->delete($id);
 		
 		$json = array(

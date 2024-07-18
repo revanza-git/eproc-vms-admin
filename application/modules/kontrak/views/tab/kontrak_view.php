@@ -54,7 +54,8 @@
 						<?php } 
 						} else{
 							echo 'Belum Terlampir';
-						}?>
+						}
+     ?>
 				</td>
 			</tr>
 			<tr class="input-form">
@@ -83,7 +84,8 @@
 		<div class="buttonRegBox clearfix">
 			<a href="<?php echo site_url('pengadaan/view/'.$id.'/kontrak_edit#tabNav');?>" class="btnBlue">Edit</a>
 		</div>
-		<?php } ?>
+		<?php }
+       ?>
 
 </div>
 		

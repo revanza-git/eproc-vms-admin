@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class admin_evaluasi extends CI_Controller {
 	public function __construct(){
@@ -6,8 +6,10 @@ class admin_evaluasi extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('evaluasi/evaluasi_model','em');
 	}
+ 
 	public function get_field(){
 		return array(
 			array(
@@ -98,7 +100,7 @@ class admin_evaluasi extends CI_Controller {
 		$this->load->view('template',$item);
 	}
 
-	function edit($id){
+	public function edit($id){
 		$data 			= $this->em->get_data($id);
 		$data['header'] = $this->em->get_header();
 		$_POST 			= $this->securities->clean_input($_POST,'save');

@@ -11,10 +11,12 @@
 				<a target="blank" href="<?php echo BASE_LINK.('lampiran/izin_file/'.$get_data[$key])?>"><?= $get_data[$key] ?></a>
 				<?php } else { 
 				echo $get_data[$key];
-				}?>
+				}
+?>
 			</td>
 			<tr>
-		<?php }?>
+<?php }
+?>
 	</table>
 </div>
 <form method="POST">
@@ -30,8 +32,8 @@
 			</thead>
 			<tbody>
 			<?php 
-			if(count($bsb_list)){
-				foreach($bsb_list as $row => $value){
+			if(count($bsb_list) > 0){
+				foreach($bsb_list as $value){
 				?>
 					<tr>
 						<td><?php echo $value['bidang'];?></td>

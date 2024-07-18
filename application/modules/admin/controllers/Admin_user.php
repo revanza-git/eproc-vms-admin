@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
  
 class Admin_user extends CI_Controller {
 	public function __construct(){
@@ -6,10 +6,12 @@ class Admin_user extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('user/admin_user_model','aum');
 		$this->load->model('izin/Izin_model','im');	
 		$this->load->model('pengadaan/pengadaan_model','pm');	
 	}
+ 
 	public function get_field(){
 		return array(
 			array(
@@ -23,6 +25,7 @@ class Admin_user extends CI_Controller {
 			
 		);
 	}
+ 
 	public function index()
 	{	
 		$this->load->library('form');
@@ -83,7 +86,8 @@ class Admin_user extends CI_Controller {
 					'label'=>'Divisi',
 					'rules'=>'required'
 				);
-		}	
+		}
+  	
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			unset($_POST['Simpan']);
@@ -95,6 +99,7 @@ class Admin_user extends CI_Controller {
 
 			redirect(site_url('admin/admin_user'));
 		}
+  
 		$data['sbu'] = $this->vm->get_sbu();
 		$data['role'] = $this->aum->get_role();
 		$layout['content']= $this->load->view('user/tambah',$data,TRUE);
@@ -141,7 +146,8 @@ class Admin_user extends CI_Controller {
 					'label'=>'Divisi',
 					'rules'=>'required'
 				);
-		}	
+		}
+  	
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			$_POST['edit_stamp'] = date("Y-m-d H:i:s");

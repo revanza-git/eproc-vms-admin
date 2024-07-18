@@ -1,16 +1,17 @@
 <?php
 class Vendor_dash extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 		$this->load->model('auction/vendor_dash_model','vdm');
 	}
-	function index(){
+ 
+	public function index(){
 		$this->load->library('form');
 		$search = '';
 		$page 	= '';
-		$post 	= $this->input->post();
+		$this->input->post();
 
 		$per_page	=10;
 		$sort 		= $this->utility->generateSort(array('name', 'auction_date', 'work_area'));
@@ -26,7 +27,7 @@ class Vendor_dash extends CI_Controller{
 		$this->load->view('template',$item);
 	}
 
-	function view($id_lelang = ''){
+	public function view($id_lelang = ''){
 		$data['fill'] = $fill = $this->vdm->get_data($id_lelang);
 		$data['barang'] = $this->vdm->get_barang($id_lelang);
 		$data['kurs_info'] = $this->vdm->kurs_info($id_lelang);
@@ -41,6 +42,7 @@ class Vendor_dash extends CI_Controller{
 		
 
 		if($fill['auction_type'] == "forward_auction"){ $data['limit'] = "tertinggi"; $data['persentase'] = "Kenaikan"; }
+  
 		if($fill['auction_type'] == "reverse_auction"){ $data['limit'] = "terendah"; $data['persentase'] = "Penurunan"; }
 
 	
@@ -52,9 +54,11 @@ class Vendor_dash extends CI_Controller{
 		$this->load->view('template', $item);
 	}
 	
-	function cek_rating($id_lelang = '', $id_user = ''){
+	public function cek_rating($id_lelang = '', $id_user = ''){
 		//debugging tools
-		if(!$id_user) $id_user = $this->session->userdata('user')['id_user'];
+		if (!$id_user) {
+      $id_user = $this->session->userdata('user')['id_user'];
+  }
 		
 		$return = array();
 		$query = $this->vdm->get_barang($id_lelang);
@@ -64,11 +68,13 @@ class Vendor_dash extends CI_Controller{
 			$x = 0;
 			foreach($query->result() as $data){
 				$return['barang'][$x]['id'] = $data->id;
-							
-				if($fill['auction_type'] == "forward_auction")
-					$limit = $this->vdm->get_highest($id_lelang, $data->id, $id_user);			
-				if($fill['auction_type'] == "reverse_auction")
-					$limit = $this->vdm->get_lowest($id_lelang, $data->id, $id_user);
+    if ($fill['auction_type'] == "forward_auction") {
+        $limit = $this->vdm->get_highest($id_lelang, $data->id, $id_user);
+    }
+
+    if ($fill['auction_type'] == "reverse_auction") {
+        $limit = $this->vdm->get_lowest($id_lelang, $data->id, $id_user);
+    }
 					
 				$return['barang'][$x]['position'] = $limit;
 				$return['barang'][$x]['is_higher'] = $this->vdm->cek_posisi_penawaran($id_lelang, $data->id, $fill['auction_type']);
@@ -77,38 +83,45 @@ class Vendor_dash extends CI_Controller{
 			}
 		}
 		else{
-			if($fill['auction_type'] == "forward_auction")
-				$limit = $this->vdm->get_highest($id_lelang, '', $id_user);			
-			if($fill['auction_type'] == "reverse_auction")
-				$limit = $this->vdm->get_lowest($id_lelang, '', $id_user);
-				
-			$return['position'] = $limit;
+			if ($fill['auction_type'] == "forward_auction") {
+       $limit = $this->vdm->get_highest($id_lelang, '', $id_user);
+   }
+
+   if ($fill['auction_type'] == "reverse_auction") {
+       $limit = $this->vdm->get_lowest($id_lelang, '', $id_user);
+   }
+
+   $return['position'] = $limit;
 			$return['is_higher'] = $this->vdm->cek_posisi_penawaran($id_lelang, '', $fill['auction_type']);
 		}
 		
 		die(json_encode($return));
 	}
 	
-	function kurs($id_lelang = ''){
+	public function kurs($id_lelang = ''){
 		$query	= $this->vdm->get_kurs($id_lelang);
-		$select	= $this->vdm->get_user_currency($id_lelang, 'ASC', $data->id);
+		$this->vdm->get_user_currency($id_lelang, 'ASC', $data->id);
 		
 		foreach($query->result() as $data) $return .= '<option value="'.$data->id.'">'.$data->symbol.'</option>';
+  
 		return $return;
 	}
 	
-	function save_penawaran(){
+	public function save_penawaran(){
 		$fill = $this->vdm->get_data($_POST['id_lelang']);
 		$id_lelang = $_POST['id_lelang'];
 		$barang = $_POST['id_barang'];
 		$kurs = $_POST['id_kurs'];
 		$return = array();
-		$curr_highest = $curr_lowest = 0;
+  $curr_highest = 0;
+  $curr_lowest = 0;
 		$is_first = (isset($_POST['is_first'])) ? $_POST['is_first'] : NULL;
+  // echo print_r($fill);
+  $counter = count($barang);
 
 		// echo print_r($fill);
 		
-		for($i=0;$i<count($barang);$i++){
+		for($i=0;$i<$counter;$i++){
 			$id_barang 			= key($barang);
 			$harga_penawaran	= $barang[$id_barang];
 			
@@ -129,18 +142,21 @@ class Vendor_dash extends CI_Controller{
 				
 				if(!$is_first){
 					//convert to rupiah first
-					if($fill['auction_type'] == "forward_auction"){
-						$curr_highest = $this->vdm->cek_highest($id_lelang, $id_barang);
-						$curr_highest = $curr_highest['nilai'];
-						// if($curr_highest>0)
-							if($curr_highest > $penawaran_in_idr) die(json_encode(array('status' => 'fail', 'message' => 'Masukan harga penawaran yang lebih tinggi !')));
-					}
-					else if($fill['auction_type'] == "reverse_auction"){
-						$curr_lowest = $this->vdm->cek_lowest($id_lelang, $id_barang);
-						$curr_lowest = $curr_lowest['nilai'];
-						// if($curr_lowest>0)
-							if($curr_lowest < $penawaran_in_idr) die(json_encode(array('status' => 'fail', 'message' => 'Masukan harga penawaran yang lebih rendah !')));
-					}
+					if ($fill['auction_type'] == "forward_auction") {
+         $curr_highest = $this->vdm->cek_highest($id_lelang, $id_barang);
+         $curr_highest = $curr_highest['nilai'];
+         // if($curr_highest>0)
+         if ($curr_highest > $penawaran_in_idr) {
+             die(json_encode(array('status' => 'fail', 'message' => 'Masukan harga penawaran yang lebih tinggi !')));
+         }
+     } elseif ($fill['auction_type'] == "reverse_auction") {
+         $curr_lowest = $this->vdm->cek_lowest($id_lelang, $id_barang);
+         $curr_lowest = $curr_lowest['nilai'];
+         // if($curr_lowest>0)
+         if ($curr_lowest < $penawaran_in_idr) {
+             die(json_encode(array('status' => 'fail', 'message' => 'Masukan harga penawaran yang lebih rendah !')));
+         }
+     }
 
 				}
 				
@@ -168,15 +184,17 @@ class Vendor_dash extends CI_Controller{
 				$return['barang'][$i]['name']		= $this->vdm->get_nama_barang($id_barang);
 				$return['is_first']					= $is_first;
 							
-				if($fill['auction_type'] == "forward_auction"){
-					if($hps_in_idr > $penawaran_in_idr)
-						$return['barang'][$i]['is_higher'] = true;
-				}				
-				else if($fill['auction_type'] == "reverse_auction"){
-					if($hps_in_idr < $penawaran_in_idr)
-						$return['barang'][$i]['is_higher'] = true;
-				}
+				if ($fill['auction_type'] == "forward_auction") {
+        if ($hps_in_idr > $penawaran_in_idr) {
+            $return['barang'][$i]['is_higher'] = true;
+        }
+    } elseif ($fill['auction_type'] == "reverse_auction") {
+        if ($hps_in_idr < $penawaran_in_idr) {
+            $return['barang'][$i]['is_higher'] = true;
+        }
+    }
 			}
+   
 			next($kurs);
 			next($barang);
 			

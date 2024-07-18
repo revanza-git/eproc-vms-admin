@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 
 
@@ -6,7 +6,7 @@ class situ_model extends CI_Model{
 
 
 
-	function __construct(){
+	public function __construct(){
 
 		parent::__construct();
 
@@ -43,7 +43,7 @@ class situ_model extends CI_Model{
 
 
 
-	function save_data($data){
+	public function save_data($data){
 
 		$_param = array();
 
@@ -95,23 +95,17 @@ class situ_model extends CI_Model{
 
 
 
-	function edit_data($data,$id){
-
-		$param = array();
-
-		
+	public function edit_data($data,$id){
 
 		$this->db->where('id',$id);
 
-		$res = $this->db->update('ms_situ',$data);
-
 		
 
-		return $res;
+		return $this->db->update('ms_situ',$data);
 
 	}
 
-	function delete($id){
+	public function delete($id){
 
 		$this->db->where('id',$id);
 
@@ -123,9 +117,9 @@ class situ_model extends CI_Model{
 
 	
 
-	function get_data($id){
+	public function get_data($id){
 
-		$user = $this->session->userdata('user');
+		$this->session->userdata('user');
 
 		$sql = "SELECT * FROM ms_situ WHERE id = ".$id;
 
@@ -137,7 +131,7 @@ class situ_model extends CI_Model{
 
 
 
-	function get_situ_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()) 
+	public function get_situ_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()) 
 
     {
 
@@ -181,11 +175,11 @@ class situ_model extends CI_Model{
 
 
 
-    function get_situ_admin_list($id) 
+    public function get_situ_admin_list($id) 
 
     {
 
-    	$user = $this->session->userdata('user');
+    	$this->session->userdata('user');
 
 		$this->db->select('*');
 

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Pemilik extends CI_Controller {
 
@@ -7,11 +7,13 @@ class Pemilik extends CI_Controller {
 		if(!$this->session->userdata('user')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('pemilik_model','pm');
 		$this->load->library('encrypt');
 		$this->load->library('utility');
 		
 	}
+ 
 	public function get_field(){
 		return array(
 			array(
@@ -32,6 +34,7 @@ class Pemilik extends CI_Controller {
 		if($this->vm->check_pic($data['id_user'])==0){
 			redirect(site_url('dashboard/pernyataan'));
 		}
+  
 		$search = $this->input->get('q');
 		$page = '';
 		
@@ -106,11 +109,11 @@ class Pemilik extends CI_Controller {
 		if(($total+$this->input->post('percentage'))>100){
 			$this->form_validation->set_message('check_total_percentage','Masukkan persentase kepemilikan dengan benar');
 			return false;
-		}		
-		else{
-			return true;
 		}
+
+  return true;
 	}
+ 
 	public function edit($id){
 		$data = $this->pm->get_data($id);
 		$_POST = $this->securities->clean_input($_POST,'save');
@@ -170,6 +173,7 @@ class Pemilik extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function hapus($id){
 		if($this->pm->delete($id)){
 			$this->dpt->non_iu_change($user['id_user']);
@@ -180,6 +184,7 @@ class Pemilik extends CI_Controller {
 			redirect(site_url('pemilik'));
 		}
 	}
+ 
 	public function do_upload($field, $db_name = ''){	
 		
 		$file_name = $_FILES[$db_name]['name'] = $db_name.'_'.$this->utility->name_generator($_FILES[$db_name]['name']);
@@ -195,9 +200,9 @@ class Pemilik extends CI_Controller {
 			$_POST[$db_name] = $file_name;
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 }

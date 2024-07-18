@@ -6,9 +6,10 @@
 				<td><label>Nama Peserta</label></td>
 				<td>
 					<select name="id_vendor" >
-                        <?php foreach ($peserta as $key => $value) { ?>
-                            <option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
-                        <?php } ?>
+                        <?php foreach ($peserta as $pesertum) { ?>
+                            <option value="<?= $pesertum['id'] ?>"><?= $pesertum['name'] ?></option>
+                        <?php }
+ ?>
                     </select>
 				</td>
 			</tr>

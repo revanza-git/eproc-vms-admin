@@ -16,8 +16,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($vendor_list)){
-			foreach($vendor_list as $row => $value){
+		if(count($vendor_list) > 0){
+			foreach($vendor_list as $value){
 			?>
 				<tr>
 					<form action="<?php echo site_url('auction/add_peserta/'.$id.'/'.$value['id'])?>" method="post">

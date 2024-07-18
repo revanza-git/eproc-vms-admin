@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Vendor extends CI_Controller {
 
@@ -7,6 +7,7 @@ class Vendor extends CI_Controller {
 		if(!$this->session->userdata('user')&&!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('Vendor_model','vm');
 		$this->load->model('izin/izin_model','im');
 		$this->load->model('k3/K3_model','km');
@@ -23,15 +24,13 @@ class Vendor extends CI_Controller {
 	}
 
 	public function suratPernyataan(){
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST, 'view');
+		if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
 
-		$item = $vld = $save_data = array();
-
-		
-		
-		$data['id_legal'] = $this->vm->get_legal();
+  $this->securities->clean_input($_POST, 'view');
+  $item = array();
+  $data['id_legal'] = $this->vm->get_legal();
 		$item['content'] = $this->load->view('register/register1',$data,TRUE);
 					
 		$item['header'] = $this->load->view('register/headerVendorRegister',NULL,TRUE);
@@ -39,7 +38,7 @@ class Vendor extends CI_Controller {
 		$this->load->view('template',$item);
 	}
 	
-	function data_administrasi(){
+	public function data_administrasi(){
 		$this->load->helper('captcha');
 		
 		$form = $this->session->userdata('form');
@@ -152,6 +151,7 @@ class Vendor extends CI_Controller {
 					'rules'=>'callback_do_upload[nppkp_file]'
 					);
 		}
+  
 		$this->form_validation->set_rules($vld);
 
 
@@ -217,10 +217,8 @@ class Vendor extends CI_Controller {
 	}
 
 	public function save($data){
-		$param = array();
 		$post = $this->securities->clean_input($data);
-		$session_id = $this->encrypt->encode($this->utility->password_generator());
-		$message = '';
+  $this->encrypt->encode($this->utility->password_generator());
 
 		
 		$post['password'] = $this->utility->password_generator();
@@ -231,13 +229,12 @@ class Vendor extends CI_Controller {
 		$post['ever_blacklisted'] = 0;
 		$post['vendor_status'] = 0;
 		$post['kategori'] = 1;
-		$id = $this->vm->save_data($post);
 
 		/*foreach($field as $_field)
 			$this->approval_framework->set_approval('save_edit_'.$_field, $id, $param['id_sbu'], null, true);
 		*/
 
-		return $id;
+		return $this->vm->save_data($post);
 
 
 
@@ -249,9 +246,9 @@ class Vendor extends CI_Controller {
 	    {
 	        $this->form_validation->set_message('validate_captcha', 'Masukkan kode captcha dengan benar');
 	        return false;
-	    }else{
-	        return true;
 	    }
+
+     return true;
 
 	}
 
@@ -279,11 +276,11 @@ class Vendor extends CI_Controller {
 		if ( ! $this->upload->do_upload($db_name)){
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors());
 			return false;
-		}else{
-			$form[$db_name] = $file_name; 
-			$this->session->set_userdata('form',$form);
-			return true;
 		}
+
+  $form[$db_name] = $file_name;
+  $this->session->set_userdata('form',$form);
+  return true;
 	}
 
 	public function to_waiting_list(){
@@ -308,6 +305,7 @@ class Vendor extends CI_Controller {
 
 		}
 	}
+ 
 	public function tambah(){
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
@@ -390,10 +388,10 @@ class Vendor extends CI_Controller {
 			$this->form_validation->set_message('is_npwp_empty','NPWP tidak boleh kosong');
 			return FALSE;
 		}
-		else{
-			return TRUE;
-		}
+
+  return TRUE;
 	}
+ 
 	public function data_pic(){
 		$_POST = $this->securities->clean_input($_POST,'save');
 		$user = $this->session->userdata('user');
@@ -447,6 +445,7 @@ class Vendor extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function edit_data_pic(){
 		
 		$_POST = $this->securities->clean_input($_POST,'save');
@@ -545,6 +544,7 @@ class Vendor extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function is_password_equal($field='',$param=''){
 		$user = $this->session->userdata('user');
 		$new_password = $this->input->post($param);
@@ -552,12 +552,12 @@ class Vendor extends CI_Controller {
 		if($password != $new_password){
 			$this->form_validation->set_message('is_password_equal','Password yang Anda masukkan salah');
 			return false;
-		}else{
-			return true;
 		}
+
+  return true;
 	}
 
-	function dpt_print($id){
+	public function dpt_print($id){
 		$data['administrasi']	= $this->vm->get_administrasi_list($id,TRUE);
 		$data['pengurus']		= $this->vm->get_pengurus_list($id,TRUE);
 		$data['surat_izin']		= $this->im->get_izin_report($id,TRUE);
@@ -573,7 +573,7 @@ class Vendor extends CI_Controller {
 		$this->load->view('template_print',$layout);
 	}
 
-	function mail($to,$message){
+	public function mail($to,$message){
  		$this->email->clear(TRUE);
 
 		$this->email->from('vms-noreply@nusantararegas.com', 'VMS REGAS');
@@ -585,7 +585,7 @@ class Vendor extends CI_Controller {
 		$this->email->send();
 	}
 	
-	function mail_test(){
+	public function mail_test(){
  		$this->email->clear(TRUE);
 
 		$this->email->from('vms-noreply@nusantararegas.com', 'VMS REGAS');

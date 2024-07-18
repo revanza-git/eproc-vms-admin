@@ -8,7 +8,8 @@
 		<div class="btnTopGroup clearfix">
 			<a href="<?php echo site_url('kontrak/tambah_bast/'.$id);?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
 		</div>
-		<?php } ?>
+		<?php }
+ ?>
 	<legend>
 		<p>Keterangan :</p>
 		<p><font color="#27ae60">&#8718; Kontrak</font></p>
@@ -27,26 +28,26 @@
 			foreach ($graph['data'] as $key => $value) { 
 				// print_r($value);die;
 				if ($value['type'] == 6 && in_array("3", $value['type'])) {
-					$width = 'calc(50% - 5px)';
-				} else if ($value['type'] == 6 && !in_array("3", $value['type'])) {
-					$width = 'calc(100% - 5px)';
-				} else {
+        $width = 'calc(50% - 5px)';
+    } elseif ($value['type'] == 6 && !in_array("3", $value['type'])) {
+        $width = 'calc(100% - 5px)';
+    } else {
 					$width = 'calc(50% - 5px)';
 				}
 				
 				if ($value['type'] == '6') {
-					$class = 'active';
-				} else if ($value['type'] == '4') {
-					$class = 'denda';
-				} else if ($value['type'] == '5') {
-					$class = 'bast';
-				}else if ($value['type'] == '3') {
-					$class = 'amandemen';
-				} else if ($value['type'] == '2') {
-					$class = 'abutua';
-				} else if ($value['type'] == '1') {
-					$class = '';
-				}
+        $class = 'active';
+    } elseif ($value['type'] == '4') {
+        $class = 'denda';
+    } elseif ($value['type'] == '5') {
+        $class = 'bast';
+    } elseif ($value['type'] == '3') {
+        $class = 'amandemen';
+    } elseif ($value['type'] == '2') {
+        $class = 'abutua';
+    } elseif ($value['type'] == '1') {
+        $class = '';
+    }
 			?>
 				<?php if($key == $last_key && $value['type'] == '5'){ ?>
 					<span class="barLine <?php echo $class; ?>" style="width:<?php echo $width; ?>;" title="<?php echo $value['label']; ?>"></span>
@@ -56,16 +57,18 @@
 					<span class="barLine" style="width:calc(50% - 5px);" title=""></span>
 				<?php }  else { ?>
 					<span class="barLine <?php echo $class; ?>" style="width:<?php echo $width; ?>;" title="<?php echo $value['label']; ?>"></span>
-				<?php } ?>
+				<?php }
+    ?>
 
-			<?php } ?>			
+<?php } ?>			
 				
 		</div>
 	</div>
 		
-	<?php } else { ?>
+<?php } else { ?>
 		<p class="noticeMsg">Isi kontrak terlebih dahulu!</p>
-	<?php } ?>
+	<?php }
+ ?>
 		<table class="tableData">
 			<thead>
 				<tr>
@@ -78,13 +81,14 @@
 					<td>Dokumen BAST</td>
 					<?php if($this->session->userdata('admin')['id_role']==3){ ?>
 						<td class="actionPanel">Action</td>
-					<?php } ?>
+					<?php }
+    ?>
 				</tr>
 			</thead>
 			<tbody>
 			<?php 
-			if(count($list)){
-				foreach($list as $row => $value){
+			if(count($list) > 0){
+				foreach($list as $value){
 				?>
 					<tr>
 						<td><?php echo $value['no'];?></td>
@@ -97,6 +101,7 @@
 								} else{
 									$file = '<a href="'.BASE_LINK.('lampiran/bast_file/'.$value['bast_file']).'" target="blank">'.$value['bast_file'].'</a>';
 								}
+        
 								echo $file;
 							?>
 						</td>
@@ -106,9 +111,10 @@
 
 							<a style="top: -4px" href="<?php echo site_url('kontrak/hapus_bast/'.$value['id'].'/'.$id)?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
 						</td>
-						<?php } ?>
+						<?php }
+        ?>
 					</tr>
-				<?php 
+<?php 
 				}
 			}else{?>
 				<tr>

@@ -1,7 +1,8 @@
 <div class="tab procView">
 	<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==9){ 
 	 echo $this->utility->tabNav($tabNav,'progress_pengerjaan');
-	 } ?>
+	 }
+ ?>
 	<div class="tableWrapper">
 		<div class="tab procView">
 		
@@ -16,7 +17,8 @@
 						<div class="graphWrapLine" style="width: <?php echo $realization['range'];?>%;">
 								<div class="graph" title="Tanggal <?php echo default_date($realization['date'])?>. <br>Dalam Masa <?php echo $realization['step']?> pada hari ke-<?php echo $realization['now']?>. "  style="width: 100%;background-color: #2ecc71;"></div>
 						</div>
-						<?php } ?>
+						<?php }
+        ?>
 						
 						<?php 
 						/*Buat graph progress*/
@@ -25,7 +27,7 @@
 								<?php 
 								$i = 0;
 								$amandemen = 0;
-								foreach($graph['data'] as $key => $row){ ?>
+								foreach($graph['data'] as $row){ ?>
 									<div class="graph <?php echo($row['gap'])?'shading':'' ?>" title="<?php echo $row['label'];?> " style="width: <?php echo ($row['value']/$graph['total_day']*100);?>%;background-color: 
 
 										<?php  if($row['type']==3){
@@ -38,10 +40,11 @@
 												}else{
 													echo  $color[$i];
 													$i++;
-												} 
+												}
+         
 										?>">
 									</div>
-								<?php
+<?php
 
 									
 								}
@@ -64,7 +67,8 @@
 								?>
 								<td>Action</td>
 								<?php
-							} ?>
+							}
+       ?>
 							
 						</tr>
 					</thead>
@@ -72,40 +76,57 @@
 					<?php 
 					
 					// print_r($contract);
-					if(count($contract)){
+					if(count($contract) > 0){
 						$key = 0;
 						$amandemen = 0;
-						foreach($contract as $row => $value){
-						?>
+						foreach ($contract as $value) {
+          ?>
 							<tr>
 								<td>
-									<?php echo $value['step_name'];?>
+									<?php 
+          echo $value['step_name'];
+          ?>
 								</td>
 								<td>
-									<div class="colorBox" style="background-color: <?php echo ($value['type']==3)? $color_amandemen[$amandemen] : $color[$key]; ?>;">
+									<div class="colorBox" style="background-color: <?php 
+          echo ($value['type']==3)? $color_amandemen[$amandemen] : $color[$key];
+          ?>;">
 									</div>
-									<?php if($key==1){ ?>
-									<div class="colorBox shading" style="border: 1px solid #cdcdcd">
-									</div>
-									<?php } ?>
-									<?php echo get_range_date($value['end_date'],$value['start_date']);?> Hari Kalendar
+									<?php 
+          if($key==1){ ?>
+    									<div class="colorBox shading" style="border: 1px solid #cdcdcd">
+    									</div>
+    									<?php }
+
+          ?>
+									<?php 
+          echo get_range_date($value['end_date'],$value['start_date']);
+          ?> Hari Kalendar
 								</td>
 								
-								<?php if($this->session->userdata('admin')['id_role']==3){ ?>
-								<td>
-									<?php if($value['type']==3){ ?>
-									<a href="<?php echo site_url('pengadaan/view/'.$id.'/amandemen/'.$value['id']);?>"><i class="fa fa-cog"></i> Edit</a> | 
-									<a href="<?php echo site_url('pengadaan/hapus_amandemen/'.$id.'/'.$value['id']);?>"><i class="fa fa-trash"></i> Hapus</a>
-									<?php 
-									
-									} ?>
-								</td>
-								<?php } ?>
+								<?php 
+          if($this->session->userdata('admin')['id_role']==3){ ?>
+    								<td>
+    									<?php if($value['type']==3){ ?>
+    									<a href="<?php echo site_url('pengadaan/view/'.$id.'/amandemen/'.$value['id']);?>"><i class="fa fa-cog"></i> Edit</a> | 
+    									<a href="<?php echo site_url('pengadaan/hapus_amandemen/'.$id.'/'.$value['id']);?>"><i class="fa fa-trash"></i> Hapus</a>
+    									<?php 
+    									
+    									}
+           ?>
+    								</td>
+<?php }
+
+          ?>
 							</tr>
 						<?php 
-							if($value['type']==3) $amandemen++;
-							$key++;
-						}
+          if ($value['type']==3) {
+              $amandemen++;
+          }
+
+          $key++;
+      }
+      
 						if($denda_day>0){
 						?>
 						<tr>
@@ -127,6 +148,7 @@
 							<td colspan="3" class="noData">Data tidak ada</td>
 						</tr>
 					<?php }
+     
 					?>	
 						
 					</tbody>
@@ -138,12 +160,15 @@
 					<a href="<?php echo site_url('pengadaan/view/'.$id_pengadaan.'/denda');?>" class="btnBlue"><i class="fa fa-exclamation-triangle"></i> Denda</a>
 					<?php if($denda_price!='') { ?>
 					<a href="<?php echo site_url('pengadaan/view/'.$id_pengadaan.'/reset_denda');?>" class="btnBlue"><i class="fa fa-exclamation-triangle"></i> Reset Denda</a>
-					<?php } ?>
+					<?php }
+     ?>
 					<?php if($denda_price=='') { ?>
 					<a href="<?php echo site_url('pengadaan/view/'.$id_pengadaan.'/amandemen');?>" class="btnBlue"> Amandemen</a>
-					<?php } ?>
+					<?php }
+     ?>
 					<a href="<?php echo site_url('pengadaan/stop_pengadaan/'.$id_pengadaan);?>" class="btnBlue"> Selesaikan Pengadaan</a>
-				</div><?php } ?>
+				</div><?php }
+     ?>
 			</div>
 		</div>
 	</div>

@@ -11,20 +11,21 @@
 				</div>
 				<?php if (isset($header['data'])) {?>
 				<?php $no = 1;?>
-				<?php foreach ($header['data'] as $keysq => $valuesq) {?>
+				<?php foreach ($header['data'] as $valuesq) {?>
 				<div class="panel-body">
 					<?php if (isset($valuesq['question'])) { ?>
 					<h4 class="panel-title"><?php echo $key.'.'.$no.'&nbsp;-&nbsp;'.$valuesq['question'];?>
 					</h4>
-					<?php $no++; }?>
+					<?php $no++; }
+?>
 					
 					<ol type="a" style="list-style-type: none;">
 						<?php if (isset($valuesq['data'])) { ?>
-						<?php foreach ($valuesq['data'] as $keyq => $valueq) {?>
+						<?php foreach ($valuesq['data'] as $valueq) {?>
 						<li>
 							<div class="fieldPanel">
 							<!--Pertanyaan-->
-							<?php foreach ($valueq as $keydata => $valuedata) { ?>
+							<?php foreach ($valueq as $valuedata) { ?>
 								<p><?php echo $valuedata['value']; ?></p>
 								<?php
 									switch ($valuedata['type']) {
@@ -42,6 +43,7 @@
 											foreach($checkbox as $keys => $rows){ ?>
 												<label><input type="checkbox" name="quest[<?php echo $valuedata['id']?>]" value="<?php echo $keys;?>"><?php echo $rows;?></label>
 											<?php }
+           
 											break;
 										case 'radio':
 											$checkbox = explode('|', $valuedata['label']);
@@ -51,6 +53,7 @@
 											foreach($checkbox as $keys => $rows){ ?>
 												<label><input type="radio" name="quest[<?php echo $valuedata['id']?>]" value="<?php echo $keys;?>"><?php echo $rows;?></label>
 											<?php }
+           
 											break;
 										case 'file':
 											?>	
@@ -60,19 +63,25 @@
 										break;
 									}
 								?>
-							<?php } ?>
+							<?php }
+ ?>
 							<!--Pertanyaan-->
 							</div>
 						</li>
-						<?php } ?>
-						<?php } ?>
+<?php }
+ ?>
+<?php }
+ ?>
 					</ol>
 					
 	            </div>
-	            <?php } ?>
-	        	<?php } ?>
+<?php }
+ ?>
+<?php }
+ ?>
 	        </div>
-	        <?php } ?>
+<?php }
+ ?>
 	    </div>
 		<div class="buttonRegBox clearfix">
 			<input type="submit" value="Simpan" class="btnBlue" name="simpan">

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Pengalaman extends CI_Controller {
 
@@ -7,6 +7,7 @@ class Pengalaman extends CI_Controller {
 		if(!$this->session->userdata('user')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('Pengalaman_model','pm');
 		$this->load->model('izin/Izin_model','im');
 		$this->load->model('vendor/Vendor_model','vm');
@@ -37,6 +38,7 @@ class Pengalaman extends CI_Controller {
 		if($this->vm->check_pic($data['id_user'])==0){
 			redirect(site_url('dashboard/pernyataan'));
 		}
+  
 		$search = $this->input->get('q');
 		$page = '';
 		
@@ -60,9 +62,9 @@ class Pengalaman extends CI_Controller {
 
 	public function siu(){ 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		$layout['get_siu'] = $this->im->get_siu_dropdown();
 		$layout['form'] = $form;
@@ -74,14 +76,12 @@ class Pengalaman extends CI_Controller {
 					)
 				);
 		$this->form_validation->set_rules($vld);
-		if($this->input->post('next')){
-			if($this->form_validation->run()==TRUE){
-				unset($_POST['next']);
-				$this->session->set_userdata('form',array_merge($form,$this->input->post()));
-
-				redirect('pengalaman/form_bsb');
-			}
-		}
+		if ($this->input->post('next') && $this->form_validation->run()==TRUE) {
+      unset($_POST['next']);
+      $this->session->set_userdata('form',array_merge($form,$this->input->post()));
+      redirect('pengalaman/form_bsb');
+  }
+  
 		$layout['content']= $this->load->view('siu',$layout,TRUE);
 
 		$item['header'] = $this->load->view('dashboard/header',$user,TRUE);
@@ -91,9 +91,9 @@ class Pengalaman extends CI_Controller {
 
 	public function form_bsb(){
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		$layout['get_bsb'] = $this->im->get_bsb_dropdown($form['id_ijin_usaha']);
 		$vld = 	array(
@@ -115,6 +115,7 @@ class Pengalaman extends CI_Controller {
 			$this->session->set_userdata('form',array_merge($form,$this->input->post()));
 			redirect('pengalaman/siu');
 		}
+  
 		$layout['content']= $this->load->view('bsb',$layout,TRUE);
 
 		$item['header'] = $this->load->view('dashboard/header',$user,TRUE);
@@ -125,9 +126,9 @@ class Pengalaman extends CI_Controller {
 	public function pengisian_data(){
 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		
 		$layout['form'] = $form;
@@ -218,6 +219,7 @@ class Pengalaman extends CI_Controller {
 			$this->session->set_userdata('form',array_merge($form,$this->input->post()));
 			redirect('pengalaman/form_bsb');
 		}
+  
 		$data['sbu'] = $this->vm->get_sbu();
 		$data['curr'] = array(
 								'USD'=>'USD',
@@ -231,6 +233,7 @@ class Pengalaman extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function edit($id){
 		$data = $this->pm->get_data($id);
 
@@ -295,6 +298,7 @@ class Pengalaman extends CI_Controller {
 						'rules'=>'callback_do_upload[contract_file]'
 					);
 		}
+  
 		if(!empty($_FILES['bast_file']['name'])){
 			$vld[] = array(
 						'field'=>'bast_file',
@@ -348,6 +352,7 @@ class Pengalaman extends CI_Controller {
 			redirect(site_url('pengalaman'));
 		}
 	}
+ 
 	public function do_upload($field, $db_name = ''){	
 		
 		$file_name = $_FILES[$db_name]['name'] = $db_name.'_'.$this->utility->name_generator($_FILES[$db_name]['name']);
@@ -363,10 +368,10 @@ class Pengalaman extends CI_Controller {
 			$_POST[$db_name] = $file_name;
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 
 }

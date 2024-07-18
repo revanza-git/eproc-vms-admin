@@ -80,7 +80,8 @@
 				<span>Aspek K3 / CSMS</span>
 			</a>
 		</li>
-		<?php }?>
+		<?php }
+  ?>
 
 		<?php 
 		$this->load->model('dashboard/dashboard_model');
@@ -93,7 +94,8 @@
 				<span>Auction</span>
 			</a>
 		</li>
-		<?php }?>
+		<?php }
+  ?>
 
 
 		<?php 

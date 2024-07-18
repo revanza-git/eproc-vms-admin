@@ -74,38 +74,38 @@
 
 		<?php 
 
-		if(count($akta_list)){
+		if(count($akta_list) > 0){
 
-			foreach($akta_list as $row => $value){
+			foreach($akta_list as $aktum_list){
 
 			?>
 
 				<tr>
 
-					<td><?php echo ($value['type']=='pendirian')?'Akta Pendirian': (($value['type']=='perubahan') ? 'Akta Perubahan Terakhir (mengenai anggaran dasar)' : (($value['type']=='direksi') ? 'Akta Perubahan Terakhir (mengenai susunan terakhir direksi dan komisaris)' : 'Akta Perubahan Terakhir (mengenai susunan terakhir pemegang saham)'));?></td>
+					<td><?php echo ($aktum_list['type']=='pendirian')?'Akta Pendirian': (($aktum_list['type']=='perubahan') ? 'Akta Perubahan Terakhir (mengenai anggaran dasar)' : (($aktum_list['type']=='direksi') ? 'Akta Perubahan Terakhir (mengenai susunan terakhir direksi dan komisaris)' : 'Akta Perubahan Terakhir (mengenai susunan terakhir pemegang saham)'));?></td>
 
-					<td><?php echo $value['notaris'];?></td>
+					<td><?php echo $aktum_list['notaris'];?></td>
 
-					<td><?php echo $value['no'];?></td>
+					<td><?php echo $aktum_list['no'];?></td>
 
-					<td><?php echo (strtotime($value['issue_date']) > 0) ? default_date($value['issue_date']):"-";?></td>
+					<td><?php echo (strtotime($aktum_list['issue_date']) > 0) ? default_date($aktum_list['issue_date']):"-";?></td>
 
-					<td><a href="<?php echo base_url('lampiran/akta_file/'.$value['akta_file']);?>" target="_blank"><?php echo $value['akta_file'];?> <i class="fa fa-link"></i></a></td>
+					<td><a href="<?php echo base_url('lampiran/akta_file/'.$aktum_list['akta_file']);?>" target="_blank"><?php echo $aktum_list['akta_file'];?> <i class="fa fa-link"></i></a></td>
 
-					<td><?php echo $value['authorize_by'];?></td>
+					<td><?php echo $aktum_list['authorize_by'];?></td>
 
-					<td><?php echo $value['authorize_no'];?></td>
+					<td><?php echo $aktum_list['authorize_no'];?></td>
 
-					<td><?php echo (strtotime($value['authorize_date']) > 0) ? default_date($value['authorize_date']):"-";?></td>
+					<td><?php echo (strtotime($aktum_list['authorize_date']) > 0) ? default_date($aktum_list['authorize_date']):"-";?></td>
 
-					<td><a href="<?php echo base_url('lampiran/authorize_file/'.$value['authorize_file']);?>"  target="_blank"><?php echo $value['authorize_file'];?> <i class="fa fa-link"></i></a></td>
-					<td><?php if($value['file_extension_akta']!='') {?><a href="<?php echo base_url('lampiran/file_extension_akta/'.$value['file_extension_akta']);?>"  target="_blank"><?php echo $value['file_extension_akta'];?> <i class="fa fa-link"></i></a><?php } ?></td>
+					<td><a href="<?php echo base_url('lampiran/authorize_file/'.$aktum_list['authorize_file']);?>"  target="_blank"><?php echo $aktum_list['authorize_file'];?> <i class="fa fa-link"></i></a></td>
+					<td><?php if($aktum_list['file_extension_akta']!='') {?><a href="<?php echo base_url('lampiran/file_extension_akta/'.$aktum_list['file_extension_akta']);?>"  target="_blank"><?php echo $aktum_list['file_extension_akta'];?> <i class="fa fa-link"></i></a><?php } ?></td>
 
 					<td class="actionBlock">
 
-						<a href="<?php echo site_url('akta/edit/'.$value['id'])?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
+						<a href="<?php echo site_url('akta/edit/'.$aktum_list['id'])?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
 
-						<a style="top: 4px" href="<?php echo site_url('akta/hapus/'.$value['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
+						<a style="top: 4px" href="<?php echo site_url('akta/hapus/'.$aktum_list['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
 
 					</td>
 

@@ -10,14 +10,16 @@
 					<td><label>Pemenang</label></td>
 					<td><?php 
 						$res = array();
-						foreach ($list as $key => $value) {
+						foreach ($list as $value) {
 							$res[$value['id']] = $value['name'];
 						}
-						if(count($res)>0){
+      
+						if($res !== []){
 							echo form_dropdown('pemenang', $res, ($this->form->get_temp_data('pemenang'))?$this->form->get_temp_data('pemenang'):$data['id_vendor'],'');
 						}else{
 							echo '-- Belum ada peserta yang melakukan penawaran --';
-						}?>
+						}
+      ?>
 						<?php echo form_error('pemenang'); ?>
 						
 					</td>
@@ -54,7 +56,8 @@
 			<div class="buttonRegBox clearfix">
 				<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 			</div>
-			<?php } ?>
+			<?php }
+       ?>
 			</div>
 		</form>
 		

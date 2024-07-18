@@ -1,4 +1,4 @@
-<?php foreach ($quest as $key => $value) {?>
+<?php foreach ($quest as $value) {?>
 <div class="formDashboard">
 	<h1 class="formHeader">Edit Evaluasi</h1>
 	<form method="POST" enctype="multipart/form-data">

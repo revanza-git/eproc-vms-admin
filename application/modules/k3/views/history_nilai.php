@@ -17,8 +17,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($history)){
-			foreach($history as $row =>$value){
+		if(count($history) > 0){
+			foreach($history as $value){
 			?>
 				<tr>
 					<td><?php echo $value['name'];?></td>

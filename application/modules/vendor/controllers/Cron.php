@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 class Cron extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
@@ -12,12 +12,12 @@ class Cron extends CI_Controller {
 		$query = "SELECT * FROM tr_email_blast WHERE distance = 0 AND DATE(`date`) <= DATE('".date('Y-m-d')."')  GROUP BY id_doc";
 		$query = $this->db->query($query)->result_array();
 
-		foreach ($query as $key => $value) {
+		foreach ($query as $value) {
 
 			$queryDocument = "SELECT * FROM ".$value['doc_type']." WHERE id = ".$value['id_doc'];
 			$queryDocument = $this->db->query($queryDocument);
 			if($value['doc_type']=='ms_ijin_usaha'){
-				foreach($queryDocument->result_array() as $keyDocument => $valueDocument){
+				foreach($queryDocument->result_array() as $valueDocument){
 					$selectTransaction = $this->db->where('id_vendor', $valueDocument['id_vendor'])->where('id_dpt_type', $valueDocument['id_dpt_type'])->where('end_date IS NULL')->get('tr_dpt');
 
 					$queryTransaction = $this->db->where('id_vendor', $valueDocument['id_vendor'])->where('id_dpt_type', $valueDocument['id_dpt_type'])->where('end_date IS NULL')->update('tr_dpt', array('status'=>2,'end_date'=>date('Y-m-d H:i:s')));
@@ -53,7 +53,7 @@ class Cron extends CI_Controller {
 				}
 				
 			}else{
-				foreach($queryDocument->result_array() as $keyDocument => $valueDocument){
+				foreach($queryDocument->result_array() as $valueDocument){
 						
 					$queryTransaction = $this->db->where('id_vendor', $valueDocument['id_vendor'])->where('end_date IS NULL')->update('tr_dpt', array('status'=>2,'end_date'=>date('Y-m-d H:i:s')));
 
@@ -67,6 +67,7 @@ class Cron extends CI_Controller {
 							'entry_stamp'=>timestamp()
 						));
 					}
+     
 					$this->db->where('id', $valueDocument['id_vendor'])->update('ms_vendor', array('vendor_status'=> 1));
 					
 				}

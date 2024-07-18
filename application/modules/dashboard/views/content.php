@@ -17,15 +17,17 @@
 				<i class="fa fa-times" ></i>
 			</div>
 		</div>
-	<?php } ?>
+	<?php }
+  ?>
 	
 
 	<div class="successVer msgBlock">
 		<h4><?php echo count($approval_data[1])?> data telah sesuai</h4>
 		<ul>
-			<?php foreach($approval_data[1] as $key =>$value){ ?>
+			<?php foreach($approval_data[1] as $value){ ?>
 			<li><?php echo $value;?></li>
-			<?php } ?>
+			<?php }
+  ?>
 		</ul>
 	</div>
 
@@ -45,17 +47,19 @@
 					'Data Administrasi Vendor'		=> 'administrasi',
 				);
 			?>
-			<?php foreach($approval_data[0] as $key =>$value){?>
+			<?php foreach($approval_data[0] as $value){?>
 			<li><a href="<?php echo $link[$value];?>"><?php echo $value;?></a></li>
-			<?php } ?>
+			<?php }
+    ?>
 		</ul>
 	</div>
 
 	<div class="errorVer msgBlock">
 		<ul>
 			<h4><?php echo count($approval_data[3])?> data tidak sesuai</h4>
-			<?php foreach($approval_data[3] as $key =>$value){ ?>
+			<?php foreach($approval_data[3] as $value){ ?>
 			<li><a href="<?php echo $link[$value];?>"><?php echo $value;?></a></li>
-			<?php } ?>
+			<?php }
+    ?>
 		</ul>
 	</div>

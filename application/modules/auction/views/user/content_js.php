@@ -11,9 +11,21 @@
 	var jumlahBarang	= <?php echo $barang->num_rows(); ?>;
 	var metodeLelang	= "<?php echo $fill['metode_auction']; ?>";
 	var typeLelang		= "<?php echo $fill['auction_type']; ?>";
-	var is_started		= <?php if($fill['is_started'])		echo "true"; else echo "false"; ?>;
-	var is_finished		= <?php if($fill['is_finished'])	echo "true"; else echo "false"; ?>;
-	var is_suspended	= <?php if($fill['is_suspended'])	echo "true"; else echo "false"; ?>;
+	var is_started		= <?php if ($fill['is_started']) {
+    echo "true";
+} else {
+    echo "false";
+} ?>;
+	var is_finished		= <?php if ($fill['is_finished']) {
+    echo "true";
+} else {
+    echo "false";
+} ?>;
+	var is_suspended	= <?php if ($fill['is_suspended']) {
+    echo "true";
+} else {
+    echo "false";
+} ?>;
 	var highlighInd		= false;
 	var timerInd		= false;
 	var isStartDrawed	= false;

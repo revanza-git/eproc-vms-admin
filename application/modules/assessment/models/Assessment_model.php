@@ -1,7 +1,7 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Assessment_model extends CI_Model{
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 	}
@@ -28,17 +28,21 @@ class Assessment_model extends CI_Model{
 			if (in_array($i, array(1, 2, 3, 4))) {
 				$ass[$i] = 1;
 			}
+   
 			if (in_array($i, array(5, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32))) {
 				$ass[$i] = 0;
 			}
+   
 			if ($i == 6) {
 				$ass[$i] = 5;
 			}
+   
 			if ($i == 7) {
 				$ass[$i] = 10;
 			}
 		}
-		foreach ($a as $b => $value) {
+  
+		foreach ($a as $value) {
 			$post['id_procurement'] = $value->id;
 			$post['id_vendor'] = $value->id_vendor;
 			$post['date'] = date('Y-m-d H:i:s');
@@ -77,6 +81,8 @@ class Assessment_model extends CI_Model{
 			));
 			// return true;
 		}
+
+  return null;
 	}
 
 	public function grouping_by_year()
@@ -115,7 +121,7 @@ class Assessment_model extends CI_Model{
 	}
 
 	
-	function get_pengadaan_list($year, $search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
+	public function get_pengadaan_list($year, $search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
 	{
 		
 		$admin = $this->session->userdata('admin');
@@ -160,6 +166,7 @@ class Assessment_model extends CI_Model{
 		if ($this->input->get('sort') && $this->input->get('by')) {
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort'));
 		}
+  
 		if ($is_page) {
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page * ($cur_page - 1));
@@ -171,8 +178,8 @@ class Assessment_model extends CI_Model{
 		return $query->result_array();
 	}
 
-	function getPengadaanNew($year, $search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array()){
-		$admin = $this->session->userdata('admin');
+	public function getPengadaanNew($year, $search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array()){
+		$this->session->userdata('admin');
 
 		$query = 	"	SELECT 
     						*, 
@@ -226,7 +233,7 @@ class Assessment_model extends CI_Model{
 		// return $arr;
 	}
 
-    function get_division($id){
+    public function get_division($id){
     	$query = 	"	SELECT 
     						id_division
     					FROM
@@ -237,83 +244,80 @@ class Assessment_model extends CI_Model{
     	// echo $this->db->last_query();
     	return $query->row_array();
     }
-   	function get_pengadaan($id){
-   		$arr = $this->db->select('*,ms_procurement.name name, tb_budget_holder.name budget_holder_name, tb_budget_spender.name budget_spender_name, tb_pejabat_pengadaan.name pejabat_pengadaan_name,tb_mekanisme.name mekanisme_name')
-   		->where('ms_procurement.id',$id)
-   		->join('tb_pejabat_pengadaan','tb_pejabat_pengadaan.id=ms_procurement.id_pejabat_pengadaan','LEFT')
+    
+   	public function get_pengadaan($id){
+   		return $this->db->select('*,ms_procurement.name name, tb_budget_holder.name budget_holder_name, tb_budget_spender.name budget_spender_name, tb_pejabat_pengadaan.name pejabat_pengadaan_name,tb_mekanisme.name mekanisme_name')
+		->where('ms_procurement.id',$id)
+		->join('tb_pejabat_pengadaan','tb_pejabat_pengadaan.id=ms_procurement.id_pejabat_pengadaan','LEFT')
 		->join('tb_budget_holder','tb_budget_holder.id=ms_procurement.budget_holder','LEFT')
 		->join('tb_budget_spender','tb_budget_spender.id=ms_procurement.budget_spender','LEFT')
 		->join('tb_mekanisme','tb_mekanisme.id=ms_procurement.id_mekanisme','LEFT')
-   		->get('ms_procurement')->row_array();
-		
-		return $arr;
+		->get('ms_procurement')->row_array();
    	}
 
 
-   	function get_assessment_vendor_list($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
-   		$result = $this->db->select('mpp.id id,ms_vendor.name peserta_name,
+   	public function get_assessment_vendor_list($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+   		$this->db->select('mpp.id id,ms_vendor.name peserta_name,
    			(SELECT point FROM tr_ass_point where id_vendor = ms_vendor.id AND id_procurement = '.$id.' ORDER BY id DESC LIMIT 0, 1) as `point` , tb_blacklist_limit.value as kategori, mpp.id_vendor id_vendor')
    		->where('mpp.id_proc',$id)
    		->where('ms_vendor.is_active',1)
    		->join('ms_vendor','ms_vendor.id=mpp.id_vendor')
    		->join('tr_assessment','tr_assessment.id_vendor=mpp.id_vendor')
    		->join('tb_blacklist_limit','tb_blacklist_limit.id=tr_assessment.category')
-   		->group_by('mpp.id')
-   		// ->where('tr_ass_point.id_procurement',$id)
-   		/*->where('mpp.del',0)*/;
+   		->group_by('mpp.id');
    		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+     
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
-		$res = $this->db->get('ms_procurement_peserta mpp')->result_array();
+  
 		// echo $this->db->last_query();
-   		return $res;
+   		return $this->db->get('ms_procurement_peserta mpp')->result_array();
    	}
    	
-   	function get_vendor_report($id){
-   		$query = $this->db 	->select('ms_vendor.id id, ms_vendor.name name, ms_vendor.npwp_code npwp_code, (SELECT point FROM tr_ass_point where id_vendor = '.$id.' ORDER BY tr_ass_point.id DESC LIMIT 0, 1) point')
+   	public function get_vendor_report($id){
+   		return $this->db 	->select('ms_vendor.id id, ms_vendor.name name, ms_vendor.npwp_code npwp_code, (SELECT point FROM tr_ass_point where id_vendor = '.$id.' ORDER BY tr_ass_point.id DESC LIMIT 0, 1) point')
    							->where('id',$id)
    							->get('ms_vendor')
    							->result_array();
-
-   		return $query;
    	}
 
-   	function get_assessment_vendor($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+   	public function get_assessment_vendor($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
 
-   		$result = $this->db->select('ms_vendor.name peserta_name,tr_ass_point.point point,ms_vendor.id id_vendor, tr_ass_point.date date')
+   		$this->db->select('ms_vendor.name peserta_name,tr_ass_point.point point,ms_vendor.id id_vendor, tr_ass_point.date date')
    		->where('id_vendor',$id)
    		->join('ms_vendor','ms_vendor.id=tr_ass_point.id_vendor');
 		
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
 
-   		$query = $this->db->get('tr_ass_point')->result_array();
-
-		return $query;
+		return $this->db->get('tr_ass_point')->result_array();
    	}
 
-   	function get_procurement_peserta($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+   	public function get_procurement_peserta($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
 
-   		$result = $this->db->select('ms_procurement_peserta.id id,ms_vendor.name peserta_name,ms_procurement_peserta.id_vendor id_vendor')->where('ms_procurement_peserta.id_proc',$id)
+   		$this->db->select('ms_procurement_peserta.id id,ms_vendor.name peserta_name,ms_procurement_peserta.id_vendor id_vendor')->where('ms_procurement_peserta.id_proc',$id)
    		->join('ms_vendor','ms_vendor.id=ms_procurement_peserta.id_vendor')
    		->where('ms_procurement_peserta.del',0);
 		
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
    		return $this->db->get('ms_procurement_peserta')->result_array();
 
    	}
@@ -325,7 +329,7 @@ class Assessment_model extends CI_Model{
 		$group_ass = $this->db->select('*')->get('ms_ass_group')->result_array();
 
 		
-		foreach($group_ass as $key => $value){
+		foreach($group_ass as $value){
 			$result[$value['id']]['name'] = $value['name'];
 			$assessment = $this->db->select('*')->where('id_group',$value['id'])->get('ms_ass')->result_array();
 			
@@ -336,6 +340,7 @@ class Assessment_model extends CI_Model{
 
 		return $result;
 	}
+ 
 	public function get_assessment($id_pengadaan,$id_vendor){
 		$result = array();
 		$data_list = $this->db->select('id_ass, value')
@@ -343,17 +348,20 @@ class Assessment_model extends CI_Model{
 				array('id_vendor'=>$id_vendor,'id_procurement'=>$id_pengadaan)
 				)
 		->get('tr_ass_result')->result_array();
-		foreach($data_list as $key=>$row){
+		foreach($data_list as $row){
 			$result[$row['id_ass']] = $row['value'];
 		}
+  
 		return $result;
 	}
+ 
 	public function check_approve($id_pengadaan, $id_vendor){
 		$sql = $this->db->query("SELECT SUM(is_approve) as sum FROM tr_ass_result
-				WHERE id_procurement = $id_pengadaan 
-				AND id_vendor = $id_vendor")->row_array();
+				WHERE id_procurement = {$id_pengadaan} 
+				AND id_vendor = {$id_vendor}")->row_array();
 		return $sql['sum'];
 	}
+ 
 	public function get_approve($id_pengadaan,$id_vendor){
 		$result = array();
 		$data_list = $this->db->select('id_ass, is_approve')
@@ -361,9 +369,10 @@ class Assessment_model extends CI_Model{
 				array('id_vendor'=>$id_vendor,'id_procurement'=>$id_pengadaan)
 				)
 		->get('tr_ass_result')->result_array();
-		foreach($data_list as $key=>$row){
+		foreach($data_list as $row){
 			$result[$row['id_ass']] = $row['is_approve'];
 		}
+  
 		return $result;
 	}
 
@@ -394,6 +403,7 @@ class Assessment_model extends CI_Model{
 
 			}
 		}
+  
 		foreach($post['is_approve'] as $key => $row){
 			$this->db->where('id_vendor',$post['id_vendor'])
 			->where('id_procurement',$post['id_procurement'])
@@ -405,8 +415,10 @@ class Assessment_model extends CI_Model{
 			$poin = $this->check_poin($id,$post['id_vendor']);
 			$this->db->insert('tr_ass_point',array('id_vendor'=>$post['id_vendor'],'id_procurement'=>$post['id_procurement'],'date'=>$post['date'],'point'=>$poin,'entry_stamp'=>date("Y-m-d H:i:s")));
 		}
+  
 		return true;
 	}
+ 
 	public function set_assessment($id_vendor,$poin,$kategori,$id_procurement){
 		$this->db->where('id_vendor',$id_vendor)->update('tr_blacklist',array('del'=>1));
 		$num_rows = $this->db->where('id_vendor',$id_vendor)->where('id_procurement',$id_procurement)->get('tr_assessment')->num_rows();
@@ -425,6 +437,7 @@ class Assessment_model extends CI_Model{
 														'edit_stamp'	=>date('Y-m-d H:i:s')
 													));
 		}
+  
 		$last_poin = $this->db->where('id_vendor',$id_vendor)->get('tr_assessment_point')->num_rows();
 		if($last_poin==0){
 			$this->db->insert('tr_assessment_point',array(
@@ -441,21 +454,22 @@ class Assessment_model extends CI_Model{
 													));
 		}
 	}
+ 
 	public function check_poin($id,$id_vendor){
 		$query = $this->db->query('SELECT SUM(value) as num FROM tr_ass_result WHERE id_procurement = '.$id.' AND id_vendor = '.$id_vendor)->row_array();
 
 		return $query['num'];
 	}
 
-	function get_mail($id){
+	public function get_mail($id){
 		$query = $this->db->select('id_role, name, email')
 							->where('id_role', $id)
 							->get('ms_admin');
-		$res   =  $query->result_array();
 
-		return $res;
+		return $query->result_array();
 	}
-	function insert_bast($id, $id_vendor){
+ 
+	public function insert_bast($id, $id_vendor){
 		$bast = $this->get_data_bast($id, $id_vendor)->row_array();
 		if(empty($bast)){
 			return $this->db->insert('tr_bast',
@@ -466,8 +480,9 @@ class Assessment_model extends CI_Model{
 						'entry_stamp'=>date('Y-m-d H:i:s')
 					)
 				);
-		}else{
-			return $this->db 	->where('id_procurement',$id)
+		}
+
+  return $this->db 	->where('id_procurement',$id)
 						->where('id_vendor',$id_vendor)
 						->update('tr_bast',
 									array(
@@ -475,10 +490,10 @@ class Assessment_model extends CI_Model{
 										'edit_stamp'=>date('Y-m-d H:i:s')
 										)
 								);
-		}
 		
 	}
-	function get_data_bast($id_procurement, $id_vendor){
+ 
+	public function get_data_bast($id_procurement, $id_vendor){
 		$query = "	SELECT 
 						a.*,
 						b.name
@@ -492,11 +507,10 @@ class Assessment_model extends CI_Model{
 						AND id_vendor = ?
 					
 				";
-		$query = $this->db->query($query, array($id_procurement, $id_vendor));
-		return $query;
+		return $this->db->query($query, array($id_procurement, $id_vendor));
 	}
 
-	function get_default_template(){
+	public function get_default_template(){
 		$query = "	SELECT 
 						*
 					FROM
@@ -504,12 +518,11 @@ class Assessment_model extends CI_Model{
 					ORDER BY id DESC
 					LIMIT 0,1
 				";
-		$query = $this->db->query($query);
 
-		return $query;
+		return $this->db->query($query);
 	}
 
-	function get_bast_fill($id){
+	public function get_bast_fill($id){
 		$query =	"	SELECT
 							a.name pekerjaan,
 							b.contract_price besaran,
@@ -533,8 +546,7 @@ class Assessment_model extends CI_Model{
 
 						WHERE a.id = ?
 					";
-		$query = $this->db->query($query,array($id));
 		
-		return $query;
+		return $this->db->query($query,array($id));
 	}
 }

@@ -33,7 +33,7 @@ class Graph_model extends CI_Model
 
 		$data = $this->db->query($query,array($id_procurement,$get_kontrak['id']))->result_array();
 
-		foreach ($data as $key => $value) {
+		foreach ($data as $value) {
 		 	$date = get_range_date($value['end_date'],$value['start_date']);
 
 			if ($value['type'] == '5') {
@@ -49,7 +49,8 @@ class Graph_model extends CI_Model
 				'type' 	=> $value['type'],
 				'label' => $label
 			);
-		 } 
+		 }
+   
 		 // echo $this->db->last_query();die;
 		// print_r($return);die;
 		return $return;
@@ -152,14 +153,13 @@ class Graph_model extends CI_Model
 					FROM
 						tr_progress_kontrak
 					WHERE
-						del = 0 AND id_procurement = $id_procurement AND id_spk IS NOT NULL
+						del = 0 AND id_procurement = {$id_procurement} AND id_spk IS NOT NULL
 					
 					order by id_spk ASC, type asc
 		";
 		$query = $this->db->query($query);
 
 		if (count($query->result_array()) > 0) {
-			$data = $query->result_array();
 			// foreach ($data as $key => $value) {
 			// 	$denda = $this->db->where('id_spk',$value['id_spk'])->get('tr_denda')->result_array();
 			// 	$bast = $this->db->where('id_spk',$value['id_spk'])->get('ms_bast')->result_array();
@@ -189,19 +189,19 @@ class Graph_model extends CI_Model
 			// 	}
 			// }
 			// print_r($data);die;
-			return $data;
+			return $query->result_array();
 
-		} else {
-			$query = "	SELECT
+		}
+
+  $query = "	SELECT
 						*
 					FROM
 						tr_progress_kontrak
 					WHERE
-						del = 0 AND id_procurement = $id_procurement AND type = 2
+						del = 0 AND id_procurement = {$id_procurement} AND type = 2
 			";
-			$query = $this->db->query($query);
-			return $query->result_array();
-		}
+  $query = $this->db->query($query);
+  return $query->result_array();
 		
 	}
 
@@ -236,14 +236,15 @@ class Graph_model extends CI_Model
 			if(isset($value['end_date'])||$value['start_date']){
 				$add_date = 1;
 			}
+   
 			$day_denda 		= (ceil(strtotime($value['end_date']) - strtotime($value['start_date']))/86400)+$add_date;
 			$max_denda = $data_kontrak['contract_price'] * 5 / 100;
 			$cur_price = $data_kontrak['contract_price'] / 1000 * $day_denda;
 			$denda_price = ($max_denda<$cur_price) ? $max_denda : $cur_price;
-			isset($value['denda_price']);
 
 			$data[$key][$value['denda_price']] = $denda_price;
 		}
+  
 		// print_r($data);die;
 		return $data;
 		

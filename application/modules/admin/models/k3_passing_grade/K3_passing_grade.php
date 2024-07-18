@@ -1,8 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class k3_passing_grade extends CI_Model{ 
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$this->field_master = array(
 								'value',
@@ -12,7 +12,7 @@ class k3_passing_grade extends CI_Model{
 							);
 	}
 
-	function get_passing_grade($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
+	public function get_passing_grade($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
 		$this->db->select('*');
 		$this->db->where('del',0);
 		
@@ -21,6 +21,7 @@ class k3_passing_grade extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
@@ -31,26 +32,23 @@ class k3_passing_grade extends CI_Model{
 		
     }
 
-    function save_data($data){
+    public function save_data($data){
 		$this->db->insert('tb_csms_limit', $data);
-
-		return;
 	}
 
 
-	function get_data($id){
+	public function get_data($id){
 
 		$sql = "SELECT * FROM tb_csms_limit WHERE id = ".$id;
 		$query = $this->db->query($sql);
 		return $query->row_array();
 	}
 
-	function edit_data($data,$id){
-		$res 	= $this->db->where('id',$id)->update('tb_csms_limit',$data);
-		
-		return $res;
+	public function edit_data($data,$id){
+		return $this->db->where('id',$id)->update('tb_csms_limit',$data);
 	}
-	function delete($id){
+ 
+	public function delete($id){
 		$this->db->where('id',$id);
 		
 		return $this->db->update('tb_csms_limit',array('del'=>1));

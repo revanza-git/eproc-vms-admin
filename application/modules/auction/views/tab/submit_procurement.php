@@ -13,7 +13,8 @@
 				<?php
 			}elseif($status_procurement==1){?>
 				<p class="noticeMsg">Pengadaan sedang menunggu di proses oleh admin kontrak</p>
-			<?php } ?>
+			<?php }
+ ?>
 			
 			</div>
 		</form>

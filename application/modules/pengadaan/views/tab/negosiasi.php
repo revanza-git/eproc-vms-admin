@@ -11,7 +11,8 @@
                     <td>Negosiasi Ke-</td>
                     <td>Nilai Negosiasi</td>                    
 			  		<td>Nilai Fee</td>
-					<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?><td class="actionPanel">Action</td><?php } ?>
+					<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?><td class="actionPanel">Action</td><?php }
+ ?>
 				</tr>
 			</thead>
 			<tbody>
@@ -33,22 +34,25 @@
 							<?php } else{ ?>
 								Negosiasi: <p> Rp. <?php echo number_format($value['value']);?></p>
 								Remark: <p> <?php echo ($value['remark']);?></p>
-							<?php } ?>
+							<?php }
+    ?>
 						</td>
 						<td>
                             <?php if($act=='edit'){?>
                                 <p> <input type="text" name="fee[<?php echo $value['id_vendor']?>]" value="<?php echo $value['fee'];?>" placeholder="nilai fee dalam IDR"></p>
                             <?php } else{ ?>
 								<p> <?php echo ($value['fee']);?></p>
-							<?php } ?>
+							<?php }
+    ?>
                         </td>
 						<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
 						<td class="actionBlock">
 							<a href="<?php echo site_url('pengadaan/hapus_negosiasi/'.$value['id'].'/'.$id)?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
 						</td>
-						<?php } ?>
+						<?php }
+    ?>
 					</tr>
-				<?php 
+<?php 
 				}
 			}
 			}else{?>
@@ -68,8 +72,10 @@
 			<div class="buttonRegBox clearfix">
 				<a href="<?php echo site_url('pengadaan/tambah_negosiasi/'.$id) ?>" class="btnBlue"><i class="fa fa-cog"></i>&nbsp;Masukan negosiasi</a>
 			</div>
-			<?php } ?>
-		<?php } ?>
+			<?php }
+    ?>
+<?php }
+    ?>
 		<div class="pageNumber">
 			<?php echo $pagination ?>
 		</div>

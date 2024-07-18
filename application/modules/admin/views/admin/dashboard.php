@@ -9,41 +9,50 @@
                     <ul class="navMenuDD">
                         <?php if ($id_role != 8 && $id_role != 3 && $id_role != 10) { ?>
                             <li><a href="<?php echo site_url('vendor/tambah') ?>">Tambah Penyedia B/J</a>
-                            <?php } ?>
+                            <?php }
+ ?>
                             <?php if ($id_role != 10) { ?>
                             <li><a href="<?php echo site_url('admin/admin_vendor/daftar') ?>">Daftar Penyedia B/J</a></li>
-                        <?php } ?>
+                        <?php }
+ ?>
                         <li><a href="<?php echo site_url('admin/admin_dpt/') ?>">DPT</a></li>
                         <?php if ($id_role == 8) { ?>
                             <li><a href="<?php echo site_url('admin/admin_vendor/waiting_list/1') ?>">Daftar Tunggu (Aktif)</a></li>
                             <li><a href="<?php echo site_url('admin/admin_vendor/waiting_list/0') ?>">Daftar Tunggu (Tidak Aktif)</a></li>
                         <?php } else { ?>
                             <li><a href="<?php echo site_url('admin/admin_vendor/waiting_list/0') ?>">Daftar Tunggu</a></li>
-                        <?php } ?>
+                        <?php }
+ ?>
                         <?php if ($id_role != 10) { ?>
                             <li><a href="<?php echo site_url('blacklist/whitelist') ?>">Daftar Putih</a></li>
                             <li><a href="<?php echo site_url('blacklist/index/1') ?>">Daftar Merah</a></li>
                             <li><a href="<?php echo site_url('blacklist/index/2') ?>">Daftar Hitam</a></li>
-                        <?php } ?>
+                        <?php }
+ ?>
                     </ul>
                 </li>
-            <?php } ?>
+<?php }
+ ?>
 
             <?php if ($id_role == 3 || $id_role == 8 || $id_role == 10) { ?>
                 <li><a href="<?php echo site_url('pengadaan') ?>">Daftar Pengadaan B/J</a></li>
-            <?php } ?>
+            <?php }
+ ?>
 
             <?php if ($id_role != 10) { ?>
                 <li><a href="<?php echo site_url('kontrak') ?>">Kontrak</a></li>
-            <?php } ?>
+            <?php }
+ ?>
 
             <?php if ($id_role != 10) { ?>
                 <li><a href="<?php echo site_url('assessment/select_year') ?>">Penilaian Kinerja</a></li>
-            <?php } ?>
+            <?php }
+ ?>
 
             <?php if ($id_role == 9) { ?>
                 <li><a href="<?php echo site_url('pengadaan') ?>">Daftar Pengadaan B/J</a></li>
-            <?php } ?>
+            <?php }
+ ?>
 
             <?php if ($id_role != 2 && $id_role != 6 && $id_role != 10) { ?>
                 <li>
@@ -54,7 +63,8 @@
                 <li><a href="<?php echo site_url('admin/custom_report') ?>">Custom Report</a></li>
             </ul> -->
                 </li>
-            <?php } ?>
+            <?php }
+ ?>
 
             <?php //if ($id_role == 3 || $id_role == 8) { ?>
                 <li><a href="<?php echo site_url('k3/get_vendor_group') ?>">Penilaian CSMS</a></li>
@@ -62,7 +72,8 @@
 			
 			<?php if ($id_role == 3) { ?>
                 <li><a href="<?php echo site_url('feedback') ?>">Umpan Balik Penyedia B/J</a></li>
-            <?php } ?>
+            <?php }
+ ?>
 
             <?php if ($id_role == 1) { ?>
                 <li><a href="#">Master</a> <i class="fa fa-chevron-down li-icon"></i>
@@ -79,12 +90,14 @@
                         <li><a href="<?php echo site_url('admin/admin_pernyataan') ?>">Surat Pernyataan</a></li>
                     </ul>
                 </li>
-            <?php } ?>
+            <?php }
+ ?>
 
 
             <?php if ($id_role != 8) { ?>
                 <!-- <li><a href="<?php echo site_url('admin/admin_dpt') ?>">DPT</a></li> -->
-            <?php } ?>
+            <?php }
+ ?>
 
             <?php if ($id_role == 1 || $id_role == 3 || $id_role == 8) { ?>
                 <!-- <li><a href="#">Daftar Merah/Hitam/Putih</a><i class="fa fa-chevron-down li-icon"></i>
@@ -94,7 +107,8 @@
                 <li><a href="<?php echo site_url('blacklist/index/2') ?>">Daftar Hitam</a></li>
             </ul>
         </li> -->
-            <?php } ?>
+            <?php }
+ ?>
 
             <?php if ($id_role != 2) { ?>
                 <?php if ($id_role != 10) { ?>
@@ -106,9 +120,11 @@
 
                         </ul>
                     </li>
-                <?php } ?>
+                <?php }
+ ?>
                 <li><a href="<?php echo site_url('admin/app') ?>">Ke aplikasi Perencanaan Pengadaan</a><i class="fa fa-sign-out li-icon"></i></li>
-            <?php } ?>
+<?php }
+ ?>
             <!-- <div class="search-bar">
             <input type="text" name="nama_pengadaan" class="input" placeholder="Search..">
             <span class="icon">
@@ -139,22 +155,25 @@
                         'Pengalaman'                    => 'pengalaman'
                     );
                     ?>
-                    <?php foreach ($approval_data[0] as $key => $value) { ?>
+                    <?php foreach ($approval_data[0] as $value) { ?>
                         <?php $perubahan = ($value == 'Akta Perubahan') ? $perubahan = "perubahan" : $perubahan = ""; ?>
                         <li>
                             <a style="color: #fff;" href="<?php echo site_url('approval/' . $link[$value] . '/' . $this->uri->segment(3) . '/' . $perubahan); ?>">
                                 <?php echo $value; ?>
                             </a>
                         </li>
-                    <?php } ?>
+                    <?php }
+                     ?>
 
                     <?php if ($this->session->userdata('admin')['role_name'] != 2) { ?>
                         <!-- <li><a href="<?php echo site_url('Katalog') ?>"><i class="fa fa-file-text-o"></i>&nbsp;Katalog</a></li> -->
-                    <?php } ?>
+                    <?php }
+                     ?>
                     <!-- <li><a href="<?php echo site_url('Katalog') ?>"><i class="fa fa-file-text-o"></i>&nbsp; Katalog</a></li> -->
                 </ul>
             </div>
-        <?php } ?>
+<?php }
+ ?>
     </div>
 </div>
 <div class="mainArea">

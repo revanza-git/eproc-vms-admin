@@ -14,10 +14,10 @@
 				<td>
 					<div class="clearfix">
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'budget_source'),'perusahaan',(set_radio('budget_source','perusahaan')||((isset($budget_source)?$budget_source:$this->form->get_temp_data('budget_source'))=='perusahaan'))?TRUE:FALSE)?>Perusahaan 
+							<?php echo form_radio(array('name'=>'budget_source'),'perusahaan',set_radio('budget_source','perusahaan')||((isset($budget_source)?$budget_source:$this->form->get_temp_data('budget_source'))=='perusahaan'))?>Perusahaan 
 						</label>
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'budget_source'),'non_perusahaan',(set_radio('budget_source','non_perusahaan')||((isset($budget_source)?$budget_source:$this->form->get_temp_data('budget_source'))=='non_perusahaan'))?TRUE:FALSE)?>Non-Perusahaan
+							<?php echo form_radio(array('name'=>'budget_source'),'non_perusahaan',set_radio('budget_source','non_perusahaan')||((isset($budget_source)?$budget_source:$this->form->get_temp_data('budget_source'))=='non_perusahaan'))?>Non-Perusahaan
 						</label>
 					</div>
 					<?php echo form_error('budget_source'); ?>
@@ -35,10 +35,10 @@
 				<td>
 					<div class="clearfix">
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'auction_type'),'reverse_auction',(set_radio('auction_type','reverse_auction')||((isset($auction_type)?$auction_type:$this->form->get_temp_data('auction_type'))=='reverse_auction'))?TRUE:FALSE)?>Reverse Auction 
+							<?php echo form_radio(array('name'=>'auction_type'),'reverse_auction',set_radio('auction_type','reverse_auction')||((isset($auction_type)?$auction_type:$this->form->get_temp_data('auction_type'))=='reverse_auction'))?>Reverse Auction 
 						</label>
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'auction_type'),'forward_auction',(set_radio('auction_type','forward_auction')||((isset($auction_type)?$auction_type:$this->form->get_temp_data('auction_type'))=='forward_auction'))?TRUE:FALSE)?>Foward Auction
+							<?php echo form_radio(array('name'=>'auction_type'),'forward_auction',set_radio('auction_type','forward_auction')||((isset($auction_type)?$auction_type:$this->form->get_temp_data('auction_type'))=='forward_auction'))?>Foward Auction
 						</label>
 					</div>
 					<?php echo form_error('auction_type'); ?>
@@ -55,10 +55,10 @@
 								<td>
 									<div class="clearfix">
 										<label class="lbform">
-											<?php echo form_radio(array('name'=>'work_area'),'kantor_pusat',(set_radio('work_area','kantor_pusat')||((isset($work_area)?$work_area:$this->form->get_temp_data('work_area'))=='kantor_pusat'))?TRUE:FALSE)?>Kantor Pusat
+											<?php echo form_radio(array('name'=>'work_area'),'kantor_pusat',set_radio('work_area','kantor_pusat')||((isset($work_area)?$work_area:$this->form->get_temp_data('work_area'))=='kantor_pusat'))?>Kantor Pusat
 										</label>
 										<label class="lbform">
-											<?php echo form_radio(array('name'=>'work_area'),'site_office',(set_radio('work_area','site_office')||((isset($work_area)?$work_area:$this->form->get_temp_data('work_area'))=='site_office'))?TRUE:FALSE)?>Site Office
+											<?php echo form_radio(array('name'=>'work_area'),'site_office',set_radio('work_area','site_office')||((isset($work_area)?$work_area:$this->form->get_temp_data('work_area'))=='site_office'))?>Site Office
 										</label>
 									</div>
 									<?php echo form_error('work_area'); ?>

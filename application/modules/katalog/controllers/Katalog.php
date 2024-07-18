@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Katalog extends CI_Controller {
 
@@ -7,6 +7,7 @@ class Katalog extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('katalog_model','km');
 		
 		$this->load->library('form');
@@ -61,18 +62,18 @@ class Katalog extends CI_Controller {
 			$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
 			$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		}
+  
 		$this->load->view('template',$item);
 	}
 
 
 	public function view($category, $id){
 
-		$id_compare		= $this->session->userdata($category);
+		$this->session->userdata($category);
 
 		$data['category'] = $category;
 
 		$search 	= $this->input->get('q');
-		$page 		= '';
 		$data['item'] 		= $this->km->get_data_barang($id);
 		
 
@@ -98,6 +99,7 @@ class Katalog extends CI_Controller {
 			$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
 			$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		}
+  
 		$this->load->view('template',$item);
 	}
 
@@ -106,9 +108,10 @@ class Katalog extends CI_Controller {
 		$result = $this->km->search_katalog();
 		echo json_encode($result);
 	}
+ 
 	public function tambah($category){
 		$_POST 	= $this->securities->clean_input($_POST,'save');
-		$admin 	= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		// echo [ri]
 
 		$data['category'] = $category;
@@ -147,6 +150,7 @@ class Katalog extends CI_Controller {
 					'rules'=>'callback_do_upload[gambar_barang]'
 					);
 		}
+  
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			// print_r($this->input->post());die;
@@ -167,11 +171,13 @@ class Katalog extends CI_Controller {
 			$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
 			$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		}
+  
 		$this->load->view('template',$item);
 	}
+ 
 	public function edit_barang($category, $id){
 		$_POST 	= $this->securities->clean_input($_POST,'save');
-		$admin 	= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$data 	= $this->km->get_data_barang($id);
 
 		// print_r($data);
@@ -215,6 +221,7 @@ class Katalog extends CI_Controller {
 					'rules'=>'callback_do_upload[gambar_barang]'
 					);
 		}
+  
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			unset($_POST['Simpan']);
@@ -229,11 +236,13 @@ class Katalog extends CI_Controller {
 			}
 
 		}
+  
 		if ($category == 'jasa') {
 			$arr = array('6' => 'Jasa Konsultasi','7' => 'Jasa Konstruksi', '8' => 'Jasa Lainnya');
 		} else {
 			$arr = array('1' => 'Divisi Operasi','10' => 'Divisi Reliability&Quality','18' => 'Departemen Layanan Umum','15' => 'Seksi Sistem Informasi', '3' => 'Departemen Sekretaris Perusahaan', '5' => 'Departemen HSSE');
 		}
+  
 		$data['v_for'] = $data['for'];
 		$data['for'] = $arr;
 		$layout['content']= $this->load->view('edit',$data,TRUE);
@@ -246,6 +255,7 @@ class Katalog extends CI_Controller {
 			$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
 			$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		}
+  
 		$this->load->view('template',$item);
 	}
 
@@ -274,15 +284,15 @@ class Katalog extends CI_Controller {
 			$_POST[$db_name] = $file_name;
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 
 	public function tambah_harga($category, $id){
 		$_POST 	= $this->securities->clean_input($_POST,'save');
-		$admin 	= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$data 	= $this->km->get_data_barang($id);
 		
 		$vld 	= array(
@@ -323,12 +333,13 @@ class Katalog extends CI_Controller {
 			$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
 			$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		}
+  
 		$this->load->view('template',$item);
 	}
 
 	public function edit_harga($id_material,$id,$category){
 		$_POST 	= $this->securities->clean_input($_POST,'save');
-		$admin 	= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$data 	= $this->km->get_harga_barang($id);
 		$barang = $this->km->get_data_barang($id_material);
 		$vld 	= array(
@@ -367,8 +378,10 @@ class Katalog extends CI_Controller {
 			$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
 			$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		}
+  
 		$this->load->view('template',$item);
 	}
+ 
 	public function hapus_harga($category,$id_material,$id){
 		if($this->km->delete_harga($id)){
 			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menghapus data!</p>');
@@ -378,6 +391,7 @@ class Katalog extends CI_Controller {
 			redirect(site_url('katalog/view/'.$category.'/'.$id_material));
 		}
 	}
+ 
 	public function autocomplete(){
 		$keyword	= $this->input->post('keyword');
         $data 		= $this->bm->get_autocomplete($keyword);        
@@ -404,9 +418,7 @@ class Katalog extends CI_Controller {
 
 
 	public function get_chart_data($id){
-		$result = $this->km->data_chart_compare($id);
-		
-		return $result;
+		return $this->km->data_chart_compare($id);
 	}
 
 	public function lihat_perbandingan($category){
@@ -417,6 +429,7 @@ class Katalog extends CI_Controller {
 
 			$id_arr = $id_compare;
 		}
+  
 		$kurs = array();
 
 		$data['item'] 		= $this->km->get_data_compare($id_arr);
@@ -425,25 +438,28 @@ class Katalog extends CI_Controller {
 		foreach($data['item'] as $value){
 			$kurs[] = $value['symbol'];
 		}
+  
 		$data['kurs']		.= implode("','", $kurs);
 		$data['kurs']		.= "'];";
 		// $data['chart'] 		= $this->km->data_chart_compare($id_compare);
 
 
-		foreach ($id_arr as $key => $value) {
+		foreach ($id_arr as $value) {
 			$data['chart'][$value] 							= $this->get_chart_data($value);
 			// $priceYear									= $this->
 
 			// $data['chart'][$value][$key]['avg_years'] 		= $arrayName ;
-			foreach ($data['chart'][$value] as $keyyears 	=> $valueyears) {
+			foreach ($data['chart'][$value] as $valueyears) {
 				// print_r($valueyears);
 				if( $valueyears['years']!=''){
 					$data['years'][$valueyears['years']]	= $valueyears['years'];
 					$data['price'][$value][$valueyears['years']]	= $valueyears['avg_year'];
 				}
+    
 			// print_r($data['chart'][$value]);
 			}
 		}
+  
 		// print_r($data['price']);
 		sort($data['years'],1);
 		$layout['content']	= $this->load->view('compare',$data,TRUE);
@@ -456,6 +472,7 @@ class Katalog extends CI_Controller {
 			$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
 			$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		}
+  
 		$this->load->view('template',$item);
 		
 	}

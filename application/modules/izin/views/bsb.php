@@ -21,8 +21,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($bsb_list)){
-			foreach($bsb_list as $row => $value){
+		if(count($bsb_list) > 0){
+			foreach($bsb_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['bidang_name'];?></td>

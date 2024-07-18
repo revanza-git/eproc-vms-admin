@@ -11,7 +11,7 @@ class Kontrak_model extends CI_Model
 
 	public function get_contract_list($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE)
 	{
-		$result = $this->db->select('ms_contract.*,ms_contract.id id,ms_vendor.name vendor_name')->where('ms_contract.id_procurement',$id)
+		$this->db->select('ms_contract.*,ms_contract.id id,ms_vendor.name vendor_name')->where('ms_contract.id_procurement',$id)
    		->join('ms_procurement','ms_procurement.id=ms_contract.id_procurement')
    		->join('ms_vendor','ms_vendor.id=ms_contract.id_vendor')
    		->where('ms_contract.del',0);
@@ -19,10 +19,12 @@ class Kontrak_model extends CI_Model
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
    		return $this->db->get('ms_contract')->result_array();
 	}
 
@@ -36,13 +38,12 @@ class Kontrak_model extends CI_Model
 		return $this->db->where('del',0)->where('id_proc',$id_procurement)->get('ms_amandemen')->row_array();
 	}
 
-	function edit_data($data,$id){
+	public function edit_data($data,$id){
 		
 		$this->db->where('id',$id);
-		$res = $this->db->update('ms_procurement',$data);
 
 		
-		return $res;
+		return $this->db->update('ms_procurement',$data);
 	}
 
 	public function save_kontrak($data){
@@ -88,7 +89,7 @@ class Kontrak_model extends CI_Model
 
 		$get_kontrak = $this->db->where('id',$id)->get('ms_contract')->row_array();
 
-		$type1 = $this->db->where('type',1)->where('id_procurement',$get_kontrak['id_procurement'])->get('tr_progress_kontrak')->num_rows();
+		$this->db->where('type',1)->where('id_procurement',$get_kontrak['id_procurement'])->get('tr_progress_kontrak')->num_rows();
 		$type2 = $this->db->where('type',2)->where('id_procurement',$get_kontrak['id_procurement'])->get('tr_progress_kontrak')->num_rows();
 
 		if($type2 > 0){
@@ -117,7 +118,11 @@ class Kontrak_model extends CI_Model
 											);
 		}
 
-		if($result)return $id;
+  if ($result) {
+      return $id;
+  }
+
+  return null;
 	}
 
 	public function countContract($id_procurement)
@@ -139,17 +144,19 @@ class Kontrak_model extends CI_Model
 
 	public function get_spk_list($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE)
 	{
-		$result = $this->db->select('ms_spk.*,ms_spk.id id')->where('ms_spk.id_proc',$id)
+		$this->db->select('ms_spk.*,ms_spk.id id')->where('ms_spk.id_proc',$id)
    		->join('ms_procurement','ms_procurement.id=ms_spk.id_proc')
    		->where('ms_spk.del',0);
 		
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
    		return $this->db->get('ms_spk')->result_array();
 	}
 
@@ -233,7 +240,7 @@ class Kontrak_model extends CI_Model
 
 		$spk = $this->get_data_spk($id);
 
-		$cek_jarak = $this->db->where('del',0)->where('id_spk',$id)->where('type',1)->get('tr_progress_kontrak')->row_array();
+		$this->db->where('del',0)->where('id_spk',$id)->where('type',1)->get('tr_progress_kontrak')->row_array();
 
 		// print_r($cek_jarak);die;
 
@@ -264,7 +271,7 @@ class Kontrak_model extends CI_Model
 			'edit_stamp'	=>	date('Y-m-d H:i:s')
 		);
 
-		$up_denda = $this->db->where('id_spk',$id)->where('type',4)->update('tr_progress_kontrak',$u_d);
+		$this->db->where('id_spk',$id)->where('type',4)->update('tr_progress_kontrak',$u_d);
 
 		$this->db->where('id_spk',$id)->where('type',5)->update('tr_progress_kontrak',
 												array(
@@ -298,23 +305,26 @@ class Kontrak_model extends CI_Model
 		if ($last_spk->num_rows() == 0) {
 			$this->db->where('is_kontrak',1)->update('tr_progress_kontrak',array('del'=>0));
 		}
+  
 		// $this->db->where('parent',$id)->where('type',1)->delete('tr_progress_kontrak');
 		return $this->db->where('id_spk',$id)->update('ms_bast',$arr);
 	}
 
 	public function get_amandemen_list($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE)
 	{
-		$result = $this->db->select('ms_amandemen.*,ms_amandemen.id id')->where('ms_amandemen.id_proc',$id)
+		$this->db->select('ms_amandemen.*,ms_amandemen.id id')->where('ms_amandemen.id_proc',$id)
    		->join('ms_procurement','ms_procurement.id=ms_amandemen.id_proc')
    		->where('ms_amandemen.del',0);
 		
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
    		return $this->db->get('ms_amandemen')->result_array();
 	}
 
@@ -330,20 +340,19 @@ class Kontrak_model extends CI_Model
 		$supposed = get_range_date($data['end_date'],$data['start_date']);
 
 		$data_kontrak = $this->db->where('del',0)->where('id_procurement',$data['id_proc'])->get('ms_contract')->row_array();
+  if (count($cek_prog) > 0) {
+      echo 'update pr kontrak';
+      $arr = array(
+   				'start_date'		=> $data['start_date'],
+   				'end_date'			=> $data['end_date'],
+   				'supposed'			=> $supposed,
+   				'edit_stamp'		=> date('Y-m-d H:i:s')
+   			);
+      return $this->db->where('id_amandemen',$id_amandemen)->update('tr_progress_kontrak',$arr);
+  }
 
-		if (count($cek_prog) > 0) {
-			echo 'update pr kontrak';
-			$arr = array(
-				'start_date'		=> $data['start_date'],
-				'end_date'			=> $data['end_date'],
-				'supposed'			=> $supposed,
-				'edit_stamp'		=> date('Y-m-d H:i:s')
-			);
-
-			$return = $this->db->where('id_amandemen',$id_amandemen)->update('tr_progress_kontrak',$arr);
-		} else {
-			echo 'insert ama';
-			$arr = array(
+  echo 'insert ama';
+  $arr = array(
 				'id_procurement'	=> $data['id_proc'],
 				'id_contract'		=> $data_kontrak['id'],
 				'id_amandemen'		=> $id_amandemen,
@@ -357,10 +366,7 @@ class Kontrak_model extends CI_Model
 				'solid_start_date'	=> $data['start_date'],
 			);
 
-			$return = $this->db->insert('tr_progress_kontrak',$arr);
-		}
-
-		return $return;
+		return $this->db->insert('tr_progress_kontrak',$arr);
 	}
 
 	public function get_data_amandemen($id)
@@ -379,20 +385,17 @@ class Kontrak_model extends CI_Model
 		$supposed = 0;
 
 		$data_kontrak = $this->db->where('id_procurement',$data['id_proc'])->get('ms_contract')->row_array();
+  if (!empty($cek_prog)) {
+      $arr = array(
+   				'start_date'		=> $data['start_date'],
+   				'end_date'			=> $data['end_date'],
+   				'supposed'			=> $supposed,
+   				'edit_stamp'		=> date('Y-m-d H:i:s')
+   			);
+      return $this->db->where('id_amandemen',$id)->update('tr_progress_kontrak',$arr);
+  }
 
-		if (!empty($cek_prog)) {
-
-			$arr = array(
-				'start_date'		=> $data['start_date'],
-				'end_date'			=> $data['end_date'],
-				'supposed'			=> $supposed,
-				'edit_stamp'		=> date('Y-m-d H:i:s')
-			);
-
-			$return = $this->db->where('id_amandemen',$id)->update('tr_progress_kontrak',$arr);
-		} else {
-			
-			$arr = array(
+  $arr = array(
 				'id_procurement'	=> $data['id_proc'],
 				'id_contract'		=> $data_kontrak['id'],
 				'id_amandemen'		=> $id,
@@ -404,10 +407,7 @@ class Kontrak_model extends CI_Model
 				'type'				=> 3
 			);
 
-			$return = $this->db->insert('tr_progress_kontrak',$arr);
-		}
-
-		return $return;
+		return $this->db->insert('tr_progress_kontrak',$arr);
 	}
 
 	public function hapus_amandemen($id)
@@ -424,17 +424,19 @@ class Kontrak_model extends CI_Model
 
 	public function get_bast_list($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE)
 	{
-		$result = $this->db->select('ms_bast.*,ms_bast.id id')->where('ms_bast.id_proc',$id)
+		$this->db->select('ms_bast.*,ms_bast.id id')->where('ms_bast.id_proc',$id)
    		->join('ms_procurement','ms_procurement.id=ms_bast.id_proc')
    		->where('ms_bast.del',0);
 		
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
    		return $this->db->get('ms_bast')->result_array();
 	}
 
@@ -449,7 +451,7 @@ class Kontrak_model extends CI_Model
 		$id_bast = $this->db->insert_id();
 
 
-		$cek_prog = $this->db->where('del',0)->where('id_procurement',$data['id_proc'])->where('id_bast',$id_bast)->get('tr_progress_kontrak')->row_array();
+		$this->db->where('del',0)->where('id_procurement',$data['id_proc'])->where('id_bast',$id_bast)->get('tr_progress_kontrak')->row_array();
 
 		$data_kontrak = $this->db->where('del',0)->where('id_procurement',$data['id_proc'])->get('ms_contract')->row_array();
 
@@ -461,7 +463,7 @@ class Kontrak_model extends CI_Model
 									del = 0 AND id_proc = ? AND id != ?
 								order by id desc";
 
-		$bast_before = $this->db->query($query_bast_before,array($data['id_proc'],$id_bast))->row_array();
+		$this->db->query($query_bast_before,array($data['id_proc'],$id_bast))->row_array();
 
 		$supposed = 0;
 
@@ -653,20 +655,16 @@ class Kontrak_model extends CI_Model
    				->select('max(DATE(`end_date`)) as end_date, min(DATE(`start_date`)) as start_date')
    				->where('id_proc',$id_procurement)
    				->where('del',0);
-   		
-   		$res =  $this->db->get('ms_spk')->row_array();
 
-   		return $res;
+   		return $this->db->get('ms_spk')->row_array();
 	}
 
 	public function get_spk_date_by_id($id_spk)
 	{
 		$this->db->where('id',$id_spk)
    				->where('del',0);
-   		
-   		$res =  $this->db->get('ms_spk')->row_array();
 
-   		return $res;
+   		return $this->db->get('ms_spk')->row_array();
 	}
 
 	public function get_contract_date($id_procurement)
@@ -675,10 +673,8 @@ class Kontrak_model extends CI_Model
    				->select('max(DATE(`end_contract`)) as end_date, min(DATE(`start_contract`)) as start_date')
    				->where('id_procurement',$id_procurement)
    				->where('del',0);
-   		
-   		$res =  $this->db->get('ms_contract')->row_array();
 
-   		return $res;
+   		return $this->db->get('ms_contract')->row_array();
 	}
 
 	public function get_amandemen_date($id_procurement)
@@ -687,10 +683,8 @@ class Kontrak_model extends CI_Model
    				->select('max(DATE(`end_date`)) as end_date, min(DATE(`start_date`)) as start_date')
    				->where('id_proc',$id_procurement)
    				->where('del',0);
-   		
-   		$res =  $this->db->get('ms_amandemen')->row_array();
 
-   		return $res;
+   		return $this->db->get('ms_amandemen')->row_array();
 	}
 
 	public function get_data_bast($id)
@@ -755,153 +749,139 @@ class Kontrak_model extends CI_Model
 		}	
 
 		if ($id_spk != '0') {
+      // echo $id_spk." string 1";die;
+      // echo $end_date;die;
+      // print_r($spk);die;
+      if (strtotime($data['end_date']) > strtotime($end_date)) {
+   				// echo "string 1.1";die;
+   				$hari 		  		  = get_range_date($data['end_date'],$spk['end_date']);
+   				// echo $hari;die;
+   				$total_hari			  = ($hari>50)?50:$hari;
+   				// echo $data_kontrak['contract_price'];die;
+   				$denda		  		  = $total_hari/1000 * $data_kontrak['contract_price'];
+   				// echo $denda;die;
+   				$max_denda		  	  = 50/100 * $data_kontrak['contract_price'];
+   				$denda				  = ($denda>$max_denda) ? $max_denda : $denda;
+   
+   				$arr = array(
+   					'id_procurement' => $spk['id_proc'],
+   					'start_date'	 => $spk['end_date'],
+   					'end_date'	 	 => $data['end_date'],
+   					'denda'			 => $denda,
+   					'id_spk'		 => $spk['id'],
+   					'entry_stamp'	 => date('Y-m-d H:i:s')
+   				);
+   
+   				// print_r($arr);die;
+   
+   				$denda_before = $this->db->where('id_spk',$id_spk)->where('type',4)->get('tr_progress_kontrak')->result_array();
+   
+   				if (count($denda_before) > 0) {
+   					$this->db->where('id_spk',$id_spk)->where('type',4)->update('tr_denda',$arr);
+   				} else {
+   					$this->db->insert('tr_denda',$arr);	
+   				}
+   
+   				$arr['id_contract'] = $data_kontrak['id'];
+   				$arr['step_name'] 	= 'Denda';
+   				$arr['type'] 		= 4;
+   				$arr['solid_start_date'] = $spk['start_date'];
+   
+   				if (count($denda_before) > 0) {
+   					$return = $this->db->where('id_spk',$id_spk)->where('type',4)->update('tr_progress_kontrak',$arr);
+   				} else {
+   					$return = $this->db->insert('tr_progress_kontrak',$arr);	
+   				}
+   			} else {
+   				// echo "string 1.2";die;
+   				$this->db->where('id_spk',$spk['id'])->delete('tr_denda');
+   				$this->db->where('id_spk',$spk['id'])->where('type',4)->delete('tr_progress_kontrak');
+   			}
+  } elseif (strtotime($data['end_date']) > strtotime($end_date)) {
+      // echo "string 3";die;
+      // $spk = $this->get_spk_date($cek_prog['id_procurement']);
+      // if ($spk['end_date'] == '' || $spk['start_date'] == '') {
+      // 	$contract = $this->get_contract_date($cek_prog['id_procurement']);
+      // 	$end_date = $contract['end_date'];
+      // } else {
+      // 	$end_date = $spk['end_date'];
+      // }
+      // echo $end_date;die;
+      // echo "string 3.1";die;
+      $hari 		  		  = get_range_date($data['end_date'],$spk['end_date']);
+      // echo $hari;die;
+      $total_hari			  = ($hari>50)?50:$hari;
+      // echo $data_kontrak['contract_price'];die;
+      $denda		  		  = $total_hari/1000 * $data_kontrak['contract_price'];
+      // echo $denda;die;
+      $max_denda		  	  = 50/100 * $data_kontrak['contract_price'];
+      $denda				  = ($denda>$max_denda) ? $max_denda : $denda;
+      $arr = array(
+  					'id_procurement' => $data['id_proc'],
+  					'start_date'	 => $end_date,
+  					'end_date'	 	 => $data['end_date'],
+  					'denda'			 => $denda,
+  					'id_bast'		 => $id_bast,
+  					'entry_stamp'	 => date('Y-m-d H:i:s')
+  				);
+      $denda_before = $this->db->where('id_bast',$id_bast)->where('type',4)->get('tr_progress_kontrak')->result_array();
+      // print_r($arr);die;
+      if (!empty($denda_before)) {
+  					$this->db->where('id_bast',$id_bast)->update('tr_denda',$arr);
+  				} else {
+  					$this->db->insert('tr_denda',$arr);
+  				}
 
-			// echo $id_spk." string 1";die;
-			// echo $end_date;die;
-			// print_r($spk);die;
+      $arr['solid_start_date'] = $data['end_date'];
+      $arr['id_contract'] = $data_kontrak['id'];
+      $arr['step_name'] 	= 'Denda';
+      $arr['type'] 		= 4;
+      if (!empty($denda_before)) {
+  					$this->db->where('id_bast',$id_bast)->update('tr_progress_kontrak',$arr);
+  				} else {
+  					$this->db->insert('tr_progress_kontrak',$arr);
+  				}
 
-			if (strtotime($data['end_date']) > strtotime($end_date)) {
-				// echo "string 1.1";die;
-				$hari 		  		  = get_range_date($data['end_date'],$spk['end_date']);
-				// echo $hari;die;
-				$total_hari			  = ($hari>50)?50:$hari;
-				// echo $data_kontrak['contract_price'];die;
-				$denda		  		  = $total_hari/1000 * $data_kontrak['contract_price'];
-				// echo $denda;die;
-				$max_denda		  	  = 50/100 * $data_kontrak['contract_price'];
-				$denda				  = ($denda>$max_denda) ? $max_denda : $denda;
-
-				$arr = array(
-					'id_procurement' => $spk['id_proc'],
-					'start_date'	 => $spk['end_date'],
-					'end_date'	 	 => $data['end_date'],
-					'denda'			 => $denda,
-					'id_spk'		 => $spk['id'],
-					'entry_stamp'	 => date('Y-m-d H:i:s')
-				);
-
-				// print_r($arr);die;
-
-				$denda_before = $this->db->where('id_spk',$id_spk)->where('type',4)->get('tr_progress_kontrak')->result_array();
-
-				if (count($denda_before) > 0) {
-					$this->db->where('id_spk',$id_spk)->where('type',4)->update('tr_denda',$arr);
-				} else {
-					$this->db->insert('tr_denda',$arr);	
-				}
-
-				$arr['id_contract'] = $data_kontrak['id'];
-				$arr['step_name'] 	= 'Denda';
-				$arr['type'] 		= 4;
-				$arr['solid_start_date'] = $spk['start_date'];
-
-				if (count($denda_before) > 0) {
-					$return = $this->db->where('id_spk',$id_spk)->where('type',4)->update('tr_progress_kontrak',$arr);
-				} else {
-					$return = $this->db->insert('tr_progress_kontrak',$arr);	
-				}
-			} else {
-				// echo "string 1.2";die;
-				$this->db->where('id_spk',$spk['id'])->delete('tr_denda');
-				$this->db->where('id_spk',$spk['id'])->where('type',4)->delete('tr_progress_kontrak');
-			}
-		}else{
-			// echo "string 3";die;
-			// $spk = $this->get_spk_date($cek_prog['id_procurement']);
-
-			// if ($spk['end_date'] == '' || $spk['start_date'] == '') {
-			// 	$contract = $this->get_contract_date($cek_prog['id_procurement']);
-			// 	$end_date = $contract['end_date'];
-			// } else {
-			// 	$end_date = $spk['end_date'];
-			// }
-			// echo $end_date;die;
-			if (strtotime($data['end_date']) > strtotime($end_date)) {
-				// echo "string 3.1";die;
-			
-				$hari 		  		  = get_range_date($data['end_date'],$spk['end_date']);
-				// echo $hari;die;
-				$total_hari			  = ($hari>50)?50:$hari;
-				// echo $data_kontrak['contract_price'];die;
-				$denda		  		  = $total_hari/1000 * $data_kontrak['contract_price'];
-				// echo $denda;die;
-				$max_denda		  	  = 50/100 * $data_kontrak['contract_price'];
-				$denda				  = ($denda>$max_denda) ? $max_denda : $denda;
-
-				$arr = array(
-					'id_procurement' => $data['id_proc'],
-					'start_date'	 => $end_date,
-					'end_date'	 	 => $data['end_date'],
-					'denda'			 => $denda,
-					'id_bast'		 => $id_bast,
-					'entry_stamp'	 => date('Y-m-d H:i:s')
-				);
-
-				$denda_before = $this->db->where('id_bast',$id_bast)->where('type',4)->get('tr_progress_kontrak')->result_array();
-
-				// print_r($arr);die;
-				if (!empty($denda_before)) {
-					$this->db->where('id_bast',$id_bast)->update('tr_denda',$arr);
-				} else {
-					$this->db->insert('tr_denda',$arr);
-				}				
-				
-				$arr['solid_start_date'] = $data['end_date'];
-				$arr['id_contract'] = $data_kontrak['id'];
-				$arr['step_name'] 	= 'Denda';
-				$arr['type'] 		= 4;
-
-				if (!empty($denda_before)) {
-					$this->db->where('id_bast',$id_bast)->update('tr_progress_kontrak',$arr);
-				} else {
-					$this->db->insert('tr_progress_kontrak',$arr);
-				}				
-
-				$arr_ = array(
-					'id_procurement'	=> $data['id_proc'],
-					'id_contract'		=> $data_kontrak['id'],
-					'id_bast'			=> $id,
-					'step_name'			=> $bast_type,
-					'start_date'		=> $data['end_date'],
-					'end_date'			=> $data['end_date'],
-					'supposed'			=> $supposed,
-					'entry_stamp'		=> date('Y-m-d H:i:s'),
-					'type'				=> 5,
-					'solid_start_date'	=> $data['end_date']
-				);
-
-				if (!empty($denda_before)) {
-					$return = $this->db->where('id_bast',$id_bast)->update('tr_progress_kontrak',$arr_);
-				} else {
-					$return = $this->db->insert('tr_progress_kontrak',$arr_);
-				}
-				
-
-			} else {
+      $arr_ = array(
+  					'id_procurement'	=> $data['id_proc'],
+  					'id_contract'		=> $data_kontrak['id'],
+  					'id_bast'			=> $id,
+  					'step_name'			=> $bast_type,
+  					'start_date'		=> $data['end_date'],
+  					'end_date'			=> $data['end_date'],
+  					'supposed'			=> $supposed,
+  					'entry_stamp'		=> date('Y-m-d H:i:s'),
+  					'type'				=> 5,
+  					'solid_start_date'	=> $data['end_date']
+  				);
+      if (!empty($denda_before)) {
+  					$return = $this->db->where('id_bast',$id_bast)->update('tr_progress_kontrak',$arr_);
+  				} else {
+  					$return = $this->db->insert('tr_progress_kontrak',$arr_);
+  				}
+  } else {
 
 				$this->db->where('id_bast',$id)->delete('tr_denda');
 				$this->db->where('id_bast',$id)->where('type',4)->delete('tr_progress_kontrak');
 				// $this->db->where('id_bast',$id)->where('type',5)->delete('tr_progress_kontrak');
 			}
-		}
 
-		if (!empty($cek_prog)) {
-			// echo "string 2.2";die;
-			$arr = array(
-				'step_name'			=> $bast_type,
-				'start_date'		=> $data['end_date'],
-				'end_date'			=> $data['end_date'],
-				'supposed'			=> $supposed,
-				'edit_stamp'		=> date('Y-m-d H:i:s'),
-				'solid_start_date'	=> $data['end_date']
-			);
+  if (!empty($cek_prog)) {
+      // echo "string 2.2";die;
+      $arr = array(
+   				'step_name'			=> $bast_type,
+   				'start_date'		=> $data['end_date'],
+   				'end_date'			=> $data['end_date'],
+   				'supposed'			=> $supposed,
+   				'edit_stamp'		=> date('Y-m-d H:i:s'),
+   				'solid_start_date'	=> $data['end_date']
+   			);
+      $this->db->where('del',0)->where('id_bast',$id)->update('tr_progress_kontrak',$arr);
+      return $this->db->where('del',0)->where('parent',$id)->update('tr_progress_kontrak',$arr);
+  }
 
-			$this->db->where('del',0)->where('id_bast',$id)->update('tr_progress_kontrak',$arr);
-
-			$return = $this->db->where('del',0)->where('parent',$id)->update('tr_progress_kontrak',$arr);
-		} else {
-			// echo "string 2.3";die;
-			$arr = array(
+  // echo "string 2.3";die;
+  $arr = array(
 				'id_procurement'	=> $data['id_proc'],
 				'id_contract'		=> $data_kontrak['id'],
 				'id_bast'			=> $id,
@@ -914,10 +894,7 @@ class Kontrak_model extends CI_Model
 				'solid_start_date'	=> $data['end_date']
 			);
 
-			$return = $this->db->insert('tr_progress_kontrak',$arr);
-		}
-
-		return $return;
+		return $this->db->insert('tr_progress_kontrak',$arr);
 	}
 
 	public function hapus_bast($id)
@@ -931,13 +908,13 @@ class Kontrak_model extends CI_Model
 		return $this->db->where('id',$id)->update('ms_bast',$arr);
 	}
 
-	function get_realization($id,$id_spk){
+	public function get_realization($id,$id_spk){
    		$data_kontrak = $this->get_data_kontrak($id);
    		$date_range = $this->get_date_range($id,$id_spk);
 
    		if(isset($date_range['end_date'])||isset($date_range['start_date'])){
 
-	   		$max_date	= (!empty($date_range['end_date'])) ? $date_range['end_date'] : date('Y-m-d');
+	   		$max_date	= (empty($date_range['end_date'])) ? date('Y-m-d') : $date_range['end_date'];
 	   		
 			$day_total 	= get_range_date($max_date,$date_range['start_date']);
 			$day_total 	+= $this->get_denda_day($id_procurement,$id_spk);
@@ -946,7 +923,10 @@ class Kontrak_model extends CI_Model
 			
 			$day_now = get_range_date($date,$date_range['start_date']);
 			$result['range'] = ($day_now / $day_total * 100);
-			if($result['range']>100) $result['range'] = 100;
+   if ($result['range']>100) {
+       $result['range'] = 100;
+   }
+   
 			$range_step = 	array(
 								'Jangka Waktu Kontrak'						=>	$this->get_kontrak_day($id,$id_spk),
 								'Jangka Waktu Pelaksanaan Pekerjaan'		=>	$this->get_work_day($id,$id_spk),
@@ -959,10 +939,12 @@ class Kontrak_model extends CI_Model
 			$range_step['Denda']	=	$this->get_denda($id,$id_spk);
 
 			foreach($range_step as $key => $value){
-				if(strtotime($date) >= strtotime($value['start_date']) && strtotime($date) <= strtotime($value['end_date']))
-					$step = $key;
+				if (strtotime($date) >= strtotime($value['start_date']) && strtotime($date) <= strtotime($value['end_date'])) {
+        $step = $key;
+    }
 
 			}
+   
 			$result['step'] = $step;
 			$result['date'] = $date;
 			$result['now'] = $day_now;
@@ -971,12 +953,12 @@ class Kontrak_model extends CI_Model
 		return $result;
    	}
 
-	function get_graph($id,$id_procurement,$id_spk){
+	public function get_graph($id,$id_procurement,$id_spk){
 
    		$data = $this->get_contract_progress($id,$id_spk);
 
-   		$data_kontrak 		= $this->get_data_kontrak($id_procurement);
-   		$amandemen_range 	= $this->get_amandemen_range($id_procurement,$id_spk);
+   		$this->get_data_kontrak($id_procurement);
+   		$this->get_amandemen_range($id_procurement,$id_spk);
    		$result = array();
    		$total_supposed = 0;
 
@@ -1009,32 +991,26 @@ class Kontrak_model extends CI_Model
 	   		$kontrak_date['supposed'] 	-= $date;
 
 
-	   		if(strtotime($value['start_date']) > strtotime($kontrak_date['end_date'])){
-
-   				$result['data'][]	=	array(
-   												'type'  => $value['type'],
-   												'value' => $date,
-   												'range' => $date,
-   												'label' => $amandemen[$key]['step_name'].'( '.$date.' Hari ) '.default_date($amandemen[$key]['start_date']).' - '.default_date($amandemen[$key]['end_date']),
-   												'step'	=> $amandemen[$key]['step_name'],
-   												);
-
-   				$total_supposed+= $date;
-
-	   		}else{
-	   			if(strtotime($value['end_date']) <= strtotime($kontrak_date['end_date'])){
-	   				
-		   			$result['data'][]	=	array(
-	   												'type'  => $value['type'],
-	   												'value' => $date,
-	   												'range' => $date,
-	   												'label' => $amandemen[$key]['step_name'].'( '.$date.' Hari ) '.default_date($amandemen[$key]['start_date']).' - '.default_date($amandemen[$key]['end_date']).'<br>'.$label_kontrak,
-	   												'step'	=> $amandemen[$key]['step_name'],
-	   												'gap'	=> true,
-	   												);
-	   				$total_supposed+= $date;
-
-	   			}else{
+	   		if (strtotime($value['start_date']) > strtotime($kontrak_date['end_date'])) {
+          $result['data'][]	=	array(
+      												'type'  => $value['type'],
+      												'value' => $date,
+      												'range' => $date,
+      												'label' => $amandemen[$key]['step_name'].'( '.$date.' Hari ) '.default_date($amandemen[$key]['start_date']).' - '.default_date($amandemen[$key]['end_date']),
+      												'step'	=> $amandemen[$key]['step_name'],
+      												);
+          $total_supposed+= $date;
+      } elseif (strtotime($value['end_date']) <= strtotime($kontrak_date['end_date'])) {
+          $result['data'][]	=	array(
+  	   												'type'  => $value['type'],
+  	   												'value' => $date,
+  	   												'range' => $date,
+  	   												'label' => $amandemen[$key]['step_name'].'( '.$date.' Hari ) '.default_date($amandemen[$key]['start_date']).' - '.default_date($amandemen[$key]['end_date']).'<br>'.$label_kontrak,
+  	   												'step'	=> $amandemen[$key]['step_name'],
+  	   												'gap'	=> true,
+  	   												);
+          $total_supposed+= $date;
+      } else{
 	   				$date_gap			=	get_range_date($kontrak_date['end_date'],$value['start_date']);
 	   				$date_remain		=	get_range_date($value['end_date'],$kontrak_date['end_date']);
 	   				
@@ -1058,7 +1034,6 @@ class Kontrak_model extends CI_Model
 	   				$total_supposed+= $date_remain;
 
 	   			}
-	   		}
 
 
 	   	}
@@ -1071,27 +1046,25 @@ class Kontrak_model extends CI_Model
    			$date 						= get_range_date($denda['end_date'],$denda['start_date']);
    			$kontrak_date['supposed']	-= $date;
 
-   			if(strtotime($denda['start_date']) > strtotime($kontrak_date['end_date'])){
-				$result['data'][] 			= 	array(
-														'type'	=> 5,
-														'value' => $denda_day,
-														'range' => $date,
-														'label' => 'Denda ( '.$date.' Hari ) '.default_date($denda['start_date']).' - '.default_date($denda['end_date']).' '.$data['denda_price']
-													);
-				$total_supposed+= $date;
-			}else{
-				if(strtotime($denda['end_date']) <= strtotime($kontrak_date['end_date'])){
-					// echo $denda_day['end_date'].' '.$kontrak_date['end_date'];
-		   			$result['data'][] 			= 	array(
-														'type'	=> 5,
-														'value' => $denda_day,
-														'range' => $date,
-														'label' => $label_kontrak.'<br>'.'Denda ( '.$date.' Hari ) '.default_date($denda['start_date']).' - '.default_date($denda['end_date']).' '.$data['denda_price'],
-														'gap'	=> true
-													);
-	   				$total_supposed+= $date;
-	   			}
-	   			else{
+   			if (strtotime($denda['start_date']) > strtotime($kontrak_date['end_date'])) {
+          $result['data'][] 			= 	array(
+      														'type'	=> 5,
+      														'value' => $denda_day,
+      														'range' => $date,
+      														'label' => 'Denda ( '.$date.' Hari ) '.default_date($denda['start_date']).' - '.default_date($denda['end_date']).' '.$data['denda_price']
+      													);
+          $total_supposed+= $date;
+      } elseif (strtotime($denda['end_date']) <= strtotime($kontrak_date['end_date'])) {
+          // echo $denda_day['end_date'].' '.$kontrak_date['end_date'];
+          $result['data'][] 			= 	array(
+  														'type'	=> 5,
+  														'value' => $denda_day,
+  														'range' => $date,
+  														'label' => $label_kontrak.'<br>'.'Denda ( '.$date.' Hari ) '.default_date($denda['start_date']).' - '.default_date($denda['end_date']).' '.$data['denda_price'],
+  														'gap'	=> true
+  													);
+          $total_supposed+= $date;
+      } else{
 	   				$date_gap		=	get_range_date($kontrak_date['end_date'],$denda['start_date']);
 	   				$date_remain		=	get_range_date($denda['end_date'],$kontrak_date['end_date']);
 					
@@ -1114,7 +1087,6 @@ class Kontrak_model extends CI_Model
 	   				$total_supposed+= $date_remain;
 
 	   			}
-			}
 	   		
 	   	}
 
@@ -1140,17 +1112,15 @@ class Kontrak_model extends CI_Model
    		return $result;
    	}
 
-   	function get_contract_progress($id,$id_spk){
+   	public function get_contract_progress($id,$id_spk){
    		if ($id_spk == '' || $id_spk == null) {
-   			$arr = $this->db->select('id,step_name,start_date,end_date,supposed,type')->where('id_contract',$id)->where('del',0)->get('tr_progress_kontrak')->result_array();
-   		} else {
-   			$arr = $this->db->select('id,step_name,start_date,end_date,supposed,type')->where('id_contract',$id)->where('id_spk',$id_spk)->where('del',0)->get('tr_progress_kontrak')->result_array();
-   		}
+         return $this->db->select('id,step_name,start_date,end_date,supposed,type')->where('id_contract',$id)->where('del',0)->get('tr_progress_kontrak')->result_array();
+     }
    		
-   		return $arr;
+   		return $this->db->select('id,step_name,start_date,end_date,supposed,type')->where('id_contract',$id)->where('id_spk',$id_spk)->where('del',0)->get('tr_progress_kontrak')->result_array();
    	}
 
-   	function get_amandemen_range($id,$id_spk){
+   	public function get_amandemen_range($id,$id_spk){
    		$this->db
    				->select('max(DATE(`end_date`)) as end_date, min(DATE(`start_date`)) as start_date')
    				->where('type',3)
@@ -1164,44 +1134,49 @@ class Kontrak_model extends CI_Model
    		if($res->num_rows()>0){
 	   		return $res->row_array();
 	   	}
+     
 	   	return false;
    	}
 
-   	function get_work_day($id,$id_spk){
+   	public function get_work_day($id,$id_spk){
    		if ($id_spk != '' || $id_spk != null) {
    			$this->db->where('id_spk',$id_spk);
    		}
+     
    		return $this->db->where('type',2)->where('id_procurement',$id)->get('tr_progress_kontrak')->row_array();
    	}
 
-   	function get_kontrak_day($id,$id_spk){
+   	public function get_kontrak_day($id,$id_spk){
    		if ($id_spk != '' || $id_spk != null) {
    			$this->db->where('id_spk',$id_spk);
    		}
+     
    		return $this->db->where('type',1)->where('id_procurement',$id)->get('tr_progress_kontrak')->row_array();
    	}
 
-   	function get_amandemen_day($id,$id_spk){
+   	public function get_amandemen_day($id,$id_spk){
    		if ($id_spk != '' || $id_spk != null) {
    			$this->db->where('id_spk',$id_spk);
    		}
+     
    		return $this->db->where('type',3)->where('id_procurement',$id)->get('tr_progress_kontrak')->result_array();
    	}
 
-   	function get_denda_day($id,$id_spk){
+   	public function get_denda_day($id,$id_spk){
    		if ($id_spk != '' || $id_spk != null) {
    			$this->db->where('id_spk',$id_spk);
    		}
+     
    		$data = $this->db->where('id_procurement',$id)->get('tr_denda')->row_array();
    		// echo $this->db->last_query();
    		if($data['end_date']!='' && $data['end_date']!='') {
    			return (ceil(strtotime($data['end_date']) - strtotime($data['start_date']))/86400)+1;
-   		}else{
-   			return 0;
    		}
+
+     return 0;
    	}
 
-   	function get_date_range($id,$id_spk){
+   	public function get_date_range($id,$id_spk){
    		$this->db
    				->select('max(DATE(`end_date`)) as end_date, min(DATE(`start_date`)) as start_date')
    				->where('id_procurement',$id);
@@ -1209,20 +1184,19 @@ class Kontrak_model extends CI_Model
    		if ($id_spk != '' || $id_spk != null) {
    			$this->db->where('id_spk',$id_spk);
    		}
-   		
-   		$res =  $this->db->get('tr_progress_kontrak')->row_array();
 
-   		return $res;
+   		return $this->db->get('tr_progress_kontrak')->row_array();
    	}
 
-   	function get_denda($id,$id_spk){
+   	public function get_denda($id,$id_spk){
    		if ($id_spk != '' || $id_spk != null) {
    			$this->db->where('id_spk',$id_spk);
    		}
+     
    		return $this->db->where('id_procurement',$id)->get('tr_denda')->row_array();
    	}
 
-   	function get_paket_progress($id,$id_spk){
+   	public function get_paket_progress($id,$id_spk){
    		if ($id_spk != '' || $id_spk != null) {
    			$this->db->where('id_spk',$id_spk);
    		}
@@ -1256,10 +1230,11 @@ class Kontrak_model extends CI_Model
 		foreach ($result as $key => $value) {
 			$result[$key]['percent'] = floor($value['day_range'] / $total_day * 100);
 		}
+  
 		return $result;
    	}
 
-   	function get_denda_price($id){
+   	public function get_denda_price($id){
    		$data_kontrak = $this->get_data_kontrak($id);
 
 		$data['denda'] = $this->get_denda($id);
@@ -1267,11 +1242,11 @@ class Kontrak_model extends CI_Model
 		if(isset($data['denda']['end_date'])||$data['denda']['start_date']){
 			$add_date = 1;
 		}
+  
 		$day_denda 		= (ceil(strtotime($data['denda']['end_date']) - strtotime($data['denda']['start_date']))/86400)+$add_date;
 		$max_denda = $data_kontrak['contract_price'] * 5 / 100;
 		$cur_price = $data_kontrak['contract_price'] / 1000 * $day_denda;
-		$denda_price = ($max_denda<$cur_price) ? $max_denda : $cur_price;
-		return $denda_price;
+		return ($max_denda<$cur_price) ? $max_denda : $cur_price;
    	}
 	
 	public function get_kurs($id)
@@ -1286,9 +1261,10 @@ class Kontrak_model extends CI_Model
 						->get('ms_procurement_kurs')
 						->result_array();*/
 		$b = array();
-		foreach ($a as $key => $value) {
+		foreach ($a as $value) {
 			$b[$value['id']] = $value['symbol'];
 		}
+  
 		return $b;
 	}
 }

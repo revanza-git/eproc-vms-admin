@@ -2,7 +2,7 @@
 	<?php echo $this->utility->tabNav($tabNav,'tatacara');?>
 	
 	<div class="tableWrapper" style="margin-bottom: 20px">
-	<?php if($this->session->userdata('admin')['id_role']==6|7){ ?>
+	<?php if(($this->session->userdata('admin')['id_role']==6|7) !== 0){ ?>
 	<div class="btnTopGroup clearfix"><?php echo $this->session->flashdata('msgSuccess')?>
 		<form method="POST" enctype="multipart/form-data">
 			<h2>Tata Cara</h2>
@@ -31,5 +31,6 @@
 		</form>
 	</div>
 	</div>
-	<?php } ?>
+	<?php }
+ ?>
 </div>

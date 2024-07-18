@@ -20,25 +20,25 @@
 			</thead>
 			<tbody>
 			<?php 
-			if(count($pengurus_list)){
-				foreach($pengurus_list as $row => $value){
+			if(count($pengurus_list) > 0){
+				foreach($pengurus_list as $penguru_list){
 				?>
 					<tr>
-						<td><?php echo $value['name'];?></td>
-						<td><?php echo $value['no_identitas'];?></td>
+						<td><?php echo $penguru_list['name'];?></td>
+						<td><?php echo $penguru_list['no_identitas'];?></td>
 						<td>
-							<?php echo ($value['expire_date']=='lifetime')?'Seumur Hidup': ((strtotime($value['expire_date']) > 0) ? default_date($value['expire_date']) : "-");?>
+							<?php echo ($penguru_list['expire_date']=='lifetime')?'Seumur Hidup': ((strtotime($penguru_list['expire_date']) > 0) ? default_date($penguru_list['expire_date']) : "-");?>
 						</td>
-						<td><?php echo $value['position'];?></td>
-						<td><?php echo $value['position_expire'];?></td>
-						<td><?php echo $value['akta_no'];?></td>
-						<td><a href="<?php echo BASE_LINK_EXTERNAL.('lampiran/pengurus_file/'.$value['pengurus_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
-						<td><input type="checkbox" name="pengurus[<?php echo $value['id']?>][mandatory]" value="1" <?php echo $this->data_process->set_mandatory($value['data_status']);?>></td>
+						<td><?php echo $penguru_list['position'];?></td>
+						<td><?php echo $penguru_list['position_expire'];?></td>
+						<td><?php echo $penguru_list['akta_no'];?></td>
+						<td><a href="<?php echo BASE_LINK_EXTERNAL.('lampiran/pengurus_file/'.$penguru_list['pengurus_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
+						<td><input type="checkbox" name="pengurus[<?php echo $penguru_list['id']?>][mandatory]" value="1" <?php echo $this->data_process->set_mandatory($penguru_list['data_status']);?>></td>
 						<td class="actionBlock">
-							<input type="radio" name="pengurus[<?php echo $value['id']?>][status]" value="1" <?php echo $this->data_process->set_yes_no(1,$value['data_status']);?>>
+							<input type="radio" name="pengurus[<?php echo $penguru_list['id']?>][status]" value="1" <?php echo $this->data_process->set_yes_no(1,$penguru_list['data_status']);?>>
 						</td>
 						<td class="actionBlock">
-							<input type="radio" name="pengurus[<?php echo $value['id']?>][status]" value="0" <?php echo $this->data_process->set_yes_no(0,$value['data_status']);?>>
+							<input type="radio" name="pengurus[<?php echo $penguru_list['id']?>][status]" value="0" <?php echo $this->data_process->set_yes_no(0,$penguru_list['data_status']);?>>
 						</td>
 					</tr>
 				<?php 
@@ -61,5 +61,6 @@
 <div class="buttonRegBox clearfix">
 	<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 </div>
-<?php }?>
+<?php }
+  ?>
 </form>

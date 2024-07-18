@@ -1,8 +1,9 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Kontrak extends CI_Controller {
 
 	public $id_pengadaan;
+ 
 	public $tabNav;
 
 	public function __construct(){
@@ -17,15 +18,9 @@ class Kontrak extends CI_Controller {
 		$this->load->model('kontrak_model','km');
 		$this->load->model('kontrak_model_test','kmt');
 		$this->load->model('graph_model','gm');
-		
-		if ($this->uri->segment(3) === FALSE)
-		{
-		    $this->id_pengadaan = 0;
-		}
-		else
-		{
-		   	$this->id_pengadaan = $this->uri->segment(3);
-		}
+
+  $this->id_pengadaan = $this->uri->segment(3) === FALSE ? 0 : $this->uri->segment(3);
+  
 		$array = array(
 						'kontrak'=>	array(
 								'url' 	=> site_url('kontrak/view/'.$this->id_pengadaan.'/kontrak#tabNav'),
@@ -85,7 +80,7 @@ class Kontrak extends CI_Controller {
 
 		$search = $this->input->get('q');
 		$page = '';
-		$post = $this->input->post();
+		$this->input->post();
 
 		$per_page=10;
 
@@ -124,7 +119,7 @@ class Kontrak extends CI_Controller {
 	public function edit($id)
 	{
 		$_POST = $this->securities->clean_input($_POST,'save');
-		$admin = $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$vld = 	array(
 			array(
 				'field'=>'name',
@@ -194,6 +189,7 @@ class Kontrak extends CI_Controller {
 					);
 				}
 			}
+   
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			
@@ -208,6 +204,7 @@ class Kontrak extends CI_Controller {
 				redirect(site_url('kontrak/view/'.$id.''));
 			}
 		}
+  
 		$data = $this->pm->get_pengadaan($id);
 
 		$arr = array('jasa_konstruksi' => 'Jasa Konstruksi', 'jasa_konsultasi' => 'Jasa Konsultasi', 'jasa_lainnya' => 'Jasa Lainnya','jasa_konsultan_non_konstruksi' => 'Jasa Konsultan non-Konstruksi', 'jasa_konsultan_konstruksi' => 'Jasa Konsultan Perencana/Pengawas Konstruksi');
@@ -233,9 +230,9 @@ class Kontrak extends CI_Controller {
 		if($idr_field==''&&$kurs_field==''){
 			$this->form_validation->set_message('check_nilai','Isi salah satu');
 			return false;
-		}else{
-			return true;
 		}
+
+  return true;
 	}
 
 	public function kontrak($id){
@@ -243,14 +240,15 @@ class Kontrak extends CI_Controller {
 		$per_page				= 10;
 		$data['pagination'] 	= $this->utility->generate_page('kontrak/view/'.$id.'/'.$page,$data['sort'], $per_page,  $this->km->get_contract_list($id,'', $data['sort'], '','',FALSE));
 		$data['list'] 			= $this->km->get_contract_list($id,'', $data['sort'], '','',FALSE);
-		$admin 					= $this->session->userdata('admin');
-		$data_kontrak 			= $this->pm->get_kontrak($id);
+		$this->session->userdata('admin');
+		$this->pm->get_kontrak($id);
 		$data['tabNav'] 		= $this->tabNav;
 		$data['winner'] 		= $this->pm->get_winner_vendor($id);
 		
 		if (!empty($this->gm->get_graph($id))) {
 			$data['graph']			= $this->gm->get_graph($id);
 		}
+  
 		// print_r($this->gm->get_graph($id));die;
 		
 		$data['id'] 			= $id;
@@ -261,12 +259,14 @@ class Kontrak extends CI_Controller {
 	public function tambah_kontrak($id)
 	{
 		$admin = $this->session->userdata('admin');
+  if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
 
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
-		$user = $this->session->userdata('user');
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
+  $this->session->userdata('user');
 		$layout['get_dpt_type'] = $this->im->get_dpt_type();
 		// echo 'dpt type'; print_r($this->im->get_dpt_type());		
 		$layout['winner'] 		= $this->pm->get_winner_vendor($id);
@@ -322,6 +322,7 @@ class Kontrak extends CI_Controller {
 				redirect(site_url('kontrak/view/'.$id.'/kontrak'.'#tabNav'));
 			}
 		}
+  
 		$layout['content']= $this->load->view('tab/tambah_kontrak',$layout,TRUE);
 
 		$item['header'] = $this->load->view('admin/header',$admin,TRUE);
@@ -334,11 +335,14 @@ class Kontrak extends CI_Controller {
 		$admin = $this->session->userdata('admin');
 
 		$data = $this->km->get_data_kontrak($id);
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
-		$user = $this->session->userdata('user');
+  if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
+
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
+  $this->session->userdata('user');
 		$layout['get_dpt_type'] = $this->im->get_dpt_type();
 		$data['winner'] 		= $this->pm->get_winner_vendor($id_proc);
 		$data['kurs'] = $this->km->get_kurs($id_proc);
@@ -374,6 +378,7 @@ class Kontrak extends CI_Controller {
 					);
 				}
 			}
+  
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			// echo "string";die;
@@ -387,6 +392,7 @@ class Kontrak extends CI_Controller {
 				redirect(site_url('kontrak/view/'.$id_proc.'/kontrak'.'#tabNav'));
 			}
 		}
+  
 		$layout['content']= $this->load->view('tab/edit_kontrak',$data,TRUE);
 
 		$item['header'] = $this->load->view('admin/header',$admin,TRUE);
@@ -411,7 +417,7 @@ class Kontrak extends CI_Controller {
 		$data['count_contract'] = $this->km->countContract($id);
 		$data['pagination'] 	= $this->utility->generate_page('kontrak/view/'.$id.'/'.$page,$data['sort'], $per_page,  $this->km->get_spk_list($id,'', $data['sort'], '','',FALSE));
 		$data['list'] 			= $this->km->get_spk_list($id,'', $data['sort'], '','',FALSE);
-		$admin 					= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$data['tabNav'] 		= $this->tabNav;		
 		$data['id'] 			= $id;
 
@@ -427,12 +433,14 @@ class Kontrak extends CI_Controller {
 	public function tambah_spk($id)
 	{
 		$admin = $this->session->userdata('admin');
+  if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
 
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
-		$user = $this->session->userdata('user');
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
+  $this->session->userdata('user');
 		$layout['get_dpt_type'] = $this->im->get_dpt_type();
 		$vld = 	array(
 					array(
@@ -471,6 +479,7 @@ class Kontrak extends CI_Controller {
 				redirect(site_url('kontrak/view/'.$id.'/spk'.'#tabNav'));
 			}
 		}
+  
 		$layout['content']= $this->load->view('tab/tambah_spk',$layout,TRUE);
 
 		$item['header'] = $this->load->view('admin/header',$admin,TRUE);
@@ -483,11 +492,14 @@ class Kontrak extends CI_Controller {
 		$admin = $this->session->userdata('admin');
 
 		$data = $this->km->get_data_spk($id);
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
-		$user = $this->session->userdata('user');
+  if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
+
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
+  $this->session->userdata('user');
 		$vld = 	array(
 					array(
 						'field'=>'no',
@@ -519,6 +531,7 @@ class Kontrak extends CI_Controller {
 					);
 				}
 			}
+  
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			$_POST['edit_stamp'] = date("Y-m-d H:i:s");
@@ -530,6 +543,7 @@ class Kontrak extends CI_Controller {
 				redirect(site_url('kontrak/view/'.$id_proc.'/spk'.'#tabNav'));
 			}
 		}
+  
 		$layout['content']= $this->load->view('tab/edit_spk',$data,TRUE);
 
 		$item['header'] = $this->load->view('admin/header',$admin,TRUE);
@@ -548,13 +562,13 @@ class Kontrak extends CI_Controller {
 		}
 	}
 
-	public function amandemen($id=0,$page,$id_amandemen=0){
+	public function amandemen($page, $id=0,$id_amandemen=0){
 		$data['sort'] 			= $this->utility->generateSort(array('no', 'contract_date', 'contract_file'));
 		$per_page				= 10;
 		$data['count_contract'] = $this->km->countContract($id);
 		$data['pagination'] 	= $this->utility->generate_page('kontrak/view/'.$id.'/'.$page,$data['sort'], $per_page,  $this->km->get_amandemen_list($id,'', $data['sort'], '','',FALSE));
 		$data['list'] 			= $this->km->get_amandemen_list($id,'', $data['sort'], '','',FALSE);
-		$admin 					= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$data['tabNav'] 		= $this->tabNav;		
 		$data['id'] = $id;
 
@@ -568,12 +582,14 @@ class Kontrak extends CI_Controller {
 	public function tambah_amandemen($id)
 	{
 		$admin = $this->session->userdata('admin');
+  if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
 
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
-		$user = $this->session->userdata('user');
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
+  $this->session->userdata('user');
 		$layout['get_dpt_type'] = $this->im->get_dpt_type();
 		$vld = 	array(
 					array(
@@ -609,6 +625,7 @@ class Kontrak extends CI_Controller {
 				redirect(site_url('kontrak/view/'.$id.'/amandemen'.'#tabNav'));
 			}
 		}
+  
 		$layout['content']= $this->load->view('tab/tambah_amandemen',$layout,TRUE);
 
 		$item['header'] = $this->load->view('admin/header',$admin,TRUE);
@@ -621,11 +638,14 @@ class Kontrak extends CI_Controller {
 		$admin = $this->session->userdata('admin');
 
 		$data = $this->km->get_data_amandemen($id);
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
-		$user = $this->session->userdata('user');
+  if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
+
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
+  $this->session->userdata('user');
 		$vld = 	array(
 					array(
 						'field'=>'no',
@@ -657,6 +677,7 @@ class Kontrak extends CI_Controller {
 					);
 				}
 			}
+  
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			$_POST['edit_stamp'] = date("Y-m-d H:i:s");
@@ -668,6 +689,7 @@ class Kontrak extends CI_Controller {
 				redirect(site_url('kontrak/view/'.$id_proc.'/amandemen'.'#tabNav'));
 			}
 		}
+  
 		$layout['content']= $this->load->view('tab/edit_amandemen',$data,TRUE);
 
 		$item['header'] = $this->load->view('admin/header',$admin,TRUE);
@@ -686,13 +708,13 @@ class Kontrak extends CI_Controller {
 		}
 	}
 
-	public function bast($id=0,$page,$id_amandemen=0){
+	public function bast($page, $id=0,$id_amandemen=0){
 		$data['sort'] 			= $this->utility->generateSort(array('no', 'contract_date', 'contract_file'));
 		$per_page				= 10;
 		$data['count_contract'] = $this->km->countContract($id);
 		$data['pagination'] 	= $this->utility->generate_page('kontrak/view/'.$id.'/'.$page,$data['sort'], $per_page,  $this->km->get_bast_list($id,'', $data['sort'], '','',FALSE));
 		$data['list'] 			= $this->km->get_bast_list($id,'', $data['sort'], '','',FALSE);
-		$admin 					= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$data['tabNav'] 		= $this->tabNav;		
 		$data['id'] = $id;
 
@@ -706,12 +728,14 @@ class Kontrak extends CI_Controller {
 	public function tambah_bast($id)
 	{
 		$admin = $this->session->userdata('admin');
+  if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
 
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
-		$user = $this->session->userdata('user');
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
+  $this->session->userdata('user');
 		$layout['get_dpt_type'] = $this->im->get_dpt_type();
 		$vld = 	array(
 					array(
@@ -753,6 +777,7 @@ class Kontrak extends CI_Controller {
 				redirect(site_url('kontrak/view/'.$id.'/bast'.'#tabNav'));
 			}
 		}
+  
 		$layout['content']= $this->load->view('tab/tambah_bast',$layout,TRUE);
 
 		$item['header'] = $this->load->view('admin/header',$admin,TRUE);
@@ -765,12 +790,14 @@ class Kontrak extends CI_Controller {
 		$admin = $this->session->userdata('admin');
 		
 		$data = $this->km->get_data_bast($id);
-		// print_r($data);die;
-		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
-		$user = $this->session->userdata('user');
+  if ($this->session->userdata('form')) {
+      $this->session->userdata('form');
+  }
+
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
+  $this->session->userdata('user');
 		$vld = 	array(
 					array(
 						'field'=>'no',
@@ -807,6 +834,7 @@ class Kontrak extends CI_Controller {
 					);
 				}
 			}
+  
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			$_POST['edit_stamp'] = date("Y-m-d H:i:s");
@@ -818,6 +846,7 @@ class Kontrak extends CI_Controller {
 				redirect(site_url('kontrak/view/'.$id_proc.'/bast'.'#tabNav'));
 			}
 		}
+  
 		$arr = array('' => 'Pilih Salah Satu','bast_tahapan' => 'BAST Tahapan', 'bast_final' => 'BAST Final');
 
 		$data['ttr']	= $arr;
@@ -849,12 +878,13 @@ class Kontrak extends CI_Controller {
 			if (!move_uploaded_file($file["tmp_name"], $target_file)) {
 				echo "Sorry, there was an error uploading your file.".$file["error"];
 			}
+   
 			return $new_name;
 	}
 
 	public function do_upload($name = '', $db_name = ''){	
 		
-		$form = $this->session->userdata('form');
+		$this->session->userdata('form');
 		$file_name = $_FILES[$db_name]['name'] = $db_name.'_'.$this->utility->name_generator($_FILES[$db_name]['name']);
 		// echo 'name'; print_r($db_name);
 		$config['upload_path'] = './lampiran/'.$db_name.'/';
@@ -869,14 +899,13 @@ class Kontrak extends CI_Controller {
 		if ( ! $this->upload->do_upload($db_name)){
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 
-	function check_mulai($field,$id=0){
+	public function check_mulai($field,$id=0){
 		
 		$kontrak = $this->km->get_contract_by_procurement($id);
 
@@ -895,12 +924,12 @@ class Kontrak extends CI_Controller {
 		if($start_date < $end_date){
 			$this->form_validation->set_message('check_mulai', 'Tanggal mulai tidak boleh dibawah tanggal '.$lab);
 			return false;
-		}else{
-			return true;
 		}
+
+  return true;
 	}
 
-	function check_akhir($field,$id=0){
+	public function check_akhir($field,$id=0){
 		$kontrak = $this->km->get_contract_by_procurement($id);
 
 		$amandemen = $this->km->get_amandemen_by_procurement($id);
@@ -918,12 +947,12 @@ class Kontrak extends CI_Controller {
 		if($end_date > $e_date){
 			$this->form_validation->set_message('check_akhir', 'Tanggal akhir tidak boleh lebih dari tanggal '.$lab);
 			return false;
-		}else{
-			return true;
 		}
+
+  return true;
 	}
 
-	function check_amandemen($field,$id=0){
+	public function check_amandemen($field,$id=0){
 		$kontrak = $this->km->get_contract_by_procurement($id);
 
 		$contract_date = strtotime($kontrak['end_contract']);
@@ -933,8 +962,8 @@ class Kontrak extends CI_Controller {
 		if($end_date > $contract_date){
 			$this->form_validation->set_message('check_amandemen', 'Tanggal mulai amandemen tidak boleh lebih dari tanggal akhir kontrak');
 			return false;
-		}else{
-			return true;
 		}
+
+  return true;
 	}
 }

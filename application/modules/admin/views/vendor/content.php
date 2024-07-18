@@ -25,8 +25,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($vendor_list)){
-			foreach($vendor_list as $row => $value){
+		if(count($vendor_list) > 0){
+			foreach($vendor_list as $value){
 			?>
 				<tr class="<?php echo ($value['is_active']==1)?'':'greyRow';?>">
 					<td><?php echo $value['name'];?></td>
@@ -38,10 +38,11 @@
 						<!--<a href="<?php echo site_url('pengalaman/edit/'.$value['id'])?>" class="editBtn">Edit</a> | -->
 						<?php if($value['is_active']==1 && $this->session->userdata('admin')['id_role'] == 1){ ?>
 						<a href="<?php echo site_url('admin/admin_vendor/hapus/'.$value['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
-						<?php } ?>
+						<?php }
+    ?>
 					</td>
 				</tr>
-			<?php 
+<?php 
 			}
 		}else{?>
 			<tr>

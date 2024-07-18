@@ -19,7 +19,7 @@
 				<?php 
 					$hide="";
 
-					foreach ($role as $keyr => $valuer) {
+					foreach ($role as $valuer) {
 						if($valuer['id_role']==2 && $key==3){
 							$hide="style='display: none;'";
 							$h_n = '1';
@@ -33,7 +33,7 @@
 						<h4 class="panel-title"><?php echo $value['name']; ?></h4>
 						<ul class="assQuest">
 							<?php
-							foreach($value['quest'] as $row => $val){
+							foreach($value['quest'] as $val){
 								$is_id = $this->session->userdata('admin')['id_role']==$val['id_role'];
 							?>
 
@@ -46,6 +46,7 @@
 								}else{
 									$class = "userForm";
 								}
+        
 								$border = "style='border-right:5px solid #27ae60;'"
 							?>
 							<li <?php echo 'class="'.$class.'"'; if($this->session->userdata('admin')['id_role']==2&&$val['id']==7){ echo $border;}?>>
@@ -62,31 +63,39 @@
 											<input type="hidden" value="<?php echo $data_assessment[$val['id']] ?>" name="ass[<?php echo $val['id']; ?>]">
 											<?php 
 											}
+       
 											if($this->session->userdata('admin')['id_role']==2&&$val['id']==7){ 
 												?>
 
 												<input type="checkbox" value="1" name="is_approve[<?php echo $val['id']; ?>]" <?php echo ($data_approve[$val['id']]==1)?'checked':'';?> class="mandatoryCheck">Menyetujui
 											<?php }else{
-												if($is_id||($this->session->userdata('admin')['id_role']==2&&$val['id_role']==9)){ 
-												?>
-												<select name="ass[<?php echo $val['id']; ?>]" class="selectAss<?php $h_n ?>">
+												if ($is_id||($this->session->userdata('admin')['id_role']==2&&$val['id_role']==9)) {
+                ?>
+												<select name="ass[<?php 
+                echo $val['id'];
+                ?>]" class="selectAss<?php 
+                ?>">
 													<option value="">Belum Dinilai</option>
-													<option value="<?php echo $val['point']; ?>" <?php echo ($data_assessment[$val['id']]==$val['point'])?'selected':'';?>>Memenuhi</option>
-													<option value="0" <?php echo ($data_assessment[$val['id']]=='0')?'selected':'';?> >Tidak Memenuhi</option>
+													<option value="<?php 
+                echo $val['point'];
+                ?>" <?php 
+                echo ($data_assessment[$val['id']]==$val['point'])?'selected':'';
+                ?>>Memenuhi</option>
+													<option value="0" <?php 
+                echo ($data_assessment[$val['id']]=='0')?'selected':'';
+                ?> >Tidak Memenuhi</option>
 												</select>
-												<?php }else{ 
-
-													if(isset($data_assessment[$val['id']])&&$data_assessment[$val['id']]!=''){
-														if($data_assessment[$val['id']]!='0'){
-															echo 'Memenuhi';
-														}else if($data_assessment[$val['id']]=='0'){
-															echo 'Tidak Memenuhi';
-														}
-													}
-													else{
+												<?php 
+            } elseif (isset($data_assessment[$val['id']])&&$data_assessment[$val['id']]!='') {
+                if ($data_assessment[$val['id']]!='0') {
+                    echo 'Memenuhi';
+                } elseif ($data_assessment[$val['id']]=='0') {
+                    echo 'Tidak Memenuhi';
+                }
+            } else{
 														echo 'Belum Dinilai';
 													}
-												}
+            
 												if($val['id']==7){
 													if($data_approve[$val['id']]==1){ ?>
 														<p><i class="fa fa-check-square-o"></i>&nbsp; Disetujui User HSE</p>
@@ -94,7 +103,8 @@
 														<p><i class="fa fa-square-o"></i>&nbsp; Belum disetujui User HSE</p>
 													<?php }
 												}
-											}	 ?>
+											}
+           	 ?>
 										</label>									
 
 									</div>
@@ -102,14 +112,16 @@
 							</li>
 							<?php
 							$i++;
-							 } ?>
+							 }
+     ?>
 						</ul>
 						
 		            </div>
 		       
-				<?php 
+<?php 
 				
-				} ?>
+				}
+     ?>
 			 </div>
               	
 		</div>

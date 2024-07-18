@@ -1,13 +1,13 @@
 <?php
 class Auction_peserta extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 		$this->load->model('auction_package/peserta_model');
 	}
 	
-	function index($id_lelang = ''){
+	public function index($id_lelang = ''){
 		$data['setting'] = array(
 			array('header' => 'Nama Penyedia Barang/Jasa','field' => 'nama','type' => 'text'),
 		);
@@ -18,7 +18,7 @@ class Auction_peserta extends CI_Controller{
 		$this->load->view('content/auction_package/auction_peserta', $data);
 	}
 	
-	function form($id_lelang = '', $id = ''){
+	public function form($id_lelang = '', $id = ''){
 		$data['content'] = "form/auction_package/auction_peserta";
 		$data['width'] = "600";
 		
@@ -27,7 +27,7 @@ class Auction_peserta extends CI_Controller{
 		$this->load->view("jc-table/form/jc-form", $data);
 	}
 	
-	function save(){
+	public function save(){
 		$param = array(
 			'id_vendor' => $_POST['id_vendor'],
 			'id_lelang' => $_POST['id_lelang'],
@@ -44,7 +44,7 @@ class Auction_peserta extends CI_Controller{
 		die(json_encode($json));
 	}
 	
-	function delete($id = ''){
+	public function delete($id = ''){
 		$this->peserta_model->delete_data($id);
 		
 		$json = array(

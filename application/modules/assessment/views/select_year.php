@@ -20,8 +20,8 @@
         </thead>
         <tbody>
             <?php
-            if (count($list_year)) {
-                foreach ($list_year as $row => $value) {
+            if (count($list_year) > 0) {
+                foreach ($list_year as $value) {
             ?>
                     <tr>
                         <td><?php echo date('Y', strtotime($value['entry_stamp'])); ?></td>
@@ -34,7 +34,7 @@
                         <?php //}
                         ?>
                     </tr>
-                <?php
+<?php
                 }
             } else { ?>
                 <tr>

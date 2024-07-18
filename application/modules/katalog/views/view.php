@@ -26,7 +26,8 @@
 
 			<a href="<?php echo site_url('katalog/tambah_harga/'.$category.'/'.$id);?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
 
-			<?php }?>
+			<?php }
+?>
 
 		</div>
 
@@ -56,9 +57,9 @@
 
 			<?php 
 
-				if(count($list_harga)){
+				if(count($list_harga) > 0){
 
-				foreach($list_harga as $key => $row){ ?>
+				foreach($list_harga as $row){ ?>
 
 					<tr>
 
@@ -74,13 +75,14 @@
 							<a href="<?php echo site_url('katalog/edit_harga/'.$id.'/'.$row['id'].'/'.$category)?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
 
 							<a href="<?php echo site_url('katalog/hapus_harga/'.$category.'/'.$id.'/'.$row['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
-							<?php }?>
+							<?php }
+    ?>
 
 						</td>
 
 					</tr>
 
-				<?php 
+<?php 
 
 					}
 
@@ -92,7 +94,8 @@
 
 			</tr>
 
-			<?php } ?>
+			<?php }
+     ?>
 
 			</tbody>
 

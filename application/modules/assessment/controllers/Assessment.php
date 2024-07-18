@@ -1,8 +1,9 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Assessment extends CI_Controller {
 
 	public $id_pengadaan;
+ 
 	public $tabNav;
 
 	public function __construct(){
@@ -19,9 +20,8 @@ class Assessment extends CI_Controller {
 	
 	public function select_year()
 	{
-		$search = $this->input->get('q');
-		$page = '';
-		$per_page = 10;
+		$this->input->get('q');
+  $per_page = 10;
 		$sort = $this->utility->generateSort(array('ms_procurement.name', 'pemenang', 'point', 'tr_assessment.category'));
 
 		$data['admin']			= $this->session->userdata('admin');
@@ -44,7 +44,7 @@ class Assessment extends CI_Controller {
 		$this->load->library('form');
 		$search = $this->input->get('q');
 		$page = '';
-		$post = $this->input->post();
+		$this->input->post();
 
 		$per_page=10;
 
@@ -67,16 +67,10 @@ class Assessment extends CI_Controller {
 	}
 
 	public function view_vendor($id_pengadaan){
-		$post = $this->input->post();
-
-		$per_page=10;
-
-		$data['sort'] = $this->utility->generateSort(array('peserta_name','point'));
+		$this->input->post();
+  $data['sort'] = $this->utility->generateSort(array('peserta_name','point'));
 	
 		$data['list'] = $this->am->get_assessment_vendor_list($id_pengadaan,NULL, $data['sort'], '','',FALSE);
-		
-		// $data['filter_list'] = $this->form->group_filter_post($this->get_field());
-		$page = 'peserta';
 		$data['pagination'] = $this->utility->generate_page('assessment/content_vendor/'.$id_pengadaan, NULL,  $this->am->get_assessment_vendor_list($id_pengadaan,NULL, $data['sort'], '','',FALSE));
 		
 		$data['id']			= $id_pengadaan;
@@ -91,15 +85,9 @@ class Assessment extends CI_Controller {
 
 	public function history_nilai($id)
 	{	
-		$post = $this->input->post();
-
-		$per_page=10;
-
-		$data['sort'] 		= $this->utility->generateSort(array('date','point'));
+		$this->input->post();
+  $data['sort'] 		= $this->utility->generateSort(array('date','point'));
 		$data['list']		= $this->am->get_assessment_vendor($id);
-
-		// $data['filter_list'] = $this->form->group_filter_post($this->get_field());
-		$page = 'peserta';
 		$data['pagination'] = $this->utility->generate_page('assessment/history_nilai/'.$id, NULL,  $this->am->get_assessment_vendor($id,NULL, $data['sort'], '','',FALSE));
 		
 		$data['id']	= $id;
@@ -267,17 +255,17 @@ class Assessment extends CI_Controller {
 			$data['text'] = $data['content']['value'];
 		}
 		
-		if($this->input->post('simpan')){
-			if($this->am->insert_bast($id, $id_vendor)){
-				redirect(site_url('assessment/export_bast/'.$id.'/'.$id_vendor));
-			}
+		if($this->input->post('simpan') && $this->am->insert_bast($id, $id_vendor)){
+			redirect(site_url('assessment/export_bast/'.$id.'/'.$id_vendor));
 		}
+  
 		$layout['content']	= $this->load->view('assessment/print_bast',$data,TRUE);
 		$layout['script']	= $this->load->view('assessment/print_bast_js',$data,TRUE);
 		$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
 		$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function export_bast($id,$id_vendor){
 		$data = $this->am->get_data_bast($id,$id_vendor)->row_array();
   		header("Cache-Control: ");// leave blank to avoid IE errors
@@ -321,6 +309,7 @@ class Assessment extends CI_Controller {
 
 		die();
 	}
+ 
 	public function print_assessment($id,$id_vendor){
 		$data = $this->am->get_pengadaan($id);
 		// $data_kontrak = $this->am->get_kontrak($id);
@@ -369,7 +358,7 @@ class Assessment extends CI_Controller {
 		);
 	}
 
-	public function export_excel($title="Data Assessment", $data){
+	public function export_excel($data, $title="Data Assessment"){
 		$data = $this->am->get_pengadaan_list($search, $sort, $page, $per_page,TRUE);
 		// print_r($data);die;	
 		$table = "<table border=1>";
@@ -399,6 +388,7 @@ class Assessment extends CI_Controller {
 			$table .= "<td>".$value['category']."</td>";
 			$table .= "</tr>";
 		}
+  
 		$table .= "</table>";
 
 		header('Content-type: application/ms-excel');

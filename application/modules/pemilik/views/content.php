@@ -31,10 +31,10 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($situ_list)){
+		if(count($situ_list) > 0){
 			$total_share = 0;
 			$total_percentage = 0;
-			foreach($situ_list as $row => $value){
+			foreach($situ_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['name'];?></td>
@@ -50,7 +50,8 @@
 					</td>
 				</tr>
 			<?php 
-			}?>
+			}
+   ?>
 			<tr>
 				<td></td>
 				<td>Total: <?php echo $total_share;?> lembar</td>
@@ -59,7 +60,7 @@
 					
 				</td>
 			</tr>
-		<?php
+<?php
 		}else{?>
 			<tr>
 				<td colspan="11" class="noData">Data tidak ada</td>

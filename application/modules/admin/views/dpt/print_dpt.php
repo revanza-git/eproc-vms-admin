@@ -41,8 +41,8 @@
 					<tbody>
 						<?php
 						// echo print_r($administrasi);
-						if(count($administrasi)){
-							foreach($administrasi as $row => $value){
+						if(count($administrasi) > 0){
+							foreach($administrasi as $value){
 						?>
 						<tr>
 							<td>1.</td>
@@ -98,6 +98,7 @@
 								<div style="float : left; margin-left : 5px">cabang</div>
 							<?php
 							}
+       
 							?>	
 							</td>
 						</tr>
@@ -141,7 +142,8 @@
 							<td>Website</td>
 							<td><?php echo $value['vendor_website'];?></td>
 						</tr>
-						<?php }} ?>
+<?php }}
+       ?>
 					</tbody>
 				</table>			
 			</div>
@@ -214,13 +216,14 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($pengurus as $key => $value) {?>
+		<?php foreach ($pengurus as $penguru) {?>
 		<tr>
-			<td><?php echo $value['name'];?></td>
-			<td><?php echo $value['no'];?></td>
-			<td><?php echo $value['position'];?></td>
+			<td><?php echo $penguru['name'];?></td>
+			<td><?php echo $penguru['no'];?></td>
+			<td><?php echo $penguru['position'];?></td>
 		</tr>
-		<?php }?>
+		<?php }
+       ?>
 	</tbody>
 </table>			</div>
 					</div>
@@ -270,7 +273,7 @@
 	<tbody>
 		<?php
 		if(isset($surat_izin['siup'])){
-		foreach($surat_izin['siup'] as $rowsiup => $izin_data){
+		foreach($surat_izin['siup'] as $izin_data){
 		?>
 		<tr>
 			<td><?php echo $izin_data['no'];?></td>
@@ -285,7 +288,7 @@
 				?>
 				<div><?php echo $rowbsb;?></div><!-- bidang -->
 					<?php
-						foreach($valuebsb as $rowsb => $valuesb){
+						foreach($valuebsb as $valuesb){
 					?>
 						<div style="margin-left : 10px"> - <?php echo $valuesb;?></div><!-- subbidang --> 
 					<?php
@@ -325,7 +328,7 @@
 	<tbody>
 		<?php
 		if(isset($surat_izin['ijin_lain'])){
-		foreach($surat_izin['ijin_lain'] as $rowijin_lain => $izin_data_lain){
+		foreach($surat_izin['ijin_lain'] as $izin_data_lain){
 		?>
 		<tr>
 			<td><?php echo $izin_data_lain['no'];?></td>
@@ -340,7 +343,7 @@
 				?>
 				<div><?php echo $rowbsb;?></div><!-- bidang -->
 					<?php
-						foreach($valuebsb as $rowsb => $valuesb){
+						foreach($valuebsb as $valuesb){
 					?>
 						<div style="margin-left : 10px"> - <?php echo $valuesb;?></div><!-- subbidang --> 
 					<?php
@@ -400,7 +403,7 @@
 	</thead>
 	<tbody>
 		<?php
-		 foreach ($situ as $rowsitu => $valuesitu) {
+		 foreach ($situ as $valuesitu) {
 		?>
 		<tr>
 			<td><?php echo $valuesitu['no']; ?></td>
@@ -409,7 +412,7 @@
 			<td><?php echo ($valuesitu['expire_date'] == 'lifetime')?'Seumur Hidup':default_date($valuesitu['expire_date']); ?></td>
 			<td><?php // echo $klasifikasi[$valuesitu['id_dpt_type']]; ?></td>
 		</tr>
-		<?php
+<?php
 		 }
 		?>
 	</tbody>
@@ -431,7 +434,7 @@
 	</thead>
 	<tbody>
 		<?php
-		 foreach ($tdp as $rowtdp => $valuetdp) {
+		 foreach ($tdp as $valuetdp) {
 		?>
 		<tr>
 			<td><?php echo $valuetdp['no']; ?></td>
@@ -439,7 +442,7 @@
 			<td><?php echo ($valuetdp['expiry_date'] == 'lifetime')?'Seumur Hidup':default_date($valuetdp['expiry_date']); ?></td>
 			<td><?php //echo $klasifikasi[$valuetdp['id_dpt_type']];?></td>
 		</tr>
-		<?php
+<?php
 		 }
 		?>
 	</tbody>
@@ -485,7 +488,7 @@
 						</thead>
 						<tbody>
 							<?php
-							 foreach ($keagenan as $rowagen => $valueagen) {
+							 foreach ($keagenan as $valueagen) {
 							?>
 							<tr>
 								<td><?php echo $valueagen['no']; ?></td>
@@ -535,7 +538,7 @@
 				?>
 				<div><?php echo $rowasosiasi;?></div><!-- bidang -->
 					<?php
-						foreach($valueasosiasi as $rowsb => $valuesb){
+						foreach($valueasosiasi as $valuesb){
 					?>
 						<div style="margin-left : 10px"> - <?php echo $valuesb;?></div><!-- subbidang --> 
 					<?php
@@ -594,7 +597,7 @@
 	<tbody>
 		<?php
 		if(isset($surat_izin['siujk'])){
-		foreach($surat_izin['siujk'] as $rowsiujk => $izin_siujk){
+		foreach($surat_izin['siujk'] as $izin_siujk){
 		?>
 		<tr>
 			<td><?php echo $izin_siujk['no'];?></td>
@@ -609,7 +612,7 @@
 				?>
 				<div><?php echo $rowsiujkbsb;?></div><!-- bidang -->
 					<?php
-						foreach($valuesiujksb as $rowsb => $valuesb){
+						foreach($valuesiujksb as $valuesb){
 					?>
 						<div style="margin-left : 10px"> - <?php echo $valuesb;?></div><!-- subbidang --> 
 					<?php
@@ -644,7 +647,7 @@
 	<tbody>
 		<?php
 		if(isset($surat_izin['sbu'])){
-		foreach($surat_izin['sbu'] as $rowsbu => $izin_sbu){
+		foreach($surat_izin['sbu'] as $izin_sbu){
 		?>
 		<tr>
 			<td><?php echo $izin_sbu['no'];?></td>
@@ -659,7 +662,7 @@
 				?>
 				<div><?php echo $rowsbubsb;?></div><!-- bidang -->
 					<?php
-						foreach($valuesbusb as $rowsb => $valuesb){
+						foreach($valuesbusb as $valuesb){
 					?>
 						<div style="margin-left : 10px"> - <?php echo $valuesb;?></div><!-- subbidang --> 
 					<?php
@@ -699,7 +702,7 @@
 					</tr>
 				</tbody></table>
 			</div>
-	<?php if(count($csms_limit)){?>
+	<?php if(count($csms_limit) > 0){?>
 	<?php // print_r($csms_limit);?>
 	<div class="content">
 		<table class="recap-table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -711,17 +714,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach($csms_limit as $aspek_k3 => $value_k3){?>
+				<?php foreach($csms_limit as $csm_limit){?>
 				<tr>
-					<td><?php echo $value_k3['value'];?></td>
-					<td align="center"><?php echo $value_k3['score'];?></td>
-					<td><?php echo ($value_k3['expiry_date'] != "") ? default_date($value_k3['expiry_date']) : "-";?></td>
+					<td><?php echo $csm_limit['value'];?></td>
+					<td align="center"><?php echo $csm_limit['score'];?></td>
+					<td><?php echo ($csm_limit['expiry_date'] != "") ? default_date($csm_limit['expiry_date']) : "-";?></td>
 				</tr>
-				<?php }?>
+				<?php }
+  ?>
 			</tbody>
 		</table>			
 	</div>
-	<?php }?>
+<?php }
+  ?>
 					</div>
 				<div class="container">
 			<div class="header">
@@ -772,9 +777,9 @@
 	<tbody>
 		<?php
 		// print_r($pengalaman);
-			if(count($pengalaman)){
+			if(count($pengalaman) > 0){
 				// print_r($pengalaman);
-				foreach ($pengalaman as $rowp => $valuep) {
+				foreach ($pengalaman as $valuep) {
 		?>
 		<tr>
 			<td><?php echo $valuep['job_name']; ?></td>
@@ -791,7 +796,7 @@
 			<td><?php echo default_date($valuep['contract_end']); ?></td>
 			<!-- <td><?php echo default_date($valuep['bast_date']); ?></td> -->
 		</tr>
-		<?php
+<?php
 			}}
 		?>
 	</tbody>

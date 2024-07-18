@@ -9,7 +9,7 @@
 			<div class="panel">
 				<?php 
 			$i=1;
-			foreach($assessment as $key => $value){ ?>
+			foreach($assessment as $value){ ?>
 				<div class="panel-body">
 					<h4 class="panel-title"><?php echo $value['name']; ?>
 						<span style="font-size: 12px; font-weight:normal;">
@@ -21,7 +21,7 @@
 					
 					<ul class="assQuest">
 						<?php
-						foreach($value['data_quest'] as $row => $val){ ?>
+						foreach($value['data_quest'] as $val){ ?>
 						<li>
 							<div class="fieldPanel">
 								<div class="questBox">
@@ -43,15 +43,17 @@
 						</li>
 						<?php
 						$i++;
-						 } ?>
+						 }
+    ?>
 					</ul>
 					<div class="tambahBtn">
 						<a href="<?php echo site_url('admin/admin_assessment/tambah_assessment/'.$value['id'])?>"><i class="fa fa-plus-square-o"></i>&nbsp; Tambah Pertanyaan</a>
 					</div>
 	            </div>
-	            <?php 
+<?php 
 			
-			} ?>
+			}
+    ?>
 			
 	            <div class="tambahBtn">
 					<a href="<?php echo site_url('admin/admin_assessment/tambah_group')?>"><i class="fa fa-plus-square-o"></i>&nbsp; Tambah Group</a>

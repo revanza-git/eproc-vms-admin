@@ -25,8 +25,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($passing_grade)){
-			foreach($passing_grade as $row => $value){
+		if(count($passing_grade) > 0){
+			foreach($passing_grade as $value){
 			?>
 				<tr>
 					<td><?php echo $value['value']?></td>

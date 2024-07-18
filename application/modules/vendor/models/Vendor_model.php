@@ -1,8 +1,8 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Vendor_model extends CI_Model
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 		$this->field_master = array(
@@ -54,7 +54,7 @@ class Vendor_model extends CI_Model
 		);
 	}
 
-	function save_data($data)
+	public function save_data($data)
 	{
 		$param = array();
 		$sql = "INSERT INTO ms_vendor (
@@ -103,6 +103,7 @@ class Vendor_model extends CI_Model
 
 
 		foreach ($this->field_admin as $_param) $param_admin[$_param] = $data[$_param];
+  
 		$param_admin['id_vendor'] = $id;
 		$this->db->query($sql, $param_admin);
 
@@ -122,6 +123,7 @@ class Vendor_model extends CI_Model
 
 
 		foreach ($this->field_pic as $_param) $param_pic[$_param] = $data[$_param];
+  
 		$param_pic['id_vendor'] = $id;
 		$this->db->query($sql, $param_pic);
 
@@ -136,40 +138,43 @@ class Vendor_model extends CI_Model
 		$this->db->query($sql, array($id, $data['pic_email'], $data['password'], 'user', $data['entry_stamp'], $data['edit_stamp']));
 	}
 
-	function get_total_daftar_tunggu()
+	public function get_total_daftar_tunggu()
 	{
 		return $this->db->select('*')->where('vendor_status', 1)->where('ms_vendor.del', 0)->join('ms_vendor_admistrasi', 'ms_vendor.id=ms_vendor_admistrasi.id_vendor', 'LEFT')->get('ms_vendor')->num_rows();
 	}
-	function get_total_dpt()
+ 
+	public function get_total_dpt()
 	{
 		return $this->db->select('*')->where('vendor_status', 2)->where('ms_vendor.del', 0)->join('ms_vendor_admistrasi', 'ms_vendor.id=ms_vendor_admistrasi.id_vendor', 'LEFT')->get('ms_vendor')->num_rows();
 	}
 
-	function get_legal()
+	public function get_legal()
 	{
 		$get = $this->db->select('id,name')->get('tb_legal');
 		$raw = $get->result_array();
 		$res = array();
 		$res[''] = 'Pilih salah satu';
-		foreach ($raw as $key => $val) {
+		foreach ($raw as $val) {
 			$res[$val['id']] = $val['name'];
 		}
+  
 		return $res;
 	}
 
-	function get_sbu()
+	public function get_sbu()
 	{
 		$get = $this->db->select('id,name')->get('tb_sbu');
 		$raw = $get->result_array();
 		$res = array();
 		$res[''] = 'Pilih salah satu';
-		foreach ($raw as $key => $val) {
+		foreach ($raw as $val) {
 			$res[$val['id']] = $val['name'];
 		}
+  
 		return $res;
 	}
 
-	function get_data($id = 0)
+	public function get_data($id = 0)
 	{
 		if (!$id) {
 			$user = $this->session->userdata('user');
@@ -189,25 +194,32 @@ class Vendor_model extends CI_Model
 		return $query->row_array();
 	}
 
-	function get_vendor_name($id)
+	public function get_vendor_name($id)
 	{
 		return $this->db->where('id', $id)->get('ms_vendor')->row_array();
 	}
 
-	function edit_data($data, $id)
+	public function edit_data($data, $id)
 	{
 
 
 		$fl = array('npwp_code' => $data['npwp_code'], 'name' => $data['name'], 'edit_stamp' => $data['edit_stamp']);
 		$this->db->where('id', $id);
-		$res = $this->db->update('ms_vendor', $fl);
+		$this->db->update('ms_vendor', $fl);
 
 
 		$fl = array();
 		$field = array('id_legal', 'npwp_code', 'npwp_date', 'nppkp_code', 'nppkp_date', 'vendor_office_status', 'vendor_address', 'vendor_country', 'vendor_province', 'vendor_city', 'vendor_phone', 'vendor_fax', 'vendor_email', 'vendor_postal', 'vendor_website');
-		if (isset($data['nppkp_file'])) $field[] = 'nppkp_file';
-		if (isset($data['npwp_file'])) $field[] = 'npwp_file';
+  if (isset($data['nppkp_file'])) {
+      $field[] = 'nppkp_file';
+  }
+
+  if (isset($data['npwp_file'])) {
+      $field[] = 'npwp_file';
+  }
+  
 		foreach ($field as $_param) $fl[$_param] = $data[$_param];
+  
 		$this->db->where('id_vendor', $id);
 		$this->db->update('ms_vendor_admistrasi', $fl);
 
@@ -220,16 +232,12 @@ class Vendor_model extends CI_Model
 		return $id;
 	}
 
-	function get_waiting_list($status, $search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
+	public function get_waiting_list($status, $search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
 	{
 		// $user = $this->session->userdata('user');
 		$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 
-		if ($status == 1) {
-			$tr_dpt = ",tr_dpt.start_date end_date";
-		} else {
-			$tr_dpt = "";
-		}
+		$tr_dpt = $status == 1 ? ",tr_dpt.start_date end_date" : "";
 
 		$this->db->select('ms_vendor.id as id,tb_legal.name legal_name,ms_vendor.name name, ms_vendor.edit_stamp last_update, mva.vendor_email email,ms_vendor.npwp_code,mva.vendor_address,mva.vendor_phone,ms_vendor.certificate_no,ms_vendor.need_approve,ms_vendor.dpt_first_date start_date' . $tr_dpt)
 			->join('ms_vendor_admistrasi as mva', 'mva.id_vendor=ms_vendor.id', 'LEFT')
@@ -263,6 +271,7 @@ class Vendor_model extends CI_Model
 		if ($this->input->get('sort') && $this->input->get('by')) {
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort'));
 		}
+  
 		if ($is_page) {
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page * ($cur_page - 1));
@@ -275,7 +284,7 @@ class Vendor_model extends CI_Model
 		return $query->result_array();
 	}
 
-	function get_dpt_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
+	public function get_dpt_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
 	{
 		$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 
@@ -301,6 +310,7 @@ class Vendor_model extends CI_Model
 		if ($this->input->get('sort') && $this->input->get('by')) {
 			$a->order_by($this->input->get('by'), $this->input->get('sort'));
 		}
+  
 		if ($is_page) {
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$a->limit($per_page, $per_page * ($cur_page - 1));
@@ -311,7 +321,7 @@ class Vendor_model extends CI_Model
 		return $query->result_array();
 	}
 
-	function get_waiting_dpt_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
+	public function get_waiting_dpt_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
 	{
 
 		$this->db->select('ms_vendor.id as id,tb_legal.name legal_name,ms_vendor.name name, ms_vendor.edit_stamp last_update, mva.vendor_email email')
@@ -328,19 +338,18 @@ class Vendor_model extends CI_Model
 		return $query->result_array();
 	}
 
-	function to_waiting_list()
+	public function to_waiting_list()
 	{
 		$user = $this->session->userdata('user');
 		// print_r($user);die;
 		$this->db->where('id', $user['id_user']);
-		$res = $this->db->update('ms_vendor', array(
+
+		return $this->db->update('ms_vendor', array(
 			'vendor_status' => 1
 		));
-
-		return $res;
 	}
 
-	function add_vendor($data)
+	public function add_vendor($data)
 	{
 		$param = array();
 
@@ -405,7 +414,7 @@ class Vendor_model extends CI_Model
 		return $id;
 	}
 	
-	function get_vendor_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
+	public function get_vendor_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
 	{
 		$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 
@@ -422,15 +431,18 @@ class Vendor_model extends CI_Model
 		} else {
 			$this->db->order_by('ms_vendor.id', 'desc');
 		}
+  
 		if ($is_page) {
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page * ($cur_page - 1));
 		}
+  
 		$query = $a->get('ms_vendor');
 		// echo $this->db->last_query();
 		return $query->result_array();
 	}
-	function get_all_vendor_list()
+ 
+	public function get_all_vendor_list()
 	{
 
 		$this->db->select('*,ms_vendor.id id, ms_vendor.name name, tb_legal.name legal_name');
@@ -443,8 +455,6 @@ class Vendor_model extends CI_Model
 		$query = $a->get('ms_vendor');
 		print_r($query->result_array());
 		die;
-		// echo $this->db->last_query();
-		return $query->result_array();
 	}
 
 	public function check_pic($id)
@@ -455,6 +465,7 @@ class Vendor_model extends CI_Model
 
 		return $query->num_rows();
 	}
+ 
 	public function get_pt($id)
 	{
 		$this->db->select('tb_legal.name legal_name,ms_vendor.name name')
@@ -466,6 +477,7 @@ class Vendor_model extends CI_Model
 		// echo $this->db->last_query();
 		return $query->row_array();
 	}
+ 
 	public function save_pic($data)
 	{
 		$param_pic = array();
@@ -481,64 +493,63 @@ class Vendor_model extends CI_Model
 
 
 		foreach ($this->field_pic as $_param) $param_pic[$_param] = $data[$_param];
-
-		$result = $this->db->query($sql, $param_pic);
-		return $result;
+  
+		return $this->db->query($sql, $param_pic);
 	}
-	function get_data_pic($id)
+ 
+	public function get_data_pic($id)
 	{
-		$user = $this->session->userdata('user');
+		$this->session->userdata('user');
 		$this->db->select('*')
 			->where('id_vendor', $id);
 		$query = $this->db->get('ms_vendor_pic');
 		return $query->row_array();
 	}
-	function edit_data_pic($data, $id)
+ 
+	public function edit_data_pic($data, $id)
 	{
 
 		$this->db->where('id_vendor', $id);
-
-		$res = $this->db->update('ms_vendor_pic', $data);
 		// echo $this->db->last_query();
 
-		return $res;
+		return $this->db->update('ms_vendor_pic', $data);
 	}
-	function get_data_username($id)
+ 
+	public function get_data_username($id)
 	{
-		$user = $this->session->userdata('user');
+		$this->session->userdata('user');
 		$this->db->select('*')
 			->where('id_user', $id);
 		$this->db->where('type', 'user');
 		$query = $this->db->get('ms_login');
 		return $query->row_array();
 	}
-	function username_change($data, $id)
+ 
+	public function username_change($data, $id)
 	{
 
 		$this->db->where('id_user', $id);
 		$this->db->where('type', 'user');
-		$res = $this->db->update('ms_login', $data);
 		//echo $this->db->last_query();
 
-		return $res;
+		return $this->db->update('ms_login', $data);
 	}
 
-	function password_change($data, $id)
+	public function password_change($data, $id)
 	{
 
 		$this->db->where('id_user', $id);
 		$this->db->where('type', 'user');
-
-		$res = $this->db->update('ms_login', array(
-			'password' => $data['new_password']
-		));
 		// echo $this->db->last_query();
 
-		return $res;
+		return $this->db->update('ms_login', array(
+			'password' => $data['new_password']
+		));
 	}
-	function get_password($id)
+ 
+	public function get_password($id)
 	{
-		$user = $this->session->userdata('user');
+		$this->session->userdata('user');
 		$this->db->select('password')->where('id_user', $id)->where('type', 'user');
 		$query = $this->db->get('ms_login');
 		$res = $query->row_array();
@@ -552,7 +563,7 @@ class Vendor_model extends CI_Model
 	######				BADAN HUKUM				######
 	##################################################
 	##################################################
-	function get_badan_hukum_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
+	public function get_badan_hukum_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
 	{
 		$this->db->select('*');
 		$this->db->where('tb_legal.del', 0);
@@ -562,6 +573,7 @@ class Vendor_model extends CI_Model
 		if ($this->input->get('sort') && $this->input->get('by')) {
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort'));
 		}
+  
 		if ($is_page) {
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page * ($cur_page - 1));
@@ -570,26 +582,29 @@ class Vendor_model extends CI_Model
 		$query = $a->get('tb_legal');
 		return $query->result_array();
 	}
-	function edit_badan_hukum($data, $id)
+ 
+	public function edit_badan_hukum($data, $id)
 	{
 
 		$this->db->where('id', $id);
-		$res = $this->db->update('tb_legal', $data);
 
-		return $res;
+		return $this->db->update('tb_legal', $data);
 	}
-	function delete_badan_hukum($id)
+ 
+	public function delete_badan_hukum($id)
 	{
 		$this->db->where('id', $id);
 		return $this->db->update('tb_legal', array('del' => 1));
 	}
-	function get_badan_hukum($id)
+ 
+	public function get_badan_hukum($id)
 	{
 		$sql = "SELECT * FROM tb_legal WHERE id = " . $id;
 		$query = $this->db->query($sql);
 		return $query->row_array();
 	}
-	function save_badan_hukum($data)
+ 
+	public function save_badan_hukum($data)
 	{
 
 		$_param = array();
@@ -603,9 +618,8 @@ class Vendor_model extends CI_Model
 		foreach ($this->badan_hukum as $_param) $param[$_param] = $data[$_param];
 
 		$this->db->query($sql, $param);
-		$id = $this->db->insert_id();
 
-		return $id;
+		return $this->db->insert_id();
 	}
 
 	##################################################
@@ -613,7 +627,7 @@ class Vendor_model extends CI_Model
 	######				ADMINISTRASI			######
 	##################################################
 	##################################################
-	function get_administrasi_list($id)
+	public function get_administrasi_list($id)
 	{
 		$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 
@@ -638,20 +652,19 @@ class Vendor_model extends CI_Model
 
 
 
-	function get_dpt_list_x()
+	public function get_dpt_list_x()
 	{
-		$query = $this->datatables->from('ms_vendor');
-		return $query;
+		return $this->datatables->from('ms_vendor');
 	}
 
 
-	function setuju($id)
+	public function setuju($id)
 	{
 		$this->db->where('id', $id);
 		$update_status = $this->db->update('ms_vendor', array('vendor_status' => 2));
 
 		$dpt_list = $this->db->select('*')->where('id_vendor', $id)->where('data_status', 1)->get('ms_ijin_usaha')->result_array();
-		foreach ($dpt_list as $key => $row) {
+		foreach ($dpt_list as $row) {
 			$this->db->where('id_vendor', $row['id_vendor']);
 			$this->db->where('id_dpt_type', $row['id_dpt_type']);
 			$update_status = $this->db->update('tr_dpt', array(
@@ -662,12 +675,12 @@ class Vendor_model extends CI_Model
 		}
 	}
 
-	function inactive_vendor($id)
+	public function inactive_vendor($id)
 	{
 		return $this->db->where('id', $id)->update('ms_vendor', array('is_active' => 0));
 	}
 
-	function get_dpt_mail($id)
+	public function get_dpt_mail($id)
 	{
 		// $user = $this->session->userdata('user');
 
@@ -689,7 +702,7 @@ class Vendor_model extends CI_Model
 		return $query->row_array();
 	}
 
-	function get_adm_mail($id)
+	public function get_adm_mail($id)
 	{
 		// $user = $this->session->userdata('user');
 
@@ -700,17 +713,17 @@ class Vendor_model extends CI_Model
 		return $this->db->get('ms_admin')->result_array();
 	}
 
-	function update_certificate($id, $nomor)
+	public function update_certificate($id, $nomor)
 	{
 
 		$this->db->where('id', $id);
-		$res = $this->db->update('ms_vendor', array(
+		// echo $this->db->last_query();
+		return $this->db->update('ms_vendor', array(
 			'certificate_no' => $nomor
 		));
-		// echo $this->db->last_query();
-		return $res;
 	}
-	function change_no($id, $no)
+ 
+	public function change_no($id, $no)
 	{
 		$data = $this->db->where('id', $id)->where('del', 0)->get('tr_certificate')->row_array();
 
@@ -723,7 +736,7 @@ class Vendor_model extends CI_Model
 
 
 
-	function get_pengurus_list($id)
+	public function get_pengurus_list($id)
 	{
 		// $user = $this->session->userdata('user');
 		$status = array('1', '2');
@@ -735,12 +748,13 @@ class Vendor_model extends CI_Model
 			# code...
 			$this->db->where('ms_pengurus.id_vendor', $id);
 		}
+  
 		$query = $this->db->get('ms_pengurus');
 		// echo $this->db->last_query();
 		return $query->result_array();
 	}
 
-	function get_csms_limit()
+	public function get_csms_limit()
 	{
 		return $this->db->select()->get('tb_csms_limit')->result_array();
 	}

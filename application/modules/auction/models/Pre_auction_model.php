@@ -1,11 +1,11 @@
 <?php
 class Pre_auction_model extends CI_Model{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 	}
 	
-	function get_status($id_lelang = ''){
+	public function get_status($id_lelang = ''){
 		$sql = "SELECT is_started, is_suspended, is_finished, time_limit FROM ms_procurement WHERE id = ?";
 		$sql = $this->db->query($sql, $id_lelang);
 		$sql = $sql->row_array();
@@ -15,7 +15,7 @@ class Pre_auction_model extends CI_Model{
 		return array('is_started' => $sql['is_started'], 'is_finished' => $sql['is_finished'], 'is_suspended' => $sql['is_suspended'], 'time' => $time_limit);
 	}
 	
-	function select_data($id_lelang = ''){
+	public function select_data($id_lelang = ''){
 		$sql = "SELECT a.*,
 					   (SELECT GROUP_CONCAT(symbol) FROM tb_kurs WHERE id IN (SELECT id_kurs FROM ms_procurement_kurs WHERE id_procurement = a.id)) AS rate, 
 					   b.metode_auction,
@@ -32,7 +32,7 @@ class Pre_auction_model extends CI_Model{
 		return $sql->row_array();
 	}
 	
-	function start_auction($id_lelang = ''){
+	public function start_auction($id_lelang = ''){
 		$duration = $this->select_data($id_lelang);
 		$duration = $duration['auction_duration'];
 		 
@@ -45,7 +45,7 @@ class Pre_auction_model extends CI_Model{
 		return $time_limit;
 	}
 	
-	function extend_lelang($id_lelang = ''){
+	public function extend_lelang($id_lelang = ''){
 		$time = ($this->input->post('time')!='') ? $this->input->post('time') : 1;
 		$time_limit = strtotime(date("Y-m-d H:i:s")." + ".$time." minutes");
 		$time_limit = date("Y-m-d H:i:s", $time_limit);
@@ -56,46 +56,52 @@ class Pre_auction_model extends CI_Model{
 		return $time_limit;
 	}
 	
-	function get_barang($id_lelang = ''){
+	public function get_barang($id_lelang = ''){
 		$sql = "SELECT * FROM ms_procurement_barang WHERE id_procurement = ?";
-		$res =  $this->db->query($sql, $id_lelang);
 		
-		return $res;
+		return $this->db->query($sql, $id_lelang);
 	}
 	
-	function initial_graph($id_lelang = "", $id_barang = ''){
+	public function initial_graph($id_lelang = "", $id_barang = ''){
 		$start = $this->count_penawaran($id_lelang, $id_barang);
 		$start -= 10;
 		
-		if($start < 0) $start = 0;
+		if ($start < 0) {
+      $start = 0;
+  }
 		
 		$fill = $this->select_data($id_lelang);
 		
-		if($fill['type_lelang'] == "forward_auction")		$order = "ASC";
-		else if($fill['type_lelang'] == "reverse_auction")	$order = "DESC";
+		if ($fill['type_lelang'] == "forward_auction") {
+      $order = "ASC";
+  } elseif ($fill['type_lelang'] == "reverse_auction") {
+      $order = "DESC";
+  }
 		
 		$sql = "SELECT a.*, b.nama FROM ms_penawaran a LEFT JOIN ms_vendor b ON a.id_vendor = b.id WHERE a.id_procurement = ? AND a.id_barang = ? ORDER BY a.entry_stamp ".$order." LIMIT ".$start.", 10";
 		return $this->db->query($sql, array($id_lelang, $id_barang));		
 	}
 	
-	function count_penawaran($id_lelang = "", $id_barang = ""){
+	public function count_penawaran($id_lelang = "", $id_barang = ""){
 		$sql = "SELECT id FROM ms_penawaran WHERE id_procurement = ? AND id_barang = ?";
 		$sql = $this->db->query($sql, array($id_lelang, $id_barang));
 		
 		return $sql->num_rows();
 	}
 	
-	function convert_to_idr($nilai = '', $id_kurs = '', $id_lelang = ''){
+	public function convert_to_idr($nilai = '', $id_kurs = '', $id_lelang = ''){
 		$sql = "SELECT * FROM ms_procurement_kurs WHERE id_kurs = ? AND id_procurement = ?";
 		$sql = $this->db->query($sql, array($id_kurs, $id_lelang));
 		$sql = $sql->row_array();
 		
-		if($sql['id_kurs'] == 1) $sql['rate'] = 1;
+		if ($sql['id_kurs'] == 1) {
+      $sql['rate'] = 1;
+  }
 		
 		return ($nilai * $sql['rate']);
 	}
 	
-	function get_lowest_price($id_lelang = '', $id_barang = ''){
+	public function get_lowest_price($id_lelang = '', $id_barang = ''){
 		
 		$sql = "SELECT MIN(a.in_rate) AS nilai,
 					   b.name
@@ -106,12 +112,11 @@ class Pre_auction_model extends CI_Model{
 				WHERE a.id_procurement = ? AND a.id_barang = ? LIMIT 10";
 		 	
 		$sql = $this->db->query($sql, array($id_lelang, $id_barang));
-		$sql = $sql->row_array();
 		
-		return $sql;
+		return $sql->row_array();
 	}
 	
-	function get_highest_price($id_lelang = '', $id_barang = ''){
+	public function get_highest_price($id_lelang = '', $id_barang = ''){
 		$sql = "SELECT MAX(a.in_rate) AS nilai,
 					   b.name AS name
 				
@@ -121,23 +126,22 @@ class Pre_auction_model extends CI_Model{
 				WHERE a.id_procurement = ? AND a.id_barang = ? LIMIT 10";
 		
 		$sql = $this->db->query($sql, array($id_lelang, $id_barang));
-		$sql = $sql->row_array();
 		
-		return $sql;
+		return $sql->row_array();
 	}
 	
-	function force_stop($id_lelang = ''){
+	public function force_stop($id_lelang = ''){
 		$sql = "UPDATE ms_procurement SET is_started = ?, is_finished = ?, is_suspended = ?, is_fail_auction = ?, end_hour = ?, time_limit = ?  WHERE id = ?";
 		$this->db->query($sql, array(1, 1, 0, 1, date("H:i:s"), date("Y-m-d H:i:s"), $id_lelang));
 	}
 	
-	function end_auction($id_lelang = ''){
+	public function end_auction($id_lelang = ''){
 		$sql = "UPDATE ms_procurement SET is_finished = ?, end_hour = ?, time_limit = ? WHERE id = ?";
 		$this->db->query($sql, array(1, date("H:i:s"), date("Y-m-d H:i:s"), $id_lelang));
 
 	}
 	
-	function cek_hps($id_lelang = ''){
+	public function cek_hps($id_lelang = ''){
 		$sql = "SELECT hps FROM ms_procurement_tatacara WHERE id_lelang = ?";
 		
 		$sql = $this->db->query($sql, array($id_lelang));
@@ -146,7 +150,7 @@ class Pre_auction_model extends CI_Model{
 		return $sql['hps'];
 	}
 	
-	function mark_as_extend($id_lelang = ''){
+	public function mark_as_extend($id_lelang = ''){
 		$sql = "UPDATE ms_procurement SET is_started = ?, 
 										   time_limit = ?, 
 										   is_finished = ?, 
@@ -156,7 +160,8 @@ class Pre_auction_model extends CI_Model{
 		
 		$this->db->query($sql, array(0, null, 0, 1, $id_lelang));
 	}
-	function generate_catalogue($id_lelang){
+ 
+	public function generate_catalogue($id_lelang){
 
 		$this->load->model('auction_report_model');
 		$fill = $this->auction_report_model->get_header($id_lelang);
@@ -181,9 +186,9 @@ class Pre_auction_model extends CI_Model{
 				$_result_peserta = $_peserta->result_array();
 				
 				$id_penawaran = 0;
-				foreach($_result_peserta as $key => $row){
-					if($row['id_penawaran']!=NULL){
-						$id_penawaran = $row['id_penawaran'];
+				foreach($_result_peserta as $_result_pesertum){
+					if($_result_pesertum['id_penawaran']!=NULL){
+						$id_penawaran = $_result_pesertum['id_penawaran'];
 						break;
 					}
 				}
@@ -207,7 +212,7 @@ class Pre_auction_model extends CI_Model{
 
 	}
 
-	function vendor_experience($id_procurement){
+	public function vendor_experience($id_procurement){
    		$this->load->model('Auction_report_model','aum');
 
 
@@ -222,13 +227,14 @@ class Pre_auction_model extends CI_Model{
 
 		$data['barang'] 	= $this->get_barang($id_procurement)->result_array();
 		// print_r($data['barang']);
-		foreach ($data['barang'] as $key => $value) {
+		foreach ($data['barang'] as $value) {
 			$vendor_ranking	= $this->get_vendor_ranking($id_procurement, $value['id'], $data['proc']['auction_type']);
 			
 			foreach($vendor_ranking as $ranking){
 				if($ranking['id_penawaran']==NULL){
 					continue;
 				}
+    
 				$vendor_penawaran = 	$this->aum->get_penawaran($ranking['id_penawaran']);
 				
 				if($vendor_penawaran['id_kurs']==1){
@@ -236,6 +242,7 @@ class Pre_auction_model extends CI_Model{
 				}else{
 					$vendor_data[$ranking['id_peserta']]['price_foreign'] += $vendor_penawaran['nilai'];
 				}
+    
 				$vendor_data[$ranking['id_peserta']]['currency'][] = $vendor_penawaran['symbol'];
 			}			
 		}
@@ -264,10 +271,15 @@ class Pre_auction_model extends CI_Model{
 
 
 
-   	function get_vendor_ranking($id_lelang = '', $id_barang = '', $type_lelang = ''){
+   	public function get_vendor_ranking($id_lelang = '', $id_barang = '', $type_lelang = ''){
 		$ord = '';
-		if($type_lelang == "forward_auction"){ $sel = "MAX"; $ord = "DESC"; }
-		else if($type_lelang == "reverse_auction"){ $sel = "MIN"; $ord = "ASC"; }
+		if ($type_lelang == "forward_auction") {
+      $sel = "MAX";
+      $ord = "DESC";
+  } elseif ($type_lelang == "reverse_auction") {
+      $sel = "MIN";
+      $ord = "ASC";
+  }
 		
 		$sql = "SELECT a.id_vendor AS id_peserta, b.name AS nama_vendor,
 					   (SELECT id FROM ms_penawaran WHERE id_vendor = a.id_vendor AND id_barang = ? ORDER BY in_rate ".$ord." LIMIT 0,1) AS id_penawaran 

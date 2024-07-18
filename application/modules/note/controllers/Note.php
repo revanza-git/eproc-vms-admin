@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Note extends CI_Controller {
 
@@ -9,6 +9,7 @@ class Note extends CI_Controller {
 		$this->load->model('Vendor_model','vm');
 		$this->load->library('email');
 	}
+ 
 	public function index($id){
 		$_POST['id_vendor'] = $id;
 		$vendor_data = $this->vm->get_data($id);
@@ -23,13 +24,15 @@ class Note extends CI_Controller {
 			redirect($url);
 		}
 	}
+ 
 	public function close($id){
 		$result = $this->nm->close($id);
 		if($result){
 			echo 'success';
 		}
 	}
-	function mail($to,$message){
+ 
+	public function mail($to,$message){
  		$this->email->clear(TRUE);
 
 		$this->email->from('vms-noreply@nusantararegas.com', 'VMS REGAS');

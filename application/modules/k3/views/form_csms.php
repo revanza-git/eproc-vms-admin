@@ -8,10 +8,10 @@
 			<tr class="input-form">
 				<td>
 					<label class="lbform">
-						<?php echo form_radio(array('name'=>'csms','id'=>'csms_true'),1,(set_radio('csms',1)||($this->form->get_temp_data('csms')==1))?TRUE:FALSE,'class="csms_radio"')?>Punya
+						<?php echo form_radio(array('name'=>'csms','id'=>'csms_true'),1,set_radio('csms',1)||($this->form->get_temp_data('csms')==1),'class="csms_radio"')?>Punya
 					</label>
 					<label class="lbform">
-						<?php echo form_radio(array('name'=>'csms'),0,(set_radio('csms',0)||($this->form->get_temp_data('csms')==0))?TRUE:FALSE,'class="csms_radio"')?>Belum Punya
+						<?php echo form_radio(array('name'=>'csms'),0,set_radio('csms',0)||($this->form->get_temp_data('csms')==0),'class="csms_radio"')?>Belum Punya
 					</label>
 				</td>
 			</tr>

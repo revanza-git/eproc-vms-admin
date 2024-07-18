@@ -12,7 +12,7 @@
        $('#container-chart').highcharts({
             title: {
             
-                text: 'Riwayat Harga <?php $x=1; foreach($item as $keyitem => $valueitem){ echo $valueitem["nama"]; if($x < count($item)){echo " dan ";} $x++; }?>',
+                text: 'Riwayat Harga <?php $x=1; foreach($item as $valueitem){ echo $valueitem["nama"]; if($x < count($item)){echo " dan ";} $x++; }?>',
                 text: 'Riwayat Harga <?php echo $item['nama']?>',
 
 
@@ -23,7 +23,7 @@
                 x: -20 //center
             },
             xAxis: {
-                categories: [<?php foreach($chart as $key=>$row){
+                categories: [<?php foreach($chart as $row){
 
                     if($row['years']!=''){
                         echo $row['years'];
@@ -70,7 +70,7 @@
             },
             series: [{
                 name: '<?php echo $item["nama"]; ?>',
-                data: [<?php foreach($chart as $key=>$row){
+                data: [<?php foreach($chart as $row){
 
                     if($row['avg_year']!=''){
                         echo $row['avg_year'];

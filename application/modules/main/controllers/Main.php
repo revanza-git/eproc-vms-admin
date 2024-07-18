@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Main extends CI_Controller {
 
@@ -9,7 +9,7 @@ class Main extends CI_Controller {
 		}elseif($this->session->userdata('admin')){
 			redirect('admin');
 		}else{
-			header("Location: https://eproc.nusantararegas.com/eproc_nusantararegas/main/logout");
+			header("Location: http://local.eproc.vms.com/eproc_nusantararegas/main/logout");
 		}
 	}
 	
@@ -37,13 +37,13 @@ class Main extends CI_Controller {
 		$key = $this->input->get('key', TRUE);
 
 		if (!$key) {
-			header("Location:https://eproc.nusantararegas.com/eproc_nusantararegas");
+			header("Location:http://local.eproc.vms.com/eproc_nusantararegas");
 		}
 
 		$data = $this->db->where('key', $key)->where('deleted_at', NULL)->get('ms_key_value')->row_array();
 
 		if (!$data) {
-			header("Location:https://eproc.nusantararegas.com/eproc_nusantararegas");
+			header("Location:http://local.eproc.vms.com/eproc_nusantararegas");
 		}
 
 		$value = json_decode($data['value']);
@@ -69,7 +69,7 @@ class Main extends CI_Controller {
 	
 	public function logout(){
 		$this->session->sess_destroy();
-		header('Location: http://10.10.10.3/eproc_nusantararegas/main/logout');
+		header('Location: http://local.eproc.intra.com/eproc_nusantararegas/main/logout');
 	}
 	
 	public function showUser()
@@ -102,7 +102,7 @@ class Main extends CI_Controller {
 			</thead>
 			<tbody>';
 			$no=1;
-		foreach ($get_data_admin as $key => $value) {
+		foreach ($get_data_admin as $value) {
 			$admin .= '<tr>
 				<td>'.$no.'</td>
 				<td>'.$value['name'].'</td>
@@ -143,7 +143,7 @@ class Main extends CI_Controller {
 			</thead>
 			<tbody>';
 		$no_ = 1;
-		foreach ($get_data_vendor as $key => $value) {
+		foreach ($get_data_vendor as $value) {
 			$admin .= '<tr>
 				<td>'.$no_.'</td>
 				<td>'.$value['name'].'</td>
@@ -152,6 +152,7 @@ class Main extends CI_Controller {
 			</tr>';
 			$no_++;
 		}
+  
 		header('Content-type: application/ms-excel');
 
     	header('Content-Disposition: attachment; filename=Daftar User VMS.xls');

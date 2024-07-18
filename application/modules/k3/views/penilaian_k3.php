@@ -21,14 +21,15 @@ RINGKASAN HASIL EVALUASI
 				Masa Berlaku : <?php echo ($get_csms['expiry_date'] == "lifetime") ? "Seumur Hidup" :( (strtotime($get_csms['expiry_date']) > 0) ? default_date($get_csms['expiry_date']) : "-");?>
 			</td>
 		</tr>
-		<?php } ?>
+		<?php }
+ ?>
 		<tr>
 			<td>
 				Skor : <?php echo $get_csms['value'];?>
 			</td>
 		</tr>
 	</table>
-	<?php } else{ ?>
+<?php } else{ ?>
 	<form method="POST" enctype="multipart/form-data" id="penilaiank3">
 	
 		<div class="panel-group">
@@ -75,11 +76,11 @@ RINGKASAN HASIL EVALUASI
 						
 					</tr>
 
-					<?php foreach($val_ev as $key_quest => $val_quest){
+					<?php foreach($val_ev as $val_quest){
 						?>
 						<tr class="borderQuest ">
 							<td class="textQuestLv2">
-							<?php foreach($val_quest as $key_answer => $val_answer){
+							<?php foreach($val_quest as $val_answer){
 								 ?>
 									<?php echo $val_answer['value'];?>
 									<p><i>Jawaban : <?php 
@@ -106,20 +107,19 @@ RINGKASAN HASIL EVALUASI
 													foreach($checkbox as $key => $row){
 
 														if(isset($data_k3[$val_answer['id']]['value'])){
-															if($data_k3[$val_answer['id']]['value']==''){
-																echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
-															}else{
-																if($key == $data_k3[$val_answer['id']]['value']){
-																	echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
-																}else{
+															if ($data_k3[$val_answer['id']]['value']=='') {
+                   echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
+               } elseif ($key == $data_k3[$val_answer['id']]['value']) {
+                   echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
+               } else{
 																	echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 																}
-															}
 															
 														}else{
 															echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 														}
 													}
+             
 													break;
 												case 'radio':
 												
@@ -128,20 +128,19 @@ RINGKASAN HASIL EVALUASI
 													foreach($radio as $key => $row){
 
 														if(isset($data_k3[$val_answer['id']]['value'])){
-															if($data_k3[$val_answer['id']]['value']==''){
-																echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
-															}else{
-																if($key == $data_k3[$val_answer['id']]['value']){
-																	echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
-																}else{
+															if ($data_k3[$val_answer['id']]['value']=='') {
+                   echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
+               } elseif ($key == $data_k3[$val_answer['id']]['value']) {
+                   echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
+               } else{
 																	echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 																}
-															}
 															
 														}else{
 															echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 														}
 													}
+             
 													break;
 												case 'file':
 													if(isset($data_k3[$val_answer['id']]['value'])){
@@ -153,17 +152,20 @@ RINGKASAN HASIL EVALUASI
 													}else{
 														echo '-';
 													}
+             
 												break;
 											}
+         
 									?></i></p>
 
-							<?php 	
-							}?>
+<?php 	
+							}
+      ?>
 							</td>
 							<?php echo $this->utility->generate_radio_k3($key_ev,$evaluasi_list,isset($value_k3[$key_ev]) ? $value_k3[$key_ev] : NULL,TRUE,$act); ?>
 						</tr>
 
-						<?php 
+<?php 
 					}  
 					?>
 
@@ -176,10 +178,10 @@ RINGKASAN HASIL EVALUASI
 						<?php echo $this->utility->generate_radio_k3($key_ev,$evaluasi_list,isset($value_k3[$key_ev]) ? $value_k3[$key_ev] : NULL,FALSE,$act); ?>
 					</tr>
 
-					<?php foreach($val_ev as $key_quest => $val_quest){ ?>
+					<?php foreach($val_ev as $val_quest){ ?>
 						<tr class="borderQuest">
 							<td class="textQuestLv2">
-						<?php foreach($val_quest as $key_answer => $val_answer){
+						<?php foreach($val_quest as $val_answer){
 						
 							?>
 							
@@ -209,20 +211,19 @@ RINGKASAN HASIL EVALUASI
 													foreach($checkbox as $key => $row){
 
 														if(isset($data_k3[$val_answer['id']]['value'])){
-															if($data_k3[$val_answer['id']]['value']==''){
-																echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
-															}else{
-																if($key == $data_k3[$val_answer['id']]['value']){
-																	echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
-																}else{
+															if ($data_k3[$val_answer['id']]['value']=='') {
+                   echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
+               } elseif ($key == $data_k3[$val_answer['id']]['value']) {
+                   echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
+               } else{
 																	echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 																}
-															}
 															
 														}else{
 															echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 														}
 													}
+             
 													break;
 												case 'radio':
 												
@@ -231,20 +232,19 @@ RINGKASAN HASIL EVALUASI
 													foreach($radio as $key => $row){
 
 														if(isset($data_k3[$val_answer['id']]['value'])){
-															if($data_k3[$val_answer['id']]['value']==''){
-																echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
-															}else{
-																if($key == $data_k3[$val_answer['id']]['value']){
-																	echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
-																}else{
+															if ($data_k3[$val_answer['id']]['value']=='') {
+                   echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
+               } elseif ($key == $data_k3[$val_answer['id']]['value']) {
+                   echo '<label><i class="fa fa-check-square-o"></i>'. $row.'</label>';
+               } else{
 																	echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 																}
-															}
 															
 														}else{
 															echo '<label><i class="fa fa-square-o"></i>'. $row.'</label>';
 														}
 													}
+             
 													break;
 												case 'file':
 													if(isset($data_k3[$val_answer['id']]['value'])){
@@ -256,25 +256,29 @@ RINGKASAN HASIL EVALUASI
 													}else{
 														echo '-';
 													}
+             
 												break;
 											}
+         
 								 ?></i></p>
 								
 								
 							
-					<?php 	
-						} ?>
+<?php 	
+						}
+      ?>
 							</td>
 							<?php echo $this->utility->generate_radio_k3($key_ev,$evaluasi_list,isset($value_k3[$key_ev]) ? $value_k3[$key_ev] : NULL,TRUE,$act); ?>
 						</tr>
-					<?php }  
+<?php }  
 					?>
 
 					<?php 
 						
 					}
 				}
-			} ?>
+			}
+ ?>
 					<!--<tr>
 						<td style="text-align: right">Total : </td>
 						<td colspan="4" style="text-align: center"><span id="nilaik3"></span></td>
@@ -289,5 +293,6 @@ RINGKASAN HASIL EVALUASI
 			<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 		</div>
 	</form>
-	<?php } ?>
+<?php }
+ ?>
 </div>

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class admin_badan_hukum extends CI_Controller {
 	public function __construct(){
@@ -6,9 +6,11 @@ class admin_badan_hukum extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('vendor/Vendor_model','vm');
 		
 	}
+ 
 	public function get_field(){
 		return array(
 			array(
@@ -20,6 +22,7 @@ class admin_badan_hukum extends CI_Controller {
 			
 		);
 	}
+ 
 	public function index(){	
 		$this->load->library('form');
 		$this->load->library('datatables');
@@ -41,6 +44,7 @@ class admin_badan_hukum extends CI_Controller {
 		$this->load->view('template',$item);
 		// echo print_r($this->db->last_query());
 	}
+ 
 	//#####################################################
 	//################  	Badan Hukum		 ##############
 	//#####################################################

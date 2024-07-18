@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Admin_bidang extends CI_Controller {
 	public function __construct(){
@@ -6,6 +6,7 @@ class Admin_bidang extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('izin/Izin_model','im');
 
 	}

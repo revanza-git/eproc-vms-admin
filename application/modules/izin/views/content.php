@@ -37,9 +37,9 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($izin_list)){
+		if(count($izin_list) > 0){
 			// print_r($izin_list);
-			foreach($izin_list as $row => $value){
+			foreach($izin_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['dpt_name'];?></td>

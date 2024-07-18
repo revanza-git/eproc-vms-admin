@@ -68,7 +68,8 @@
 		<div class="buttonRegBox clearfix">
 			<a href="<?php echo site_url('auction/edit/'.$id);?>" class="btnBlue">Edit</a>
 		</div>
-		<?php } ?>
+		<?php }
+ ?>
 </div>
 <div id="contentWrap">
 <?php echo $table ?>

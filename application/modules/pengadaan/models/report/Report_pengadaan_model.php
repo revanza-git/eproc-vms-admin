@@ -1,11 +1,11 @@
 <?php
 class Report_pengadaan_model extends CI_Model{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 	}
 	
-	function get_header($id_lelang = ''){
+	public function get_header($id_lelang = ''){
 		$sql = "SELECT a.*,
 					   b.name budget_holder,
 					   g.name budget_spender,
@@ -29,7 +29,7 @@ class Report_pengadaan_model extends CI_Model{
 		return $sql->row_array();
 	}
 
-	function get_bsb($id_lelang = ''){
+	public function get_bsb($id_lelang = ''){
 		$sql = "SELECT a.*,
 					   b.name bidang,
 					   c.name sub_bidang
@@ -42,7 +42,8 @@ class Report_pengadaan_model extends CI_Model{
 		
 		return $sql = $this->db->query($sql, $id_lelang);
 	}
-	function get_pemenang($id_lelang = ''){
+ 
+	public function get_pemenang($id_lelang = ''){
 		$sql = "SELECT a.*,
 				b.name name,
 				c.symbol kurs
@@ -56,7 +57,8 @@ class Report_pengadaan_model extends CI_Model{
 		
 		return $sql = $this->db->query($sql, $id_lelang);
 	}
-	function get_assessment($id_lelang = '',$id_vendor = ''){
+ 
+	public function get_assessment($id_lelang = '',$id_vendor = ''){
 		/*$sql = "SELECT a.*
 					   
 				FROM tr_ass_point a
@@ -72,7 +74,7 @@ class Report_pengadaan_model extends CI_Model{
 		return $query/*sql = $this->db->query($sql, array($id_lelang,$id_vendor))*/;
 	}
 
-	function get_barang($id_lelang = ''){
+	public function get_barang($id_lelang = ''){
 		$sql = "SELECT a.*,
 				b.symbol kurs
 					   
@@ -83,7 +85,8 @@ class Report_pengadaan_model extends CI_Model{
 		
 		return $sql = $this->db->query($sql, array($id_lelang));
 	}
-	function get_kontrak($id_lelang = ''){
+ 
+	public function get_kontrak($id_lelang = ''){
 		$sql = "SELECT a.*,
 				b.name name,
 				c.symbol kurs_symbol
@@ -99,12 +102,12 @@ class Report_pengadaan_model extends CI_Model{
 		return $sql = $this->db->query($sql, $id_lelang);
 	}
 
-	function get_kurs($id_lelang = ''){
+	public function get_kurs($id_lelang = ''){
 		$sql = "SELECT b.name FROM ms_procurement_kurs a LEFT JOIN tb_kurs b ON a.id_kurs = b.id WHERE a.id_procurement = ?";
 		return $sql = $this->db->query($sql, $id_lelang);
 	}
 	
-	function get_peserta($id_lelang = ''){
+	public function get_peserta($id_lelang = ''){
 		$sql = "SELECT a.*,
 					   b.name
 					   
@@ -117,20 +120,21 @@ class Report_pengadaan_model extends CI_Model{
 		return $sql = $this->db->query($sql, $id_lelang);
 	}
 	
-	function get_progress_pengadaan($id){
+	public function get_progress_pengadaan($id){
    		$query = $this->db->select('tb_progress_pengadaan.value step, tr_progress_pengadaan.value value,tr_progress_pengadaan.date date')->where('id_proc',$id)->where('del',0)->join('tb_progress_pengadaan','tb_progress_pengadaan.id = tr_progress_pengadaan.id_progress')->get('tr_progress_pengadaan')->result_array();
    		$return = array();
-   		foreach ($query as $key => $value) {
+   		foreach ($query as $value) {
    			$return[$value['step']] = $value;
    		}
+     
    		return $return;
    	}
-   	function get_contract_progress($id){
-   		$arr = $this->db->select('*')
+ 
+   	public function get_contract_progress($id){
+   		/*print_r($this->db->last_query());*/
+   		return $this->db->select('*')
    						->where('tr_progress_kontrak.id_procurement',$id)
    						->where('del',0	)
    						->get('tr_progress_kontrak')->result_array();
-   		/*print_r($this->db->last_query());*/
-   		return $arr;
    	}
 }

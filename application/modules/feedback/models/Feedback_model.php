@@ -1,11 +1,11 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Feedback_model extends CI_Model
 {
 
-    function get_feedback_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
+    public function get_feedback_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
     {
-        $admin = $this->session->userdata('admin');
+        $this->session->userdata('admin');
         $this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 
         // print_r($admin);
@@ -18,6 +18,7 @@ class Feedback_model extends CI_Model
         if ($this->input->get('sort') && $this->input->get('by')) {
             $this->db->order_by($this->input->get('by'), $this->input->get('sort'));
         }
+        
         if ($is_page) {
             $cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
             $this->db->limit($per_page, $per_page * ($cur_page - 1));
@@ -38,8 +39,7 @@ class Feedback_model extends CI_Model
 
     public function save_reply($id, $data)
     {
-        $a = $this->db->where('id', $id)->update('tr_feedback', $data);
-        return $a;
+        return $this->db->where('id', $id)->update('tr_feedback', $data);
     }
 
     public function get_vendor_email($id)

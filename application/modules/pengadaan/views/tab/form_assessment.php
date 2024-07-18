@@ -8,13 +8,13 @@
 				<div class="panel-group">
 				<?php 
 				$i=1;
-				foreach($assessment_question as $key => $value){ ?>
+				foreach($assessment_question as $value){ ?>
 				<div class="panel">
 					<div class="panel-body">
 						<h4 class="panel-title"><?php echo $value['name']; ?></h4>
 						<ul class="assQuest">
 							<?php
-							foreach($value['quest'] as $row => $val){ ?>
+							foreach($value['quest'] as $val){ ?>
 							<li>
 								<div class="fieldPanel">
 									<div class="questBox">
@@ -28,10 +28,8 @@
 										<input type="hidden" name="ass[<?php echo $val['id']; ?>]" value="0">
 										<input type="checkbox" name="ass[<?php echo $val['id']; ?>]" value="<?php echo $val['point']; ?>" 
 										<?php 
-										if(isset($data_assessment[$val['id']])){
-											if($data_assessment[$val['id']]==$val['point']){
-												echo 'checked';
-											}
+										if(isset($data_assessment[$val['id']]) && $data_assessment[$val['id']]==$val['point']){
+											echo 'checked';
 										}
 										?>
 										/>
@@ -43,14 +41,16 @@
 							</li>
 							<?php
 							$i++;
-							 } ?>
+							 }
+     ?>
 						</ol>
 						
 		            </div>
 		        </div>
-				<?php 
+<?php 
 				
-				} ?>
+				}
+     ?>
 				
 	              	
 			</div>

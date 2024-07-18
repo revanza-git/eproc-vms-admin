@@ -23,8 +23,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($vendor_list)){
-			foreach($vendor_list as $row => $value){
+		if(count($vendor_list) > 0){
+			foreach($vendor_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['name'];?></td>
@@ -34,13 +34,14 @@
  						<a href="<?php echo site_url('k3/penilaian_k3/'.$value['id'].'/edit/'.$value['csms_id'])?>" class="editBtn"><i class="fa fa-pencil-square-o"></i>&nbsp;Nilai CSMS</a>
 						<?php }else{ ?>
 						<a href="<?php echo site_url('k3/penilaian_k3/'.$value['id'])?>" class="editBtn"><i class="fa fa-pencil-square-o"></i>&nbsp;Nilai CSMS</a>
-						<?php	}?>
+						<?php	}
+   ?>
 						
 						<a href="<?php echo site_url('k3/penilaian_view/'.$value['id'])?>" class="editBtn lihatData"><i class="fa fa-search"></i>&nbsp;Lihat Nilai</a>
 						<a href="<?php echo site_url('k3/history_nilai/'.$value['id'])?>" class="editBtn lihatData"><i class="fa fa-eye"></i>&nbsp;Lihat History Nilai</a>
 					</td>
 				</tr>
-			<?php 
+<?php 
 			}
 		}else{?>
 			<tr>

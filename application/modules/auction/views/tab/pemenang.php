@@ -7,12 +7,13 @@
 			<table style="width: 100%;" class="winTable">
 				<tr>
 					<td>
-						<?php foreach ($list as $key => $value) {
+						<?php foreach ($list as $value) {
 							?>
 							<label class="<?php echo ($value['is_winner']==1?'winner':'');?>">
-								<?php if($this->session->userdata('admin')['id_role']==3){ ?><input type="radio" name="pemenang" value="<?php echo $value['id']?>" <?php echo ($value['is_winner']==1?'checked':'')?>><?php } ?>
+								<?php if($this->session->userdata('admin')['id_role']==3){ ?><input type="radio" name="pemenang" value="<?php echo $value['id']?>" <?php echo ($value['is_winner']==1?'checked':'')?>><?php }
+        ?>
 								</div>&nbsp;<?php echo $value['name']?><?php echo ($value['is_winner']==1?'<i class="fa fa-trophy"></i>':'')?></label>
-							<?php
+<?php
 						}
 						?>
 						
@@ -24,7 +25,8 @@
 			<div class="buttonRegBox clearfix">
 				<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 			</div>
-			<?php } ?>
+			<?php }
+       ?>
 			</div>
 		</form>
 		

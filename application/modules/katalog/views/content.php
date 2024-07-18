@@ -30,7 +30,7 @@
 
 					
 
-						<?php foreach($barang_compare as $key => $row) { /*print_r($row);*/?>
+						<?php foreach($barang_compare as $row) { /*print_r($row);*/?>
 
 						<!-- <a href="<?php echo site_url('katalog/view/'.$category.'/'.$row['id'])?>"> -->
 
@@ -86,7 +86,8 @@
 
 						<!-- </a> -->
 
-						<?php } ?>
+<?php }
+ ?>
 
 				</ul>
 
@@ -100,7 +101,7 @@
 
 						
 
-					<?php }else{?>
+<?php }else{?>
 
 				<ul>
 
@@ -126,7 +127,8 @@
 
 						</li>
 
-					<?php }?>
+					<?php }
+?>
 
 				</ul>
 
@@ -158,7 +160,8 @@
 				<a style="/*width : 200px; top: 4px;*/ margin-left: 140px" href="<?php echo site_url('katalog/tambah/'.$category);?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
 				<button class="editBtn lihatData filterBtn">Filter</button>
 			</div>
-			<?php }?>
+			<?php }
+         ?>
 	</div>
 
 <div class="tableWrapper">
@@ -167,7 +170,7 @@
 
 			<div class="itemContainer clearfix">
 
-				<?php foreach ($katalog as $key => $value) { /*print_r($value);*/?>
+				<?php foreach ($katalog as $value) { /*print_r($value);*/?>
 
 				
 
@@ -209,24 +212,24 @@
 
 								<?php
 									if ($value['for'] == '1') {
-										echo "<b>Divisi Operasi</b>"; 
-									} else if ($value['for'] == '10') {
-										echo "<b>Divisi Reliability&Quality</b>"; 
-									} else if ($value['for'] == '18') {
-										echo "<b>Departemen Layanan Umum</b>"; 
-									} else if ($value['for'] == '15') {
-										echo "<b>Seksi Sistem Informasi</b>"; 
-									} else if ($value['for'] == '3') {
-										echo "<b>Departemen Sekretaris Perusahaan</b>"; 
-									} else if ($value['for'] == '5') {
-										echo "<b>Departemen HSSE</b>"; 
-									} else if ($value['for'] == '6') {
-										echo "<b>Jasa Konsultasi</b>"; 
-									} else if ($value['for'] == '7') {
-										echo "<b>Jasa Konstruksi</b>"; 
-									} else if ($value['for'] == '8') {
-										echo "<b>Jasa Lainnya</b>"; 
-									} 
+            echo "<b>Divisi Operasi</b>";
+        } elseif ($value['for'] == '10') {
+            echo "<b>Divisi Reliability&Quality</b>";
+        } elseif ($value['for'] == '18') {
+            echo "<b>Departemen Layanan Umum</b>";
+        } elseif ($value['for'] == '15') {
+            echo "<b>Seksi Sistem Informasi</b>";
+        } elseif ($value['for'] == '3') {
+            echo "<b>Departemen Sekretaris Perusahaan</b>";
+        } elseif ($value['for'] == '5') {
+            echo "<b>Departemen HSSE</b>";
+        } elseif ($value['for'] == '6') {
+            echo "<b>Jasa Konsultasi</b>";
+        } elseif ($value['for'] == '7') {
+            echo "<b>Jasa Konstruksi</b>";
+        } elseif ($value['for'] == '8') {
+            echo "<b>Jasa Lainnya</b>";
+        } 
 								?>
 
 							</div>
@@ -249,15 +252,17 @@
 
 								<!-- <a href="<?php echo site_url('katalog/compare/'.$category.'/'.$value['id_materials']);?>"><i class="fa fa-clone"></i></a> &nbsp;  -->
 
-								<?php } ?>
+								<?php }
+         ?>
 								<?php if($this->session->userdata('admin')['id_role']==1){ ?>
 								<a href="<?php echo site_url('katalog/edit_barang/'.$category.'/'.$value['id_materials']);?>"><i class="fa fa-cog"></i></a> &nbsp; 
 
 								<a href="<?php echo site_url('katalog/hapus_barang/'.$category.'/'.$value['id_materials']);?>" class="delBtn iconOnly"><i class="fa fa-trash"></i></a>
-								<?php } ?>
+								<?php }
+         ?>
 							</div>
 
-							<?php }else{?>
+<?php }else{?>
 
 							<div class="btn">
 
@@ -265,11 +270,13 @@
 
 								<a href="<?php echo site_url('katalog/compare/'.$category.'/'.$value['id_materials']);?>"><i class="fa fa-clone"></i></a> &nbsp; 
 
-								<?php } ?>
+								<?php }
+         ?>
 
 							</div>
 
-							<?php } ?>
+<?php }
+         ?>
 
 						</div>
 
@@ -287,7 +294,8 @@
 
 				
 
-				<?php } ?>
+<?php }
+          ?>
 
 
 

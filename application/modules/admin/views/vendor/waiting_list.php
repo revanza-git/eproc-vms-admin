@@ -79,12 +79,8 @@
 	echo $this->session->flashdata('msgSuccess');
 	$admin = $this->session->userdata('admin');
 	if ($admin['id_role'] == 8) {
-		if ($status == 1) {
-			$label = '(Aktif)';
-		} else {
-			$label = '(Tidak Aktif)';
-		}
-	}
+     $label = $status == 1 ? '(Aktif)' : '(Tidak Aktif)';
+ }
 ?>
 <h2 class="formHeader">Daftar Tunggu Penyedia Barang/Jasa <?php echo $label; ?></h2>
 <div class="tableWrapper">
@@ -109,15 +105,16 @@
 				<td>Tanggal Pengangkatan Awal</td>
 				<td>Tanggal Pengangkatan Akhir</td>
 				<td>Form</td>
-				<?php } ?>
+				<?php }
+ ?>
 				<td class="actionPanel">Action</td>
 			</tr>
 		</thead>
 		<tbody>
 		<?php 
-		if(count($list)){
+		if(count($list) > 0){
 			// print_r($list);die;
-			foreach($list as $row => $value){ 
+			foreach($list as $value){ 
 				// if ($status==1) { 
 					if ($value['need_approve'] == 1) { ?>
 						<tr>
@@ -132,6 +129,7 @@
 									} else {
 										echo default_date($value['start_date']);
 									}
+         
 								?>	
 							</td>
 							<td><?php 
@@ -140,19 +138,21 @@
 									} else {
 										echo default_date($value['end_date']);
 									}
+         
 								?>	
 							</td>
 							<td>
 								<form action="<?php echo site_url('approval/approve/'.$value['id'])?>" method="POST">
 									<?php echo $this->form->calendar(array('name'=>'start_date_'.$value['id'],'value'=>$this->form->get_temp_data('start_date')), false, 'required');?>
 							</td>
-							<?php } else{ ?>
+<?php } else{ ?>
 							<td><?php 
 									if ($value['start_date'] == '0000-00-00 00:00:00' || $value['start_date'] == null || $value['start_date'] == '') {
 										echo "-";				
 									} else {
 										echo default_date($value['start_date']);
 									}
+         
 								?>	
 							</td>
 							<td>
@@ -165,7 +165,8 @@
 								?>
 							</td>
 							<td> - </td>
-							<?php } ?>
+<?php }
+      ?>
 							<td class="actionBlock">
 								
 								<button type="submit" name="submit" class="editBtn"><i class="fa fa-check-square-o"></i>Angkat Menjadi DPT</button>
@@ -173,7 +174,8 @@
 								
 							</td>
 						</tr>
-					<?php }?>
+<?php }
+     ?>
 				<?php // else {
 					if ($value['need_approve'] != 1) { ?>
 						<tr>
@@ -188,6 +190,7 @@
 									} else {
 										echo default_date($value['start_date']);
 									}
+         
 								?>	
 							</td>
 							<td><?php 
@@ -196,18 +199,20 @@
 									} else {
 										echo default_date($value['end_date']);
 									}
+         
 								?>	
 							</td>
 							<td>
 								-
 							</td>
-							<?php } //else{ ?>
+<?php } //else{ ?>
 							<!-- <td><?php 
 									if ($value['start_date'] == '0000-00-00 00:00:00' || $value['start_date'] == null || $value['start_date'] == '') {
 										echo "-";				
 									} else {
 										echo default_date($value['start_date']);
 									}
+         
 								?>	
 							</td>
 							<td>
@@ -229,16 +234,18 @@
 								<a href="<?php echo site_url('approval/administrasi/'.$value['id'])?>" class="editBtn lihatData"><i class="fa fa-search"></i>Lihat Data</a>
 							</td>
 						</tr>
-					<?php }?>
+<?php }
+     ?>
 				
 				<?php //}?>
-		<?php } 
+<?php } 
 				}else{?>
 
 					<tr>
 						<td colspan="11" class="noData">Data tidak ada</td>
 					</tr>
-				<?php } ?>
+				<?php }
+   ?>
 		</tbody>
 	</table>
 	

@@ -17,8 +17,8 @@
 			</thead>
 			<tbody>
 			<?php 
-			if(count($tdp_list)){
-				foreach($tdp_list as $row => $value){
+			if(count($tdp_list) > 0){
+				foreach($tdp_list as $value){
 				?>
 					<tr>
 						<td><?php echo $value['no'];?></td>
@@ -55,5 +55,6 @@
 <div class="buttonRegBox clearfix">
 	<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 </div>
-<?php }?>
+<?php }
+  ?>
 </form>

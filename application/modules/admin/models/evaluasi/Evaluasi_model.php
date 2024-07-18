@@ -1,8 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class evaluasi_model extends CI_Model{
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$this->evaluasi 		= array(
 								'id_ms_quest',
@@ -14,7 +14,7 @@ class evaluasi_model extends CI_Model{
 							);
 		}
 
-	function get_evaluasi_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
+	public function get_evaluasi_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
 		$this->db->select('*');
 		$this->db->where('del',0);
 		
@@ -23,6 +23,7 @@ class evaluasi_model extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
@@ -46,39 +47,39 @@ class evaluasi_model extends CI_Model{
 		
 		
 		foreach($this->evaluasi as $_param) $param[$_param] = $data[$_param];
+  
 		// echo print_r($this->input->post());
 		$this->db->query($sql, $param);
-		$id = $this->db->insert_id();
 		
-		return $id;
+		return $this->db->insert_id();
     }
 
-    function get_data($id){
+    public function get_data($id){
     	$query = $this->db->select('*')->where('id', $id)->where('del',0)->get('tb_evaluasi');
 		// $sql = "SELECT * FROM tb_evaluasi WHERE id = ".$id;
 		// $query = $this->db->query($sql);
 		return $query->row_array();
 	}
 
-	function edit_data($data,$id){
+	public function edit_data($data,$id){
 				
 		$this->db->where('id',$id);
-		$res = $this->db->update('tb_evaluasi',$data);
 		
-		return $res;
+		return $this->db->update('tb_evaluasi',$data);
 	}
 
 
 
 
-	function get_header(){
+	public function get_header(){
     	$get = $this->db->where('del',0)->select('id,question')->get('tb_ms_quest_k3');
 		$raw = $get->result_array();
 		$res = array();
 		$res[''] = 'Pilih salah satu';
-		foreach($raw as $key => $val){
+		foreach($raw as $val){
 			$res[$val['id']] = $val['question'];
 		}
+  
 		return $res;
     }
 }

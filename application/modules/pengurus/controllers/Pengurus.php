@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Pengurus extends CI_Controller {
 
@@ -7,6 +7,7 @@ class Pengurus extends CI_Controller {
 		if(!$this->session->userdata('user')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('pengurus_model','pm');
 		$this->load->library('encrypt');
 		$this->load->library('utility');
@@ -34,6 +35,7 @@ class Pengurus extends CI_Controller {
 		if($this->vm->check_pic($data['id_user'])==0){
 			redirect(site_url('dashboard/pernyataan'));
 		}
+  
 		$search = $this->input->get('q');
 		$page = '';
 		
@@ -111,6 +113,7 @@ class Pengurus extends CI_Controller {
 				redirect(site_url('pengurus'));
 			}
 		}
+  
 		$data['id_akta'] = $this->pm->get_akta($user['id_user']);
 		
 		$layout['content']= $this->load->view('tambah',$data,TRUE);
@@ -191,6 +194,7 @@ class Pengurus extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function hapus($id){
 		if($this->pm->delete($id)){
 			$this->dpt->non_iu_change($user['id_user']);
@@ -218,9 +222,9 @@ class Pengurus extends CI_Controller {
 			$_POST[$db_name] = $file_name;
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 }

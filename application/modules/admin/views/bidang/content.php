@@ -27,15 +27,15 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($akta_list)){
-			foreach($akta_list as $row => $value){
+		if(count($akta_list) > 0){
+			foreach($akta_list as $aktum_list){
 			?>
 				<tr>
-					<td><?php echo $value['id_dpt_type']?></td>
-					<td><?php echo $value['name'];?></td>
+					<td><?php echo $aktum_list['id_dpt_type']?></td>
+					<td><?php echo $aktum_list['name'];?></td>
 					<td class="actionBlock">
-						<a href="<?php echo site_url('admin/admin_bidang/edit_bidang/'.$value['id'])?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
-						<a style="top: -4px" href="<?php echo site_url('admin/admin_bidang/hapus_bidang/'.$value['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
+						<a href="<?php echo site_url('admin/admin_bidang/edit_bidang/'.$aktum_list['id'])?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
+						<a style="top: -4px" href="<?php echo site_url('admin/admin_bidang/hapus_bidang/'.$aktum_list['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
 					</td>
 				</tr>
 			<?php 

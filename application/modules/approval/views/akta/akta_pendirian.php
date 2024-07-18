@@ -33,26 +33,26 @@
 				</thead>
 				<tbody>
 				<?php 
-				if(count($akta_list)){
-					foreach($akta_list as $row => $value){
+				if(count($akta_list) > 0){
+					foreach($akta_list as $aktum_list){
 					?>
 						<tr>
-							<td><?php echo $value['no'];?></td>
-							<td><?php echo $value['notaris'];?></td>
-							<!-- <td><?php echo default_date(date('d-m-Y', strtotime($value['issue_date'])));?></td> -->
-							<td><?php echo  special_date($value['issue_date']);?></td>
-							<td><a href="<?php echo BASE_LINK_EXTERNAL.('lampiran/akta_file/'.$value['akta_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
-							<td><?php echo $value['authorize_by'];?></td>
-							<td><?php echo $value['authorize_no'];?></td>
-							<td><?php echo  special_date($value['authorize_date']);?></td>
-							<!-- <td><?php echo default_date(date('d-m-Y', strtotime($value['authorize_date'])));?></td> -->
-							<td><a href="<?php echo BASE_LINK_EXTERNAL.('lampiran/authorize_file/'.$value['authorize_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
-							<td><input type="checkbox" name="akta[<?php echo $value['id']?>][mandatory]" value="1" <?php echo $this->data_process->set_mandatory($value['data_status']);?>></td>
+							<td><?php echo $aktum_list['no'];?></td>
+							<td><?php echo $aktum_list['notaris'];?></td>
+							<!-- <td><?php echo default_date(date('d-m-Y', strtotime($aktum_list['issue_date'])));?></td> -->
+							<td><?php echo  special_date($aktum_list['issue_date']);?></td>
+							<td><a href="<?php echo BASE_LINK_EXTERNAL.('lampiran/akta_file/'.$aktum_list['akta_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
+							<td><?php echo $aktum_list['authorize_by'];?></td>
+							<td><?php echo $aktum_list['authorize_no'];?></td>
+							<td><?php echo  special_date($aktum_list['authorize_date']);?></td>
+							<!-- <td><?php echo default_date(date('d-m-Y', strtotime($aktum_list['authorize_date'])));?></td> -->
+							<td><a href="<?php echo BASE_LINK_EXTERNAL.('lampiran/authorize_file/'.$aktum_list['authorize_file']);?>" target="_blank"><i class="fa fa-download"></i></a></td>
+							<td><input type="checkbox" name="akta[<?php echo $aktum_list['id']?>][mandatory]" value="1" <?php echo $this->data_process->set_mandatory($aktum_list['data_status']);?>></td>
 							<td class="actionBlock">
-								<input type="radio" name="akta[<?php echo $value['id']?>][status]" value="1" <?php echo $this->data_process->set_yes_no(1,$value['data_status']);?>>
+								<input type="radio" name="akta[<?php echo $aktum_list['id']?>][status]" value="1" <?php echo $this->data_process->set_yes_no(1,$aktum_list['data_status']);?>>
 							</td>
 							<td class="actionBlock">
-								<input type="radio" name="akta[<?php echo $value['id']?>][status]" value="0" <?php echo $this->data_process->set_yes_no(0,$value['data_status']);?>>
+								<input type="radio" name="akta[<?php echo $aktum_list['id']?>][status]" value="0" <?php echo $this->data_process->set_yes_no(0,$aktum_list['data_status']);?>>
 							</td>
 						</tr>
 					<?php 
@@ -76,6 +76,7 @@
 	<div class="buttonRegBox clearfix">
 		<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 	</div>
-	<?php }?>
+	<?php }
+  ?>
 	</form>
 </div>

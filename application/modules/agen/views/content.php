@@ -35,8 +35,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($izin_list)){
-			foreach($izin_list as $row => $value){
+		if(count($izin_list) > 0){
+			foreach($izin_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['no'];?></td>

@@ -29,7 +29,8 @@
 								echo form_dropdown('id_kurs', $kurs, ($this->form->get_temp_data('id_kurs'))?$this->form->get_temp_data('id_kurs'):$id_kurs,'');
 							}else{
 								echo '-- Belum Ada Kurs Yang Dipilih --';
-							}?>
+							}
+       ?>
 							<?php echo form_error('id_kurs'); ?>
 							
 						</td>

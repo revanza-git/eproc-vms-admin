@@ -14,17 +14,18 @@
 <div class="formDashboard">
 	<form method="POST" enctype="multipart/form-data">
 		<table>
-		<?php foreach($dpt[$form['id_dpt_type']] as $key => $val){?>
+		<?php foreach($dpt[$form['id_dpt_type']] as $val){?>
 			<tr class="input-form">
 				
 				<td>
 					<label class="lbform">
-						<?php echo form_radio(array('name'=>'type'),$val,(set_radio('type',$val)||($this->form->get_temp_data('type')==$val))?TRUE:FALSE)?><?php echo $siu[$val];?>
+						<?php echo form_radio(array('name'=>'type'),$val,set_radio('type',$val)||($this->form->get_temp_data('type')==$val))?><?php echo $siu[$val];?>
 					</label>
 				</td>
 				
 			</tr>
-			<?php } ?>
+			<?php }
+ ?>
 		</table>
 		
 		<div class="buttonRegBox clearfix">

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Admin_vendor extends CI_Controller {
 
@@ -140,7 +140,7 @@ class Admin_vendor extends CI_Controller {
 
 	}
 
-	public function export_excel($title="Data Penyedia Barang/Jasa", $data){
+	public function export_excel($data, $title="Data Penyedia Barang/Jasa"){
 		$data = $this->vm->get_all_vendor_list();
 		$csms_limit = $this->vm->get_csms_limit();
 		$table = "<table border=1>";
@@ -164,11 +164,12 @@ class Admin_vendor extends CI_Controller {
 			$table .= "<td>".$value['name']."</td>";
             
 			    $table_ = "<td>-</td>";
-			foreach ($csms_limit as $key_ => $value_) {
-                if ($value['score'] > $value_['end_score'] && $value['score'] < $value_['start_score']) {
-			        $table_ = "<td>".$value_['value']."</td>";
+			foreach ($csms_limit as $csm_limit) {
+                if ($value['score'] > $csm_limit['end_score'] && $value['score'] < $csm_limit['start_score']) {
+			        $table_ = "<td>".$csm_limit['value']."</td>";
                 }
 			}
+   
 			$table .= $table_;
 			$table .= "<td>".$value['certificate_no']."</td>";
 			$table .= "<td>".$value['npwp_code']."</td>";
@@ -176,6 +177,7 @@ class Admin_vendor extends CI_Controller {
 			$table .= "<td>".$value['vendor_phone']."</td>";
 			$table .= "</tr>";
 		}
+  
 		$table .= "</table>";
 		header('Content-type: application/ms-excel');
 
@@ -184,9 +186,9 @@ class Admin_vendor extends CI_Controller {
 		echo $table;
 	}
 
-	public function export_excel_waiting_list($title="Data Penyedia Barang/Jasa", $data){
+	public function export_excel_waiting_list($data, $title="Data Penyedia Barang/Jasa"){
 		$data = $this->vm->get_waiting_list($search, $sort, $page, $per_page,TRUE);
-		$csms_limit = $this->vm->get_csms_limit();
+		$this->vm->get_csms_limit();
 		$table = "<table border=1>";
 
 			$table .= "<tr>";
@@ -214,6 +216,7 @@ class Admin_vendor extends CI_Controller {
 			$table .= "<td>".$value['email']."</td>";
 			$table .= "</tr>";
 		}
+  
 		$table .= "</table>";
 		header('Content-type: application/ms-excel');
 

@@ -1,27 +1,31 @@
 <?php
 class Report extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 
 		// require_once(BASEPATH."plugins/dompdf/dompdf_config.inc.php");  
 		$this->load->model('auction/auction_report_model');
 	}
 	
-	function index( $type = '',$id_lelang =  '', $id_vendor = ''){
+	public function index( $type = '',$id_lelang =  '', $id_vendor = ''){
 
 		$hasil = '';
 		$fill = $this->auction_report_model->get_header($id_lelang);
-		
-		$_barang = $_peserta = $_pengguna = $_kurs = '';
+  $_barang = '';
+  $_peserta = '';
+  $_pengguna = '';
+  $_kurs = '';
 		$barang = $this->auction_report_model->get_barang($id_lelang);
 		foreach($barang->result() as $data)
-			$_barang .= '<li>'.$data->nama_barang.'</li>'; 
+			$_barang .= '<li>'.$data->nama_barang.'</li>';
+   
 		$barang = $_barang;
 		
 		$peserta = $this->auction_report_model->get_peserta($id_lelang);
 		foreach($peserta->result() as $data)
 			$_peserta .= '<li>'.$data->name.'</li>';
+  
 		$peserta = $_peserta;
 		
 		$pemenang_list = array();
@@ -49,7 +53,8 @@ class Report extends CI_Controller{
 
 		$kurs = $this->auction_report_model->get_kurs($id_lelang);
 		foreach($kurs->result() as $data)
-			$_kurs .= '<li>'.$data->name.'</li>'; 
+			$_kurs .= '<li>'.$data->name.'</li>';
+   
 		$kurs = $_kurs;
 
 
@@ -92,13 +97,14 @@ class Report extends CI_Controller{
 					if($_data->id_penawaran!=NULL){
 						// echo "Masuk Ke Tidak Null";die;
 						$penawaran = $this->auction_report_model->get_penawaran($_data->id_penawaran);
-						// print_r($penawaran);die;
-						$nilai = $in_rate = " - ";
+      // print_r($penawaran);die;
+      $nilai = " - ";
+      $in_rate = " - ";
 						
 						if($penawaran['nilai'] > 0){
-							if($penawaran['id_kurs'] == 1)
-								$in_rate = number_format($penawaran['in_rate']);	
-							else{
+							if ($penawaran['id_kurs'] == 1) {
+           $in_rate = number_format($penawaran['in_rate']);
+       } else{
 								$nilai = $penawaran['symbol']." ".number_format($penawaran['nilai']);
 								$in_rate = number_format($penawaran['in_rate']);
 							}
@@ -113,6 +119,7 @@ class Report extends CI_Controller{
 							// 	$return .= '<td rowspan="'.$_peserta->num_rows().'">'.$data->symbol.' '.number_format($data->nilai_hps).'</td>';
 							// }
 						}
+      
 						// echo $in_rate;die;
 							$return .= '<td width="5%" align="center">'.$index.'</td>';
 							$return .= '<td>'.$_data->nama_vendor.'</td>';
@@ -131,6 +138,7 @@ class Report extends CI_Controller{
 							// 	$return .= '<td rowspan="'.$_peserta->num_rows().'">Rp. '.number_format($data->nilai_hps).'</td>';
 							// }
 						}
+      
 							$return .= '<td width="5%" align="center">'.$index.'</td>';
 							$return .= '<td>'.$_data->nama_vendor.'</td>';
 							$return .= '<td>'.$nilai.'</td>';
@@ -139,6 +147,7 @@ class Report extends CI_Controller{
 						$is_first = false;
 						$index++;
 					}
+     
 					// echo $in_rate;die;
 					$tes_idr .= $in_rate.'-';
 					$tes_kurs .= $nilai.'-';
@@ -185,6 +194,7 @@ class Report extends CI_Controller{
 										</tr>';
 			}
 		}
+  
 		#------------------------------------
 		$pemenang_auction .= '</table>';
 		// print_r($pemenang_list);
@@ -214,17 +224,21 @@ class Report extends CI_Controller{
 		$index = array();
 		
 			foreach($history->result() as $data){
-				if(!isset($index[$data->id_vendor][$data->id_barang])) $index[$data->id_vendor][$data->id_barang] = 1;
-				$nilai = $in_rate = " - ";
-				
-				if($data->nilai > 0){
-					if($data->id_kurs == 1)
-						$in_rate = number_format($data->in_rate);	
-					else{
+				if (!isset($index[$data->id_vendor][$data->id_barang])) {
+        $index[$data->id_vendor][$data->id_barang] = 1;
+    }
+
+    $nilai = " - ";
+    $in_rate = " - ";
+    if($data->nilai > 0){
+					if ($data->id_kurs == 1) {
+         $in_rate = number_format($data->in_rate);
+     } else{
 						$nilai = $data->symbol." ".number_format($data->nilai);
 						$in_rate = number_format($data->in_rate);
 					}
 				}
+    
 			// print_r($history);
 				$return .= '<tr>';
 					$return .= '<td><div class="history-page-break">'.default_date($data->entry_stamp).date(", H:i:s", strtotime($data->entry_stamp)).'</div></td>';
@@ -237,13 +251,14 @@ class Report extends CI_Controller{
 				
 				$index[$data->id_vendor][$data->id_barang]++;
 			}
+   
 		$return .= '</table>';
 		$history = $return;
 		$date= date_create($fill['auction_date']);
 
 		$ttdpengadaan = "";
-		if($type=="internal") {
-			$ttdpengadaan = '<table>
+		if ($type=="internal") {
+      $ttdpengadaan = '<table>
 						<tr>
 							<td height="20"></td>
 						</tr>
@@ -320,9 +335,8 @@ class Report extends CI_Controller{
 							</td>
 						</tr>
 					</table>';
-		}else{
-			if($this->session->userdata('admin')['id_role']==6){
-				$ttdpengadaan = '<table>
+  } elseif ($this->session->userdata('admin')['id_role']==6) {
+      $ttdpengadaan = '<table>
 					<tr>
 						<td height="20"></td>
 					</tr>
@@ -375,28 +389,18 @@ class Report extends CI_Controller{
 							</td>
 						</tr>
 					</table>';
-			}
-		}
-		
+  }
 
-		
-		
-		
-		// print_r($data);
- 		
- 		//tipe auction
- 		if($fill['auction_type'] == 'reverse_auction') $fill['auction_type'] = 'Reverse';
-		else $fill['auction_type'] = 'Forward';
-		//metode penawaran
-		if($fill['metode_penawaran'] == 'harga_satuan') $metode_penawaran = 'Harga Satuan';
-		else $metode_penawaran = 'Lump Sum';
-			// print_r($fill);
+  // print_r($data);
+  //tipe auction
+  $fill['auction_type'] = $fill['auction_type'] == 'reverse_auction' ? 'Reverse' : 'Forward';
 
-		if($fill['work_area'] == 'kantor_pusat') $area_work = 'Kantor Pusat';
-		else $area_work = 'Site Office';
+  //metode penawaran
+  $metode_penawaran = $fill['metode_penawaran'] == 'harga_satuan' ? 'Harga Satuan' : 'Lump Sum';
 
-		if($fill['budget_source'] == 'non_perusahaan') $fill['budget_source'] = 'Non-Perusahaan';
-		else $fill['budget_source'] = 'Perusahaan';
+  // print_r($fill);
+  $area_work = $fill['work_area'] == 'kantor_pusat' ? 'Kantor Pusat' : 'Site Office';
+  $fill['budget_source'] = $fill['budget_source'] == 'non_perusahaan' ? 'Non-Perusahaan' : 'Perusahaan';
 
 		$return = '
 			<html>

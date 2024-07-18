@@ -56,7 +56,8 @@
 
 					<input type="hidden" value="lifetime" name="end_date">
 
-					<?php } ?>
+					<?php }
+      ?>
 
 				</td>
 
@@ -116,7 +117,7 @@
 
 		<ul>
 
-			<?php foreach ($remark_list as $key => $value) {?>
+			<?php foreach ($remark_list as $value) {?>
 
 			<li>
 
@@ -126,7 +127,8 @@
 
 			</li>
 
-			<?php }?>
+			<?php }
+      ?>
 
 		</ul>
 

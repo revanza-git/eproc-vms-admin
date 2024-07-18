@@ -1,8 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Administrasi_model extends CI_Model{
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$this->field_master = array(
 								'id_vendor',
@@ -20,7 +20,7 @@ class Administrasi_model extends CI_Model{
 							);
 	}
 
-	function save_data($data){
+	public function save_data($data){
 		$_param = array();
 		$sql = "INSERT INTO ms_akta (
 							id_vendor,
@@ -41,9 +41,8 @@ class Administrasi_model extends CI_Model{
 		foreach($this->field_master as $_param) $param[$_param] = $data[$_param];
 		
 		$this->db->query($sql, $param);
-		$id = $this->db->insert_id();
 		
-		return $id;
+		return $this->db->insert_id();
 	}
 
 	public function get_pic($id_vendor)

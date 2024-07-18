@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 
 
@@ -34,7 +34,7 @@ class Admin_dpt extends CI_Controller {
 
 		
 
-			if(count($_POST['simpan'])){
+			if(count($_POST['simpan']) > 0){
 				// print_r($_POST);
 				unset($_POST['simpan']);
 				$nomor = $_POST['certificate_no'];
@@ -90,7 +90,7 @@ class Admin_dpt extends CI_Controller {
 
 	}
 
-	public function export_excel($title="Data Penyedia Barang/Jasa", $data){
+	public function export_excel($data, $title="Data Penyedia Barang/Jasa"){
 		$data = $this->vm->get_dpt_list($search, $sort, $page, $per_page,TRUE);
 		$csms_limit = $this->vm->get_csms_limit();
 		// print_r($data);die;	
@@ -117,14 +117,15 @@ class Admin_dpt extends CI_Controller {
 			$table .= "<td>".$value['name']."</td>";
             
 			    $table_ = "<td>-</td>";
-			foreach ($csms_limit as $key_ => $value_) {
+			foreach ($csms_limit as $csm_limit) {
                 # code...
 
-                if ($value['score'] > $value_['end_score'] && $value['score'] < $value_['start_score']) {
+                if ($value['score'] > $csm_limit['end_score'] && $value['score'] < $csm_limit['start_score']) {
                     # code...
-			        $table_ = "<td>".$value_['value']."</td>";
+			        $table_ = "<td>".$csm_limit['value']."</td>";
                 }
 			}
+   
 			$table .= $table_;
 			$table .= "<td>".$value['certificate_no']."</td>";
 			$table .= "<td>".$value['npwp_code']."</td>";
@@ -133,6 +134,7 @@ class Admin_dpt extends CI_Controller {
 			$table .= "<td>".$value['email']."</td>";
 			$table .= "</tr>";
 		}
+  
 		$table .= "</table>";
 		header('Content-type: application/ms-excel');
 

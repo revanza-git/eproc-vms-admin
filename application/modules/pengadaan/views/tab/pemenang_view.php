@@ -43,7 +43,8 @@
 			<div class="buttonRegBox clearfix">
 				<a href="<?php echo site_url('pengadaan/view/'.$id.'/pemenang_edit')?>" class="btnBlue">Edit</a>
 			</div>
-			<?php } ?>
+			<?php }
+ ?>
 			</div>
 		</form>
 		

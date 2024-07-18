@@ -21,7 +21,8 @@
 				<div class="form-group">
 					<p class="errorMsg"><?php echo $this->session->flashdata('error_msg');?></p>
 				</div>
-				<?php } ?>
+				<?php }
+ ?>
 				<div class="form-group">
 					<input type="submit" value="LOGIN" class="btnBlue">
 					

@@ -9,22 +9,22 @@
 
 class Filter extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$this->load->library('form');
 	}
 	
-	function form_default(){
+	public function form_default(){
 		$id_type = explode("/", $_POST['id_type']);
 		
 		$id = $id_type[2];
 		$type = $id_type[1];
 				
-		if($type == "text"){
+		if($type === "text"){
 			$return = 'Ketikkan filter anda &nbsp; <input type="text" size="20" value="" id="text-'.$id.'"/>';
 		}
 		
-		if($type == "kualifikasi"){
+		if($type === "kualifikasi"){
 			$return = 
 			'<table cellspacing="0" cellpadding="0" border="0">
 				<tr>
@@ -42,9 +42,9 @@ class Filter extends CI_Controller{
 			$type = "text";
 		}
 		
-		if($type == "group_bsb"){
-			$return = 
-			'<table cellspacing="0" cellpadding="0" border="0">
+		if ($type === "group_bsb") {
+      $return = 
+   			'<table cellspacing="0" cellpadding="0" border="0">
 				<tr>
 					<td valign="top" width="100" align="right">Pilih Filter</td>
 					<td valign="top" width="20" align="center">:</td>
@@ -59,20 +59,17 @@ class Filter extends CI_Controller{
 					</td>
 				</tr>
 			 </table>';
-			
-			$data['width'] = 500;
-			$type = "text";
-		}
-		
-		else if($type == "bsb"){
-			$setting = array(
-				'db' => 'tb_bidang',
-				'id' => 'id',
-				'value' => 'name'
-			);
-			$return = $this->form->drop_down_db('bsb-id_bidang', '', $setting, 'onchange="fill_sub_bidang(\'bsb-id_sub_bidang\', this.value)"');	
-			$data['width'] = 600;
-		}
+      $data['width'] = 500;
+      $type = "text";
+  } elseif ($type === "bsb") {
+      $setting = array(
+   				'db' => 'tb_bidang',
+   				'id' => 'id',
+   				'value' => 'name'
+   			);
+      $return = $this->form->drop_down_db('bsb-id_bidang', '', $setting, 'onchange="fill_sub_bidang(\'bsb-id_sub_bidang\', this.value)"');
+      $data['width'] = 600;
+  }
 		
 		$data['filter_content'] = $return;
 		$data['type'] = $type;

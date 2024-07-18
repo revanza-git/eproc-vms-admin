@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class K3 extends CI_Controller {
 
@@ -7,10 +7,12 @@ class K3 extends CI_Controller {
 		if(!$this->session->userdata('user')&&!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('K3_model','km');
 		$this->load->library('utility');
 		
 	}
+ 
 	public function index(){
 		$user = $this->session->userdata('user');
 		$data_k3['csms_file'] 	= $this->km->get_k3_all_data($user['id_user']);
@@ -38,13 +40,14 @@ class K3 extends CI_Controller {
 				}
 			}
 
-			foreach($data_k3['data_quest'] as $key_quest => $val_quest){
+			foreach($data_k3['data_quest'] as $val_quest){
 				$data_k3['quest_all'][$val_quest['id_ms_header']]['data'][$val_quest['id_sub_header']]['data'][$val_quest['id']] = array();
 			}
 
-			foreach ($data_k3['data_field'] as $key_data => $value_data) {
+			foreach ($data_k3['data_field'] as $value_data) {
 				$data_k3['quest_all'][$value_data['id_ms_header']]['data'][$value_data['id_sub_header']]['data'][$value_data['id_question']][$value_data['id']] = $value_data;	
 			}
+   
 			$layout['content']	= $this->load->view('form_view',$data_k3,TRUE);
 
 		
@@ -68,6 +71,7 @@ class K3 extends CI_Controller {
 		}
 		
 	}
+ 
 	public function first_form(){
 		$user = $this->session->userdata('user');
 		if($this->input->post('next')){
@@ -213,17 +217,18 @@ class K3 extends CI_Controller {
 			}
 		}
 
-		foreach($data['data_quest'] as $key_quest => $val_quest){
+		foreach($data['data_quest'] as $val_quest){
 			$data['quest_all'][$val_quest['id_ms_header']]['data'][$val_quest['id_sub_header']]['data'][$val_quest['id']] = array();
 		}
 
-		foreach ($data['data_field'] as $key_data => $value_data) {
+		foreach ($data['data_field'] as $value_data) {
 			$data['quest_all'][$value_data['id_ms_header']]['data'][$value_data['id_sub_header']]['data'][$value_data['id_question']][$value_data['id']] = $value_data;	
 		}
+  
 		// echo print_r($data['quest_all']);
 
 		if($this->input->post('simpan')){
-				foreach($this->km->get_admin_email(3) as $key => $admin){
+				foreach($this->km->get_admin_email(3) as $admin){
 					$this->utility->mail($admin['email'],$email['message'],$email['subject']);
 				}
 
@@ -235,6 +240,7 @@ class K3 extends CI_Controller {
 				redirect('k3');
 			}
 		}
+  
 		// echo print_r($this->km->get_k3_data($user['id_user']));
 		if(count($this->km->get_k3_data($user['id_user']))>0){
 			$layout['content']= $this->load->view('form_view',$data,TRUE);
@@ -275,7 +281,7 @@ class K3 extends CI_Controller {
 			$res = $this->km->update_k3_data($this->input->post('quest'),$user['id_user'],'edit');
 			if($res){
 
-				foreach($this->km->get_admin_email(3) as $key => $admin){
+				foreach($this->km->get_admin_email(3) as $admin){
 					$this->utility->mail($admin['email'],$email['message'],$email['subject']);
 				}
 
@@ -336,15 +342,14 @@ class K3 extends CI_Controller {
 		if($date <= strtotime(date('Y-m-d'))){
 			$this->form_validation->set_message('backdate', 'Tanggal tidak boleh lampau');
 			return false;
-		}else{
-			return true;
 		}
+
+  return true;
 	}
 	
 	public function history_nilai($id){
 		$this->load->library('form');
-		$search = $this->input->get('q');
-		$page = '';
+  $this->input->get('q');
 		// unset($_POST);
 
 		$per_page=10;
@@ -359,6 +364,7 @@ class K3 extends CI_Controller {
 		$item['content'] = $this->load->view('admin/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function penilaian_k3($id_vendor,$act = 'create',$id_csms=0){
 		$data['act'] = $act;
 		$data['vendor'] = $this->vm->get_data($id_vendor);
@@ -390,13 +396,15 @@ class K3 extends CI_Controller {
 										<br><br>
 										Terimakasih,<br>
 										PT Nusantara Regas";
-				foreach($this->km->get_admin_email(1) as $key => $admin){
+				foreach($this->km->get_admin_email(1) as $admin){
 					$this->utility->mail($admin['email'],$email['message'],$email['subject']);
 				}
+    
 				$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menyimpan data!</p>');
 				redirect('k3/penilaian_view/'.$id_vendor);
 			}
 		}
+  
 		$layout['content']= $this->load->view('k3/penilaian_k3',$data,TRUE);	
 		$layout['script']= $this->load->view('k3/penilaian_k3_js',$data,TRUE);
 
@@ -435,6 +443,7 @@ class K3 extends CI_Controller {
 		$item['content'] = $this->load->view('admin/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function do_upload($files,$quest){
 		// echo print_r($files);
 		$this->load->library('upload');	
@@ -463,13 +472,16 @@ class K3 extends CI_Controller {
 					// echo $this->upload->display_errors('','');
 					// $this->session->userdata('msgSuccess',$this->upload->display_errors('',''));
 					return false;
-				}else{
-					$_POST['quest'][$key] = $file_name;
-					return true;
 				}
+
+    $_POST['quest'][$key] = $file_name;
+    return true;
 			}
 		}
+
+  return null;
 	}
+ 
 	public function do_upload_single($field, $db_name = ''){	
 		
 		$file_name = $_FILES[$db_name]['name'] = $db_name.'_'.$this->utility->name_generator($_FILES[$db_name]['name']);
@@ -485,14 +497,14 @@ class K3 extends CI_Controller {
 			$_POST[$db_name] = $file_name;
 			$this->form_validation->set_message('do_upload_single', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 
 
-	public function export_excel($title="Data CSMS", $data){
+	public function export_excel($data, $title="Data CSMS"){
 		$data = $this->km->get_k3_vendor($search, $sort, $page, $per_page,TRUE);
 		// print_r($data);die;	
 		$table = "<table border=1>";
@@ -512,6 +524,7 @@ class K3 extends CI_Controller {
 			$table .= "<td>".$value['score']."</td>";
 			$table .= "</tr>";
 		}
+  
 		$table .= "</table>";
 		header('Content-type: application/ms-excel');
 

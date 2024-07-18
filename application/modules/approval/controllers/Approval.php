@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Approval extends CI_Controller
 {
@@ -9,6 +9,7 @@ class Approval extends CI_Controller
 		if (!$this->session->userdata('admin')) {
 			redirect(site_url());
 		}
+  
 		$this->load->model('vendor/vendor_model', 'apprm');
 		$this->load->library('data_process');
 		$this->load->library('email');
@@ -30,15 +31,14 @@ class Approval extends CI_Controller
 
 		$this->form_validation->set_rules($vld);
 
-		if ($this->input->post('simpan')) {
-			if ($this->form_validation->run() == TRUE) {
-				$result = $this->data_process->check($id, $this->input->post(), $data['id'], 'ms_vendor_admistrasi');
-				if ($result) {
-					$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
-					redirect(site_url('approval/administrasi/' . $id));
-				}
-			}
-		}
+		if ($this->input->post('simpan') && $this->form_validation->run() == TRUE) {
+      $result = $this->data_process->check($id, $this->input->post(), $data['id'], 'ms_vendor_admistrasi');
+      if ($result) {
+  					$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
+  					redirect(site_url('approval/administrasi/' . $id));
+  				}
+  }
+  
 		$data['id_data'] = $id;
 		$layout['content'] =  $this->load->view('administrasi', $data, TRUE);
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
@@ -61,16 +61,14 @@ class Approval extends CI_Controller
 			foreach ($this->input->post('akta') as $key => $value) {
 				$this->data_process->check($id, $value, $key, 'ms_akta');
 			}
+   
 			$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('approval/akta/' . $id . '/' . $akta_type));
 		}
+  
 		$data['id_data'] = $id;
-
-		if ($akta_type == 'pendirian') {
-			$view = 'akta/akta_pendirian';
-		} else {
-			$view = 'akta/akta_perubahan';
-		}
+  $view = $akta_type == 'pendirian' ? 'akta/akta_pendirian' : 'akta/akta_perubahan';
+  
 		$layout['content'] =  $this->load->view($view, $data, TRUE);
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
 
@@ -92,9 +90,11 @@ class Approval extends CI_Controller
 			foreach ($this->input->post('situ') as $key => $value) {
 				$this->data_process->check($id, $value, $key, 'ms_situ');
 			}
+   
 			$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('approval/situ/' . $id));
 		}
+  
 		$data['id_data'] = $id;
 
 		$layout['content'] =  $this->load->view('situ', $data, TRUE);
@@ -118,9 +118,11 @@ class Approval extends CI_Controller
 			foreach ($this->input->post('tdp') as $key => $value) {
 				$this->data_process->check($id, $value, $key, 'ms_tdp');
 			}
+   
 			$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('approval/tdp/' . $id));
 		}
+  
 		$data['id_data'] = $id;
 
 		$layout['content'] =  $this->load->view('tdp', $data, TRUE);
@@ -144,9 +146,11 @@ class Approval extends CI_Controller
 			foreach ($this->input->post('pengurus') as $key => $value) {
 				$this->data_process->check($id, $value, $key, 'ms_pengurus');
 			}
+   
 			$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('approval/pengurus/' . $id));
 		}
+  
 		$data['id_data'] = $id;
 		$layout['content'] =  $this->load->view('pengurus', $data, TRUE);
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
@@ -171,9 +175,11 @@ class Approval extends CI_Controller
 			foreach ($this->input->post('pemilik') as $key => $value) {
 				$this->data_process->check($id, $value, $key, 'ms_pemilik');
 			}
+   
 			$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('approval/pemilik/' . $id));
 		}
+  
 		$data['id_data'] = $id;
 		$layout['content'] =  $this->load->view('pemilik', $data, TRUE);
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
@@ -248,8 +254,10 @@ class Approval extends CI_Controller
 					$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 				}
 			}
+   
 			redirect(site_url('approval/badan_usaha/' . $id . '/' . $surat));
 		}
+  
 		$data['table'] = $table;
 		$data['id_data'] = $id;
 		$data['izin_list'] = $this->im->get_izin_admin_list($id, $surat);
@@ -317,9 +325,11 @@ class Approval extends CI_Controller
 			foreach ($this->input->post('bsb') as $key => $value) {
 				$this->data_process->check($id, $value, $key, 'ms_iu_bsb');
 			}
+   
 			$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('approval/bsb/' . $id_data . '/' . $id));
 		}
+  
 		$data['id_data'] = $id_data;
 		$data['table'] = $table;
 		$layout['content'] =  $this->load->view('bsb', $data, TRUE);
@@ -343,9 +353,11 @@ class Approval extends CI_Controller
 			foreach ($this->input->post('agen') as $key => $value) {
 				$this->data_process->check($id, $value, $key, 'ms_agen');
 			}
+   
 			$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('approval/agen/' . $id));
 		}
+  
 		$data['id_data'] = $id;
 		$layout['content'] =  $this->load->view('agen', $data, TRUE);
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
@@ -357,6 +369,7 @@ class Approval extends CI_Controller
 
 		$this->load->view('template', $item);
 	}
+ 
 	public function produk($id_data, $id)
 	{
 		$this->load->model('agen/agen_model', 'am');
@@ -368,9 +381,11 @@ class Approval extends CI_Controller
 			foreach ($this->input->post('produk') as $key => $value) {
 				$this->data_process->check($id, $value, $key, 'ms_agen_produk');
 			}
+   
 			$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('approval/produk/' . $id_data . '/' . $id));
 		}
+  
 		$data['id_data'] = $id_data;
 		$layout['content'] =  $this->load->view('produk', $data, TRUE);
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
@@ -393,9 +408,11 @@ class Approval extends CI_Controller
 			foreach ($this->input->post('pengalaman') as $key => $value) {
 				$this->data_process->check($id, $value, $key, 'ms_pengalaman');
 			}
+   
 			$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
 			redirect(site_url('approval/pengalaman/' . $id));
 		}
+  
 		$data['id_data'] = $id;
 		$layout['content'] =  $this->load->view('pengalaman', $data, TRUE);
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
@@ -407,6 +424,7 @@ class Approval extends CI_Controller
 
 		$this->load->view('template', $item);
 	}
+ 
 	public function pengalaman_detail($id_data, $id)
 	{
 		$this->load->model('pengalaman/pengalaman_model', 'pm');
@@ -425,10 +443,12 @@ class Approval extends CI_Controller
 
 		$this->load->view('template', $item);
 	}
+ 
 	public function k3($id)
 	{
 		$this->load->model('approval_model', 'appm');
 		$this->load->model('k3/k3_model', 'km');
+  
 		$data = $this->vm->get_data($id);
 		$data['get_csms'] = $this->km->get_csms($id);
 		$data['id_data'] = $id;
@@ -463,22 +483,19 @@ class Approval extends CI_Controller
 		);
 
 		$this->form_validation->set_rules($vld);
-		if ($this->input->post('simpan')) {
-			if ($this->form_validation->run() == TRUE) {
-				$_POST['mandatory'] = 1;
-				$result = $this->data_process->check($id, $this->input->post(), $id, 'ms_csms', 'id_vendor');
-
-				if ($result) {
-					if ($_POST['status'] && $_POST['mandatory']) {
-						$array = $this->appm->set_expiry($id);
-						$this->dpt->set_email_blast($res, 'ms_csms', 'Lampiran CSMS', $array['expiry_date']);
-					}
-
-					$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
-					redirect(site_url('approval/k3/' . $id));
-				}
-			}
-		}
+		if ($this->input->post('simpan') && $this->form_validation->run() == TRUE) {
+      $_POST['mandatory'] = 1;
+      $result = $this->data_process->check($id, $this->input->post(), $id, 'ms_csms', 'id_vendor');
+      if ($result) {
+  					if ($_POST['status'] && $_POST['mandatory']) {
+  						$array = $this->appm->set_expiry($id);
+  						$this->dpt->set_email_blast($res, 'ms_csms', 'Lampiran CSMS', $array['expiry_date']);
+  					}
+  
+  					$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses menyimpan data!</p>');
+  					redirect(site_url('approval/k3/' . $id));
+  				}
+  }
 
 		$item['header'] = $this->load->view('admin/header', $this->session->userdata('admin'), TRUE);
 
@@ -495,7 +512,7 @@ class Approval extends CI_Controller
 	{
 		$this->load->model('approval_model', 'am');
 		$data = $this->vm->get_vendor_name($id);
-		$admin = $this->session->userdata('admin');
+		$this->session->userdata('admin');
 
 		$data['approval_data'] = $this->am->get_total_data($id);
 		$data['spv']	= $this->am->get_spv_mail(8);
@@ -529,7 +546,7 @@ class Approval extends CI_Controller
 		if ($this->input->post('simpan')) {
 			/// if ($admin['id_role'] == 1) {
 				#email SPV
-				foreach ($data['spv'] as $keyspv => $valuespv) {
+				foreach ($data['spv'] as $valuespv) {
 					$this->utility->mail($valuespv['email'], $email['msg'], $email['subject']);
 				}
 
@@ -542,6 +559,7 @@ class Approval extends CI_Controller
 
 					redirect(site_url('approval/verification/' . $id));
 				}
+    
 			/*} else {
 				$msg =  $email['dpt']['legal_name'] . ". " . $email['dpt']['name'] . " telah di lakukan pengecekan data di Sistem Aplikasi Kelogistikan PT Nusantara Regas.<br/>
 						Untuk selanjutnya, silahkan memeriksa kembali kelengkapan data - data calon DPT di aplikasi.<br/><br/>
@@ -591,12 +609,12 @@ class Approval extends CI_Controller
 		$email['subject']	= "Pemberitahuan Pengangkatan DPT - Sistem Aplikasi Kelogistikan PT Nusantara Regas";
 		$email['to'] = array();
 		$email['to'][] = $email['dpt']['email'];
-		foreach ($email['adm'] as $keyadm => $valueadm) {
+		foreach ($email['adm'] as $valueadm) {
 			$email['to'][] = $valueadm['email'];
 		}
 
 		$this->am->approve($id);
-		foreach ($email['to'] as $keyto => $valueto) {
+		foreach ($email['to'] as $valueto) {
 			$this->utility->mail($valueto, $email['msg'], $email['subject']);
 		}
 
@@ -604,7 +622,7 @@ class Approval extends CI_Controller
 		redirect('admin/admin_vendor/waiting_list/1');
 	}
 
-	function mail($to, $message)
+	public function mail($to, $message)
 	{
 		$this->email->clear(TRUE);
 
@@ -621,7 +639,7 @@ class Approval extends CI_Controller
 		echo $this->email->print_debugger();
 	}
 
-	function mail_test()
+	public function mail_test()
 	{
 
 		$to = base64_encode("arinaldha@gmail.com");
@@ -644,10 +662,11 @@ class Approval extends CI_Controller
 		);
 		$context  = stream_context_create($options);
 		$result = file_get_contents($url, false, $context);
-		if ($result)
-			redirect('dashboard');
-		else
-			echo '<script>alert("Gagal Mengirim Email!");location.reload();</script>';
+		if ($result) {
+      redirect('dashboard');
+  } else {
+      echo '<script>alert("Gagal Mengirim Email!");location.reload();</script>';
+  }
 	}
 	
 	public function download_surat_pernyataan($id_vendor)
@@ -704,7 +723,7 @@ class Approval extends CI_Controller
 		$dompdf->stream("Surat Pernyataan.pdf", array('Attachment' => 1));
 	}
 
-	function mailer_test()
+	public function mailer_test()
 	{
 		return $this->utility->mail('arinaldha@gmail.com', 'Testing', 'Testing');
 	}

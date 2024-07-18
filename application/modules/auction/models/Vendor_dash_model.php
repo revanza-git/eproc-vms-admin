@@ -1,12 +1,12 @@
 <?php
 class Vendor_dash_model extends CI_Model{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 	}
 
-	function get_auction_list_vendor($search='', $sort='', $page='', $per_page='',$is_page=FALSE){
-    	$user = $this->session->userdata('user');
+	public function get_auction_list_vendor($search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+    	$this->session->userdata('user');
 
 		$this->db->select('*, ms_procurement.id id, ms_procurement.name name, ms_procurement.work_area work_area, ms_procurement.auction_date auction_date, ms_vendor.name pemenang, "-" as pemenang_kontrak , "-" as user_kontrak , proc_date, ms_procurement.del del');
 		$this->db->group_by('ms_procurement.id');
@@ -19,6 +19,7 @@ class Vendor_dash_model extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
@@ -31,7 +32,7 @@ class Vendor_dash_model extends CI_Model{
 		
     }
 
-	function get_data($id_lelang = ''){
+	public function get_data($id_lelang = ''){
 		$sql = "SELECT a.*,
 					   (SELECT GROUP_CONCAT(symbol) FROM tb_kurs WHERE id IN (SELECT id_kurs FROM ms_procurement_kurs WHERE id_procurement = a.id)) AS rate, 
 					   b.metode_auction,
@@ -47,12 +48,12 @@ class Vendor_dash_model extends CI_Model{
 		return $sql->row_array();
 	}
 	
-	function kurs_info($id_lelang = ""){
+	public function kurs_info($id_lelang = ""){
 		$sql = "SELECT a.*, b.name FROM ms_procurement_kurs a LEFT JOIN tb_kurs b ON a.id_kurs = b. id WHERE a.id_procurement = ? AND a.id_kurs <> 1"; 
 		return $this->db->query($sql, $id_lelang);
 	}
 	
-	function select_tata_cara($id_lelang = ''){
+	public function select_tata_cara($id_lelang = ''){
 		$sql = "SELECT metode_penawaran FROM ms_procurement_tatacara WHERE id_procurement = ?";
 		$sql = $this->db->query($sql, $id_lelang);
 		$sql = $sql->row_array();
@@ -60,7 +61,7 @@ class Vendor_dash_model extends CI_Model{
 		return $sql['metode_penawaran'];
 	}
 	
-	function get_syarat($id_lelang = ''){
+	public function get_syarat($id_lelang = ''){
 		$sql = "SELECT description FROM ms_procurement_persyaratan WHERE id_proc = ?";
 		$sql = $this->db->query($sql, $id_lelang);
 		$sql = $sql->row_array();
@@ -68,7 +69,7 @@ class Vendor_dash_model extends CI_Model{
 		return $sql['description'];
 	}
 
-	function get_kurs($id_lelang = ''){
+	public function get_kurs($id_lelang = ''){
 		$sql = "SELECT b.* 
 				FROM tb_kurs b 
 				LEFT JOIN ms_procurement_kurs a ON a.id_kurs = b.id 
@@ -77,12 +78,12 @@ class Vendor_dash_model extends CI_Model{
 		return $this->db->query($sql, $id_lelang);
 	}
 	
-	function get_penawaran($id_lelang = ''){
+	public function get_penawaran($id_lelang = ''){
 		$sql = "SELECT * FROM ms_penawaran WHERE id_procurement = ? AND id_vendor = ?";
 		return $this->db->query($sql, array($id_lelang, $this->session->userdata('user')['id_user']));
 	}
 	
-	function get_barang($id_lelang = ''){
+	public function get_barang($id_lelang = ''){
 		$sql = "SELECT a.*,
 					   b.symbol,
 					   b.name AS kurs 
@@ -94,7 +95,7 @@ class Vendor_dash_model extends CI_Model{
 		return $this->db->query($sql, $id_lelang);
 	}
 	
-	function get_nama_barang($id = ''){
+	public function get_nama_barang($id = ''){
 		$sql = "SELECT * FROM ms_procurement_barang WHERE id = ?";
 		$sql = $this->db->query($sql, $id);
 		$sql = $sql->row_array();
@@ -102,14 +103,14 @@ class Vendor_dash_model extends CI_Model{
 		return $sql['nama_barang'];
 	}
 	
-	function cek_rate_info($id_lelang = '', $id_kurs = ''){
+	public function cek_rate_info($id_lelang = '', $id_kurs = ''){
 		$sql = "SELECT * FROM ms_procurement_kurs WHERE id_kurs = ? AND id_procurement = ?";
 		$sql = $this->db->query($sql, array($id_kurs, $id_lelang));
 		
 		return $sql->row_array();
 	}
 	
-	function cek_hps($id_lelang = '', $id_barang = ''){
+	public function cek_hps($id_lelang = '', $id_barang = ''){
 		$sql = "SELECT a.nilai_hps, 
 					   a.id_kurs,
 					   (SELECT rate FROM ms_procurement_kurs WHERE id_kurs = a.id_kurs AND id_procurement = a.id_procurement) as rate 
@@ -117,15 +118,16 @@ class Vendor_dash_model extends CI_Model{
 					   FROM ms_procurement_barang a 
 					   WHERE a.id_procurement = ?"; 
 		
-		if($id_barang) $sql .= " AND a.id = ? ";
+		if ($id_barang) {
+      $sql .= " AND a.id = ? ";
+  }
 		
 		$sql = $this->db->query($sql, array($id_lelang, $id_barang));
-		$sql = $sql->row_array();
 		// echo $this->db->last_query();
-		return $sql;
+		return $sql->row_array();
 	}
 	
-	function cek_percentage($id_lelang = '', $id_barang = '', $nilai = '', $id_before = ''){
+	public function cek_percentage($id_lelang = '', $id_barang = '', $nilai = '', $id_before = ''){
 		$percent = 0;
 		$input = array($id_lelang, $id_barang, $this->session->userdata('user')['id_user']);
 		$sql = "SELECT in_rate AS nilai, id_kurs FROM ms_penawaran WHERE id_procurement = ? AND id_barang = ? AND id_vendor = ? ";
@@ -150,54 +152,62 @@ class Vendor_dash_model extends CI_Model{
 		return $percent.'%';
 	}
 	
-	function cek_lowest($id_lelang = '', $id_barang = ''){
+	public function cek_lowest($id_lelang = '', $id_barang = ''){
 		$sql = "SELECT MIN(in_rate) AS nilai FROM ms_penawaran WHERE id_procurement = ? AND id_barang = ? AND id_vendor = ?";
 		$sql = $this->db->query($sql, array($id_lelang, $id_barang, $this->session->userdata('user')['id_user']));
-		$sql = $sql->row_array();
 		
-		return $sql;
+		return $sql->row_array();
 	}
 	
-	function cek_highest($id_lelang = '', $id_barang = ''){
+	public function cek_highest($id_lelang = '', $id_barang = ''){
 		$sql = "SELECT MAX(in_rate) AS nilai FROM ms_penawaran WHERE id_procurement = ? AND id_barang = ? AND id_vendor = ?";
 		$sql = $this->db->query($sql, array($id_lelang, $id_barang, $this->session->userdata('user')['id_user']));
-		$sql = $sql->row_array();
 		
-		return $sql;
+		return $sql->row_array();
 	}
 	
-	function convert_to_idr($nilai = '', $id_kurs = '', $id_lelang = ''){
+	public function convert_to_idr($nilai = '', $id_kurs = '', $id_lelang = ''){
 		$sql = "SELECT * FROM ms_procurement_kurs WHERE id_kurs = ? AND id_procurement= ?";
 		$sql = $this->db->query($sql, array($id_kurs, $id_lelang));
 		$sql = $sql->row_array();
 		// print_r($sql);
-		if($sql['id_kurs'] == 1) $sql['rate'] = 1;
+		if ($sql['id_kurs'] == 1) {
+      $sql['rate'] = 1;
+  }
 		
 		return ($nilai * $sql['rate']);
 	}
 	
-	function cek_posisi_penawaran($id_lelang = '', $id_barang = '', $type = ''){
+	public function cek_posisi_penawaran($id_lelang = '', $id_barang = '', $type = ''){
 		$hps = $this->cek_hps($id_lelang, $id_barang);
 		$hps = $this->convert_to_idr($hps['nilai_hps'], $hps['id_kurs'], $id_lelang);
 				
-		if($type == "forward_auction")		$ord = "DESC";
-		else if($type == "reverse_auction")	$ord = "ASC";
+		if ($type == "forward_auction") {
+      $ord = "DESC";
+  } elseif ($type == "reverse_auction") {
+      $ord = "ASC";
+  }
 		
 		$sql = "SELECT in_rate FROM ms_penawaran WHERE id_procurement = ? AND id_barang = ? ORDER BY in_rate ".$ord." LIMIT 0,1";
 		$sql = $this->db->query($sql, array($id_lelang, $id_barang));
 	 	$sql = $sql->row_array();
 	 		 	
-	 	if($type == "forward_auction"){
-	 		if($sql['in_rate'] < $hps) return true;
-	 	}
-		else if($type == "reverse_auction"){
-	 		if($sql['in_rate'] > $hps) return true;
-	 	}
-	 	else 
-	 		return false;
+	 	if ($type == "forward_auction") {
+       if ($sql['in_rate'] < $hps) {
+           return true;
+       }
+   } elseif ($type == "reverse_auction") {
+       if ($sql['in_rate'] > $hps) {
+           return true;
+       }
+   } else {
+       return false;
+   }
+
+   return null;
 	}
 	
-	function get_highest($id_lelang = '', $id_barang = '', $id_user = ''){		
+	public function get_highest($id_lelang = '', $id_barang = '', $id_user = ''){		
 		$sql = "SELECT id 
 					   FROM ms_penawaran 
 					   WHERE 
@@ -207,13 +217,14 @@ class Vendor_dash_model extends CI_Model{
 					   GROUP BY id_vendor ORDER BY nilai DESC";
 
 		$sql = $this->db->query($sql, array($id_lelang, $id_barang, $id_user, $id_barang));
+  
 		$data = $sql->num_rows();
 		$data++;
 				
 		return $data;
 	}
 		
-	function get_lowest($id_lelang = '', $id_barang = '', $id_user = ''){
+	public function get_lowest($id_lelang = '', $id_barang = '', $id_user = ''){
 		$sql = "SELECT id 
 					   FROM ms_penawaran 
 					   WHERE 
@@ -223,13 +234,14 @@ class Vendor_dash_model extends CI_Model{
 					   GROUP BY id_vendor ORDER BY nilai ASC";
 
 		$sql = $this->db->query($sql, array($id_lelang, $id_barang, $id_user, $id_barang));
+  
 		$data = $sql->num_rows();
 		$data++;
 				
 		return $data;
 	}
 	
-	function get_default_currency($id_barang = ''){
+	public function get_default_currency($id_barang = ''){
 		$sql = "SELECT b.id, 
 					   b.symbol 
 					   
@@ -242,7 +254,7 @@ class Vendor_dash_model extends CI_Model{
 		return $sql->row_array();
 	}
 	
-	function get_user_currency($id_lelang = '', $position = '', $id_barang = ''){
+	public function get_user_currency($id_lelang = '', $position = '', $id_barang = ''){
 		$sql = "SELECT a.id_kurs, 
 					   b.symbol 
 					   
@@ -257,7 +269,7 @@ class Vendor_dash_model extends CI_Model{
 		return $sql->row_array();
 	}
 	
-	function get_last_offer($id_barang = '', $id_vendor = '', $id_lelang = ''){
+	public function get_last_offer($id_barang = '', $id_vendor = '', $id_lelang = ''){
 		$sql = "SELECT in_rate AS nilai FROM ms_penawaran WHERE id_barang = ? AND id_vendor = ? AND id_procurement = ? ORDER BY id DESC LIMIT 0,1 ";
 		$sql = $this->db->query($sql, array($id_barang, $this->session->userdata('user')['id_user'], $id_lelang));
 		$sql = $sql->row_array();
@@ -265,7 +277,7 @@ class Vendor_dash_model extends CI_Model{
 		return $sql['nilai']; 
 	}
 	
-	function save_penawaran($param = array()){
+	public function save_penawaran($param = array()){
 		$sql = "INSERT INTO ms_penawaran (`id_procurement`,
 													  `id_vendor`,
 													  `id_barang`,

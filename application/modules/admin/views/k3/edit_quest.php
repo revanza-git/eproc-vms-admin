@@ -10,7 +10,7 @@
 
 	<h1 class="formHeader">Edit Pertanyaan K3</h1>
 
-	<?php foreach ($quest as $key => $value) {?>
+	<?php foreach ($quest as $value) {?>
 
 
 
@@ -50,7 +50,8 @@
 
 	</div>
 
-	<?php }?>
+	<?php }
+?>
 
 
 
@@ -108,7 +109,8 @@
 
 	</div>
 
-	<?php }?>
+	<?php }
+?>
 
 
 
@@ -164,9 +166,11 @@
 
 	</div>
 
-	<?php } ?>
+	<?php }
+ ?>
 
-	<?php } ?>
+<?php }
+ ?>
 
 	
 

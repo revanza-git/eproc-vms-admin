@@ -10,13 +10,14 @@
 					<td><a href="?<?php echo $this->utility->generateLink('sort','desc')?>&sort=<?php echo ($sort['peserta_name'] == 'asc') ? 'desc' : 'asc'; ?>&by=peserta_name">Peserta<i class="fa fa-sort-<?php echo ($sort['peserta_name'] == 'asc') ? 'desc' : 'asc'; ?>"></i></a></td>
                     <td>Nilai Penawaran</td>
                     <td>Nilai Fee</td>
-					<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?><td class="actionPanel">Action</td><?php } ?>
+					<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?><td class="actionPanel">Action</td><?php }
+ ?>
 				</tr>
 			</thead>
 			<tbody>
 			<?php 
-			if(count($list)){
-				foreach($list as $row => $value){
+			if(count($list) > 0){
+				foreach($list as $value){
 				?>
 					<tr>
 						<td><?php echo $value['peserta_name'];?></td>
@@ -36,22 +37,25 @@
 								<p> <?php echo $value['symbol']?> <?php echo number_format($value['kurs_value']);?></p>
 								<p> <?php echo ($value['remark']);?></p>
 
-							<?php } ?>
+							<?php }
+     ?>
                         </td>
                         <td>
                             <?php if($act=='edit'){?>
                                 <p> <input type="text" name="fee[<?php echo $value['id']?>]" value="<?php echo $value['fee'];?>" placeholder="nilai fee dalam IDR"></p>
                             <?php } else{ ?>
 								<p> <?php echo ($value['fee']);?></p>
-							<?php } ?>
+							<?php }
+     ?>
                         </td>
 						<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
 						<td class="actionBlock">
 							<a href="<?php echo site_url('pengadaan/hapus_peserta/'.$value['id'].'/'.$id)?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
 						</td>
-						<?php } ?>
+						<?php }
+     ?>
 					</tr>
-				<?php 
+<?php 
 				}
 			}else{?>
 				<tr>
@@ -70,8 +74,10 @@
 			<div class="buttonRegBox clearfix">
 				<a href="<?php echo site_url('pengadaan/view/'.$id.'/penawaran/edit#tabNav') ?>" class="btnBlue"><i class="fa fa-cog"></i>&nbsp;Masukan Penawaran</a>
 			</div>
-			<?php } ?>
-		<?php } ?>
+			<?php }
+    ?>
+<?php }
+    ?>
 		<div class="pageNumber">
 			<?php echo $pagination ?>
 		</div>

@@ -38,7 +38,8 @@
 							<option value="6">Jasa Konsultasi</option>
 							<option value="7">Jasa Konstruksi</option>
 							<option value="8">Jasa Lainnya</option>
-						<?php } ?>
+						<?php }
+ ?>
 					</select>
 				</td>
 			</tr>
@@ -52,13 +53,15 @@
 			<tr class="input-form">
 				<td><label>Foto</label></td>
 				<td>
-					<?php if(isset($gambar_barang)){
-						if($gambar_barang!=''){?>
-						<p><a href="<?php echo base_url('lampiran/gambar_barang/'.$gambar_barang)?>" target="_blank">Lampiran</a></p>
+					<?php if (isset($gambar_barang) && $gambar_barang!='') {
+    ?>
+						<p><a href="<?php 
+    echo base_url('lampiran/gambar_barang/'.$gambar_barang)?>
+    ?>" target="_blank">Lampiran</a></p>
 						<p><b><i style="color: #D62E2E;">Tinggalkan kosong jika tidak diganti</i></b></p>	
 						<?php 
-						}
-					}?>
+}
+?>
 					<input type="file" name="gambar_barang" value="<?php echo $this->form->get_temp_data('gambar_barang');?>">
 					<?php echo form_error('gambar_barang'); ?>
 					

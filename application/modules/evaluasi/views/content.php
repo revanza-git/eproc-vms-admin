@@ -26,8 +26,8 @@
 		</thead>
 		<tbody>
 			<?php
-			if (count($pengadaan_list)) {
-				foreach ($pengadaan_list as $row => $value) {
+			if (count($pengadaan_list) > 0) {
+				foreach ($pengadaan_list as $value) {
 			?>
 					<tr>
 						<td><?php echo $value['name']; ?></td>
@@ -37,10 +37,11 @@
 						<td class="actionBlock">
 							<?php if ($value['remark'] == null) { ?>
 								<a href="<?php echo site_url('evaluasi/form_feedback/' . $value['id'] . '/' . $value['id_vendor']) ?>" class="editBtn"><i class="fa fa-edit"></i>&nbsp;Kirim Umpan Balik</a>
-							<?php } ?>
+							<?php }
+    ?>
 						</td>
 					</tr>
-				<?php
+<?php
 				}
 			} else { ?>
 				<tr>

@@ -1,11 +1,11 @@
 <?php
 class Auction_report_model extends CI_Model{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 	}
 	
-	function get_header($id_lelang = ''){
+	public function get_header($id_lelang = ''){
 		$sql = "SELECT a.*,
 					   b.metode_penawaran,
 					   b.metode_auction,
@@ -30,12 +30,12 @@ class Auction_report_model extends CI_Model{
 		return $sql->row_array();
 	}
 	
-	function get_pengguna($id_lelang = ''){
+	public function get_pengguna($id_lelang = ''){
 		$sql = "SELECT b.name FROM ms_sbu_lelang a LEFT JOIN tb_sbu_lokasi b ON a.id_sbu = b.id WHERE a.id_lelang = ?";
 		return $this->db->query($sql, $id_lelang);
 	}
 	
-	function get_barang($id_lelang = ''){
+	public function get_barang($id_lelang = ''){
 		$sql = "SELECT 	a.* ,
 						b.symbol
 
@@ -47,12 +47,12 @@ class Auction_report_model extends CI_Model{
 		return $sql = $this->db->query($sql, $id_lelang);
 	}
 	
-	function get_kurs($id_lelang = ''){
+	public function get_kurs($id_lelang = ''){
 		$sql = "SELECT b.name FROM ms_procurement_kurs a LEFT JOIN tb_kurs b ON a.id_kurs = b.id WHERE a.id_procurement = ?";
 		return $sql = $this->db->query($sql, $id_lelang);
 	}
 	
-	function get_peserta($id_lelang = ''){
+	public function get_peserta($id_lelang = ''){
 		$sql = "SELECT a.*,
 					   b.name,
 					   d.name legal
@@ -67,18 +67,22 @@ class Auction_report_model extends CI_Model{
 		return $sql = $this->db->query($sql, $id_lelang);
 	}
 	
-	function get_count_penawaran($id_barang = ""){
+	public function get_count_penawaran($id_barang = ""){
 		$sql = "SELECT COUNT(id) FROM ms_penawaran WHERE id_barang = ? GROUP BY id_vendor";	
 		$sql = $this->db->query($sql, $id_barang);
-		$sql = $sql->num_rows();
 		
-		return $sql;
+		return $sql->num_rows();
 	}
 	
-	function get_vendor_ranking($id_lelang = '', $id_barang = '', $type_lelang = ''){
+	public function get_vendor_ranking($id_lelang = '', $id_barang = '', $type_lelang = ''){
 		$ord = '';
-		if($type_lelang == "forward_auction"){ $sel = "MAX"; $ord = "DESC"; }
-		else if($type_lelang == "reverse_auction"){ $sel = "MIN"; $ord = "ASC"; }
+		if ($type_lelang == "forward_auction") {
+      $sel = "MAX";
+      $ord = "DESC";
+  } elseif ($type_lelang == "reverse_auction") {
+      $sel = "MIN";
+      $ord = "ASC";
+  }
 		
 		$sql = "SELECT a.id_vendor AS id_peserta, b.name AS nama_vendor,
 					   (SELECT id FROM ms_penawaran WHERE id_vendor = a.id_vendor AND id_barang = ? ORDER BY in_rate ".$ord." LIMIT 0,1) AS id_penawaran 
@@ -91,7 +95,7 @@ class Auction_report_model extends CI_Model{
 		return $this->db->query($sql, array($id_barang, $id_lelang, $id_barang, $id_barang));
 	}
 	
-	function get_penawaran($id = ''){
+	public function get_penawaran($id = ''){
 		$sql = "SELECT a.*,
 					   b.nama_barang, 
 					   c.symbol
@@ -107,7 +111,7 @@ class Auction_report_model extends CI_Model{
 		return $sql->row_array();
 	}
 	
-	function get_history($id_lelang = '', $id_vendor = ''){
+	public function get_history($id_lelang = '', $id_vendor = ''){
 		$arr = array($id_lelang);
 		$sql = "SELECT a.*, 
 					   b.nama_barang AS nama_barang,

@@ -12,8 +12,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($list)){
-			foreach($list as $row => $value){
+		if(count($list) > 0){
+			foreach($list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['peserta_name'];?></td>

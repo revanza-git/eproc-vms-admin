@@ -19,13 +19,14 @@
                 text: 'Riwayat Harga <?php 
                 $x=1;
                 $sisipan = "";
-                foreach($item as $keyitem => $valueitem){ 
+                foreach($item as $valueitem){ 
                     echo $valueitem["nama"]; 
                     if($x < (count($item) - 1) ){
                         $sisipan = ", "; echo $sisipan;                        
                     }elseif($x < count($item)){
                         $sisipan = " dan "; echo $sisipan;
                     }
+                    
                 $x++; 
                 }?>',
                 x: -20 //center
@@ -74,7 +75,7 @@
             },
             series: [<?php 
             $h=0; 
-            foreach($item as $key => $_item){
+            foreach($item as $_item){
                 if($h!=0){
                             echo ",";
                         }
@@ -85,12 +86,12 @@
                 <?php 
                     
                     $i = 0;
-                    foreach($years as $key => $row){
+                    foreach($years as $year){
                         if($i!=0){
                             echo ",";
                         }
                         
-                        $prices = ($price[$_item['id']][$row])?$price[$_item['id']][$row]:'null';
+                        $prices = ($price[$_item['id']][$year])?$price[$_item['id']][$year]:'null';
                             echo $prices;
                         $i++;
                     }
@@ -100,7 +101,8 @@
             
             <?php 
             $h++;
-            } ?>
+            }
+             ?>
 
             ]
         });

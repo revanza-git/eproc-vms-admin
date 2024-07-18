@@ -20,7 +20,8 @@
 	<div class="filterBtnWp">
 		<?php if($this->session->userdata('admin')['id_role']== 1){;?>
 		<a href="<?php echo site_url('blacklist/tambah/'.$id_blacklist)?>" class="btnBlue"><i class="fa fa-plus"></i>Tambah</a>
-		<?php }?>
+		<?php }
+?>
 		<button class="editBtn lihatData filterBtn">Filter</button>
 	</div>
 	<div class="tableHeader">
@@ -56,7 +57,8 @@
 
 				<td style="width: 190px"><a href="?<?php echo $this->utility->generateLink('sort','desc')?>&sort=<?php echo ($sort['end_date'] == 'asc') ? 'desc' : 'asc'; ?>&by=end_date">Tanggal Akhir<i class="fa fa-sort-<?php echo ($sort['end_date'] == 'asc') ? 'desc' : 'asc'; ?>"></i></a></td>
 
-				<?php } ?>
+				<?php }
+ ?>
 
 				
 				<td style="width: 80px"><a href="?<?php echo $this->utility->generateLink('sort','desc')?>&sort=<?php echo ($sort['total_bl'] == 'asc') ? 'desc' : 'asc'; ?>&by=total_bl">Total<i class="fa fa-sort-<?php echo ($sort['total_bl'] == 'asc') ? 'desc' : 'asc'; ?>"></i></a></td>
@@ -74,11 +76,11 @@
 
 		// echo print_r($blacklist);
 
-		if(count($blacklist)){
+		if(count($blacklist) > 0){
 
 			$yellow = "";
 
-			foreach($blacklist as $row => $value){
+			foreach($blacklist as $value){
 
 				if (($value['need_approve_bl'] == 1 && $value['is_white'] == 0 && $value['del'] == 0 || $value['need_approve_bl'] == 1 && $value['is_white'] == 1 && $value['del'] == 0 )){
 
@@ -119,7 +121,8 @@
 					<td><?php echo default_date($value['end_date']);?></td>
 					
 
-					<?php } ?>
+					<?php }
+   ?>
 
 					<td><?php echo $value['total_bl'];?></td>
 
@@ -141,17 +144,16 @@
 
 						<a href="<?php echo site_url('blacklist/edit/'.$value['id_tr'].'/'.$value['id_blacklist'])?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
 
-						<?php }?>
+						<?php }
+      ?>
 
 						<?php 
 
-							if($this->session->userdata('admin')['id_role']==8){
+							if($this->session->userdata('admin')['id_role'] == 8 && $value['need_approve_bl']==1){
 
 
 
-								if($value['need_approve_bl']==1){
-
-									if($value['is_white']==1){ ?>
+								if($value['is_white']==1){ ?>
 
 									<a class="editBtn aktifkan" href="<?php echo site_url('blacklist/approve_aktif/'.$value['id_tr'])?>"  class="alertApprove"><i class="fa fa-check-square-o"></i>Setuju Aktifkan kembali</a>
 
@@ -160,8 +162,6 @@
 									<a class="editBtn aktifkan" href="<?php echo site_url('blacklist/approve_form/'.$value['id_vendor'].'/'.$value['id_tr'].'/'.$value['id_blacklist'])?>" class="alertApprove"><i class="fa fa-check-square-o"></i>&nbsp;Setujui Masuk <?php echo $value['blacklist_val']?></a>
 
 									<?php }
-
-								}
 
 
 
@@ -187,7 +187,7 @@
 
 				</tr>
 
-			<?php 
+<?php 
 
 				
 

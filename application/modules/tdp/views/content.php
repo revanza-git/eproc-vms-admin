@@ -35,8 +35,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($tdp_list)){
-			foreach($tdp_list as $row => $value){
+		if(count($tdp_list) > 0){
+			foreach($tdp_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['no'];?></td>
@@ -44,7 +44,7 @@
 					<td><?php echo $value['authorize_by'];?></td>
 					<td>
 						<?php $expire = "";?>
-						<?php ($value['expiry_date'] == "lifetime") ? $expire = "Seumur Hidup" : $expire = default_date($value['expiry_date']);?>
+						<?php $expire = ($value['expiry_date'] == "lifetime") ? "Seumur Hidup" : default_date($value['expiry_date']);?>
 						<?php echo $expire; ?>
 					</td>
 					<td><a href="<?php echo base_url('lampiran/tdp_file/'.$value['tdp_file']);?>"  target="_blank"><?php echo $value['tdp_file'];?> <i class="fa fa-link"></i></a></td>

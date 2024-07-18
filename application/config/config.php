@@ -22,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['BASE_LINK.']	=  	"";
 $config['BASE_LINK_EXTERNAL.']	=  	"";
-$config['base_app']	= 	"https://eproc.nusantararegas.com/eproc_pengadaan/";
+$config['base_app']	= 	"http://local.eproc.intra.com/eproc_pengadaan/";
 
 /*
 |--------------------------------------------------------------------------
@@ -212,7 +212,7 @@ $config['directory_trigger'] = 'd';
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 1;
+$config['log_threshold'] = 2;
 
 /*
 |--------------------------------------------------------------------------

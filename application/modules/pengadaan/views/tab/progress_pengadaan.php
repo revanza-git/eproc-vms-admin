@@ -73,7 +73,8 @@
 
 			echo $this->utility->tabNav($tabNav,'progress_pengadaan');
 
-		}?>
+		}
+  ?>
 
 	<div class="tableWrapper">
 
@@ -175,7 +176,8 @@
 									<input type="checkbox" name="progress[<?php echo $key;?>]" value="1" <?php echo ($progress[$key]['value'])?'checked':'';?>>
 									<?php }else{  
 										echo ($progress[$key]['value'])?'<i class="fa fa-check-square-o"></i>':'<i class="fa fa-square-o"></i>';
-									} ?>
+									}
+          ?>
 								</td>
 
 								<td>
@@ -187,13 +189,15 @@
 										}else{
 											echo $this->form->calendar(array('name'=>'date['.$key.']'), false);
 										}
+          
 										if ($key == 10) {
 											# code...
 												echo " - ".$this->form->calendar(array('name'=>'date_['.$key.']','value'=>$progress[$key]['date']), false);
 										}
 									}else{
 										echo default_date($progress[$key]['date']);
-									}?>
+									}
+         ?>
 								</td>
 								<td width="70px">
 									<?php 
@@ -205,7 +209,8 @@
 										}else{
 											echo "--";
 										}
-									}?>
+									}
+         ?>
 								</td>
 								<td width="162px">
 									<?php if (($progress[$key]['file'] != '')) {
@@ -213,22 +218,26 @@
 									?>
 										<?php if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10) { ?>
 											<input type="file" name="file_upload[<?php echo $key;?>]">
-										<?php } ?>
-									<?php
+										<?php }
+          ?>
+<?php
 									}else{
 									?>
 										<?php if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10) { ?>
 											<input type="file" name="file_upload[<?php echo $key;?>]">
-										<?php } ?>
-									<?php }?>
+										<?php }
+          ?>
+<?php }
+         ?>
 									
 									
 								</td>
 
 							</tr>
 
-						<?php 
+<?php 
 							}
+         
 						if (count($custom_step_pengadaan) > 0) {
 							foreach($custom_step_pengadaan as $key => $val){
 						?>
@@ -240,7 +249,8 @@
 									<input type="checkbox" name="progress[<?php echo $key;?>]" value="1" <?php echo ($progress[$key]['value'])?'checked':'';?>>
 									<?php }else{  
 										echo ($progress[$key]['value'])?'<i class="fa fa-check-square-o"></i>':'<i class="fa fa-square-o"></i>';
-									} ?>
+									}
+       ?>
 								</td>
 
 								<td>
@@ -252,13 +262,15 @@
 										}else{
 											echo $this->form->calendar(array('name'=>'date['.$key.']'), false);
 										}
+          
 										if ($key == 10) {
 											# code...
 												echo " - ".$this->form->calendar(array('name'=>'date_['.$key.']','value'=>$progress[$key]['date']), false);
 										}
 									}else{
 										echo default_date($progress[$key]['date']);
-									}?>
+									}
+         ?>
 								</td>
 								<td width="100px">
 									<?php 
@@ -270,7 +282,8 @@
 										}else{
 											echo "--";
 										}
-									}?>
+									}
+         ?>
 								</td>
 								<td width="200px">
 									<?php if (($progress[$key]['file'] != '')) {
@@ -278,20 +291,24 @@
 									?>
 										<?php if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10) { ?>
 											<input type="file" name="file_upload[<?php echo $key;?>]">
-										<?php } ?>
-									<?php
+										<?php }
+          ?>
+<?php
 									}else{
 									?>
 										<?php if ($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10) { ?>
 											<input type="file" name="file_upload[<?php echo $key;?>]">
-										<?php } ?>
-									<?php }?>
+										<?php }
+          ?>
+<?php }
+         ?>
 									
 									
 								</td>
 
 							</tr>
-						<?php } }?>
+<?php } }
+      ?>
 						</table>
 
 						<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?>
@@ -302,7 +319,8 @@
 
 						</div>
 
-						<?php } ?>
+						<?php }
+          ?>
 
 					</div>
 

@@ -47,7 +47,8 @@
 				<td><label>No. Kontrak / PO*</label></td>
 				<td>
 					<div style="margin-bottom: 10px"><?php echo $no_contract;?></div>
-					Lampiran : <?php if($po_file){?><a href="<?php echo base_url('lampiran/po_file/'.$po_file);?>"  target="_blank"><?php echo $po_file;?> <i class="fa fa-link"></i></a><?php } ?>
+					Lampiran : <?php if($po_file){?><a href="<?php echo base_url('lampiran/po_file/'.$po_file);?>"  target="_blank"><?php echo $po_file;?> <i class="fa fa-link"></i></a><?php }
+ ?>
 					
 				</td>
 			</tr>

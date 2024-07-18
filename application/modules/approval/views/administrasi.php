@@ -136,6 +136,7 @@
 		<div class="buttonRegBox clearfix">
 			<a href="<?= base_url('approval/download_surat_pernyataan/' . $id_data) ?>" target="_blank" class="btnBlue"><i class="fa fa-download"></i> Download Surat Pernyataan</a>
 		</div>
-		<?php } ?>
+		<?php }
+   ?>
 	</form>
 </div>

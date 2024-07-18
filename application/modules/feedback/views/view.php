@@ -20,7 +20,8 @@
                                 : <?php echo ($get_feedback['reply'] == null) ? '-' : $get_feedback['reply']; ?>
                             </td>
                         </tr>
-                    <?php } ?>
+                    <?php }
+ ?>
                     <?php if ($get_feedback['reply'] == null) { ?>
                         <tr class="input-form">
                             <td><label>Pesan*</label></td>
@@ -29,7 +30,8 @@
                                 <?php echo form_error('reply'); ?>
                             </td>
                         </tr>
-                    <?php } ?>
+                    <?php }
+ ?>
                 </table>
                 <?php if ($get_feedback['reply'] == null) { ?>
                     <div class="buttonRegBox clearfix">
@@ -37,7 +39,8 @@
                     </div>
                 <?php } else { ?>
                     <a href="<?= site_url('feedback') ?>" class="btnBlue">Kembali</a>
-                <?php } ?>
+                <?php }
+ ?>
             </form>
         </div>
     </div>

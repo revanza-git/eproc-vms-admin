@@ -19,7 +19,8 @@
 						echo form_dropdown('category', $arr, ($this->form->get_temp_data('category'))?$this->form->get_temp_data('category'):$category,'class="kategori"');
 					}else{
 						echo $arr[$category];
-						} ?>
+						}
+      ?>
 
 					</div>
 
@@ -43,7 +44,8 @@
 					<?php } else{
 						
 						echo $nama_barang;
-					 } ?>
+					 }
+      ?>
 					</div>
 
 					<?php echo form_error('nama_barang'); ?>

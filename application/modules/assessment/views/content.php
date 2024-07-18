@@ -26,8 +26,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($pengadaan_list)){
-			foreach($pengadaan_list as $row => $value){
+		if(count($pengadaan_list) > 0){
+			foreach($pengadaan_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['name'];?></td>
@@ -35,13 +35,14 @@
 					<td><?php echo $value['point'];?></td>
 					<td><?php echo $value['category'];?></td>
 
-					<?php if (($admin['id_user'] !== "55" || $admin['id_user'] == "56")) {?>
+					<?php if (($admin['id_user'] !== "55" || $admin['id_user'] === "56")) {?>
 					<td class="actionBlock">
 						<a target="_blank" href="<?php echo site_url('assessment/form_assessment/'.$value['id'].'/'.$value['id_vendor'])?>" class="editBtn lihatData"><i class="fa fa-search"></i>&nbsp;Lihat data</a>
 					</td>
-					<?php }?>
+					<?php }
+   ?>
 				</tr>
-			<?php 
+<?php 
 			}
 		}else{?>
 			<tr>

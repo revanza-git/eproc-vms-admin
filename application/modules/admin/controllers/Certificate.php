@@ -2,7 +2,7 @@
 class certificate extends CI_Controller{
 	// protected $id_user;
 	
-	function __construct()
+	public function __construct()
 	{	
 		
 		ini_set("memory_limit","2048M");
@@ -20,10 +20,11 @@ class certificate extends CI_Controller{
 		//$this->output->enable_profiler(TRUE);
 	}
 	
-	function index($id = ""){
+	public function index($id = ""){
 		$this->dpt($id);
 	}
-	function change_no(){
+ 
+	public function change_no(){
 		if($this->vm->change_no($this->input->get('id'),$this->input->get('no'))){
 			echo 1;
 			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses mengubah data!</p>');
@@ -33,7 +34,7 @@ class certificate extends CI_Controller{
 		}
 	}
 
-	function dpt($id = ""){
+	public function dpt($id = ""){
 		$data['vendor']			= $this->vm->get_data($id,TRUE);
 		// print_r($data['vendor']);/
 		$data['administrasi']	= $this->vm->get_administrasi_list($id,TRUE);
@@ -51,14 +52,11 @@ class certificate extends CI_Controller{
 		$data['data_poin']		= $this->km->get_poin($id);
 		$data['csms_file'] 		= $this->km->get_k3_all_data($id)['csms_file'];
 		$data['value_k3']		= $this->km->get_penilaian_value($id,$data['csms_file']['id']);
-
-		///print_r($data);die;
-		$first_date = strtotime($data['vendor']['first_date']);
-		$logo	= base_url('assets/images/login-regas-logo.jpg');
+  base_url('assets/images/login-regas-logo.jpg');
 		// $nomor	= $this->session->userdata('nomor');;
 		#Pengurus Vendor
-		foreach ($data['administrasi'] as $key => $value)
-			$pic_name = $value['pic_name']; $pic_jabatan = $value['pos'];
+		foreach ($data['administrasi'] as $value)
+			$pic_name = $value['pic_name'];
 
 
 		#Surat Izin
@@ -96,7 +94,7 @@ class certificate extends CI_Controller{
 						$izin_usaha		.=					'<li>';
 
 						#Sub Bidang
-						foreach ($bidang as $sb => $sub_bidang) {
+						foreach ($bidang as $sub_bidang) {
 							$izin_usaha		.=					'<p>'.$sub_bidang.'</p>';
 						}
 
@@ -112,6 +110,7 @@ class certificate extends CI_Controller{
 					$izin_usaha		.=			'<td>'.$expire.'</td>';
 					$izin_usaha		.=		'</tr>';
 				}
+    
 			$izin_usaha		.='</table>';
 		}
 
@@ -146,6 +145,7 @@ class certificate extends CI_Controller{
 				foreach($value_ms as $key_ev => $val_ev){
 					$subtotal += isset($data['value_k3'][$key_ev]) ? $data['value_k3'][$key_ev] : NULL;
 				}
+    
 				$total_sub = round($subtotal / $total_data,2);
 				$total +=$total_sub;
 				$rekap_k3		.= '	<td class="nilai"><i>'.$total_sub.'</i></td>';
@@ -154,6 +154,7 @@ class certificate extends CI_Controller{
 
 			$nomor_rekap++;
 		}
+  
 				$rekap_k3		.= '<tr>';
 				$rekap_k3		.= 		'<td style="border:none;"></td>';
 				$rekap_k3		.= 		'<td style="border:none;" width="300px"></td>';
@@ -212,6 +213,7 @@ class certificate extends CI_Controller{
 
 					$subtotal += isset($data['value_k3'][$key_ev]) ? $data['value_k3'][$key_ev] : NULL;
 				}
+    
 				$total_sub = round($subtotal / $total_data,2);
 				$total +=$total_sub;
 				$csms_k3	.= '	<tr class="evalQuest subTotalQuest">
@@ -230,17 +232,13 @@ class certificate extends CI_Controller{
 									</tr>';
 			}
 		}
+  
 				$csms_k3	.= '<tr class="">
 									<td colspan=7>TOTAL</td>
 									<td><b>'.$total.'</b></td>
 								</tr>';
 		$csms_k3			.= '</tbody>
 							</table>';
-		
-		// echo $csms_k3;
-
-		#print K3 DATA
-		$k3_data="";
 		if ($data['get_csms']['value']!="") {
 			/*$k3_data = '<div class="page second-page" style="margin: 0 auto; page-break-inside: avoid;">
 							<div class="rekapContainer">
@@ -287,6 +285,7 @@ class certificate extends CI_Controller{
 									
 								</tr>';
 		}
+  
 		#--------------------------------------------------------------------------------------------------
 		#--------------------------------------------------------------------------------------------------
 
@@ -615,7 +614,7 @@ class certificate extends CI_Controller{
 		// $dompdf->output();
 	}
 
-	function dpt_($id = ""){
+	public function dpt_($id = ""){
 		$data['vendor']			= $this->vm->get_data($id,TRUE);
 		// print_r($data['vendor']);/
 		$data['administrasi']	= $this->vm->get_administrasi_list($id,TRUE);
@@ -633,14 +632,11 @@ class certificate extends CI_Controller{
 		$data['data_poin']		= $this->km->get_poin($id);
 		$data['csms_file'] 		= $this->km->get_k3_all_data($id)['csms_file'];
 		$data['value_k3']		= $this->km->get_penilaian_value($id,$data['csms_file']['id']);
-
-		///print_r($data);die;
-		$first_date = strtotime($data['vendor']['first_date']);
 		$logo	= base_url('assets/images/login-regas-logo.jpg');
 		// $nomor	= $this->session->userdata('nomor');;
 		#Pengurus Vendor
-		foreach ($data['administrasi'] as $key => $value)
-			$pic_name = $value['pic_name']; $pic_jabatan = $value['pos'];
+		foreach ($data['administrasi'] as $value)
+			$pic_name = $value['pic_name'];
 
 
 		#Surat Izin
@@ -678,7 +674,7 @@ class certificate extends CI_Controller{
 						$izin_usaha		.=					'<li>';
 
 						#Sub Bidang
-						foreach ($bidang as $sb => $sub_bidang) {
+						foreach ($bidang as $sub_bidang) {
 							$izin_usaha		.=					'<p>'.$sub_bidang.'</p>';
 						}
 
@@ -694,6 +690,7 @@ class certificate extends CI_Controller{
 					$izin_usaha		.=			'<td>'.$expire.'</td>';
 					$izin_usaha		.=		'</tr>';
 				}
+    
 			$izin_usaha		.='</table>';
 		}
 
@@ -728,6 +725,7 @@ class certificate extends CI_Controller{
 				foreach($value_ms as $key_ev => $val_ev){
 					$subtotal += isset($data['value_k3'][$key_ev]) ? $data['value_k3'][$key_ev] : NULL;
 				}
+    
 				$total_sub = round($subtotal / $total_data,2);
 				$total +=$total_sub;
 				$rekap_k3		.= '	<td class="nilai"><i>'.$total_sub.'</i></td>';
@@ -736,6 +734,7 @@ class certificate extends CI_Controller{
 
 			$nomor_rekap++;
 		}
+  
 				$rekap_k3		.= '<tr>';
 				$rekap_k3		.= 		'<td style="border:none;"></td>';
 				$rekap_k3		.= 		'<td style="border:none;" width="300px"></td>';
@@ -794,6 +793,7 @@ class certificate extends CI_Controller{
 
 					$subtotal += isset($data['value_k3'][$key_ev]) ? $data['value_k3'][$key_ev] : NULL;
 				}
+    
 				$total_sub = round($subtotal / $total_data,2);
 				$total +=$total_sub;
 				$csms_k3	.= '	<tr class="evalQuest subTotalQuest">
@@ -812,17 +812,13 @@ class certificate extends CI_Controller{
 									</tr>';
 			}
 		}
+  
 				$csms_k3	.= '<tr class="">
 									<td colspan=7>TOTAL</td>
 									<td><b>'.$total.'</b></td>
 								</tr>';
 		$csms_k3			.= '</tbody>
 							</table>';
-		
-		// echo $csms_k3;
-
-		#print K3 DATA
-		$k3_data="";
 		if ($data['get_csms']['value']!="") {
 			/*$k3_data = '<div class="page second-page" style="margin: 0 auto; page-break-inside: avoid;">
 							<div class="rekapContainer">
@@ -866,6 +862,7 @@ class certificate extends CI_Controller{
 									<td>:&nbsp;&nbsp;&nbsp;'.$data['data_poin']['score'].'</td>
 								</tr>';
 		}
+  
 		#--------------------------------------------------------------------------------------------------
 		#--------------------------------------------------------------------------------------------------
 
@@ -1212,7 +1209,7 @@ class certificate extends CI_Controller{
 
 
 
-	function csms($id = ""){
+	public function csms($id = ""){
 
 		$data['vendor']			= $this->vm->get_data($id,TRUE);
 		$data['administrasi']	= $this->vm->get_administrasi_list($id,TRUE);
@@ -1232,17 +1229,16 @@ class certificate extends CI_Controller{
 			$no_id = (6 - strlen($data['vendor']['id']));
 
 			for($i=0;$i<$no_id;$i++) $nomor .= "0";
+   
 				$nomor .= $data['vendor']['id'];
-
-			$nomor = $nomor."/NR/CSMS/".date("d/m/Y", $first_date);
 		
 
 		// $logo	= base_url('assets/images/login-regas-logo.jpg');
 			$logo = 'https://eproc.nusantararegas.com/eproc/lampiran/login-regas-logo.jpg';
 
 		#Pengurus Vendor
-		foreach ($data['administrasi'] as $key => $value)
-			$pic_name = $value['pic_name']; $pic_jabatan = $value['pos'];
+		foreach ($data['administrasi'] as $value)
+			$pic_name = $value['pic_name'];
 
 
 		#--------------------------------------------------------------------------------------------------
@@ -1269,6 +1265,7 @@ class certificate extends CI_Controller{
 				foreach($value_ms as $key_ev => $val_ev){
 					$subtotal += isset($data['value_k3'][$key_ev]) ? $data['value_k3'][$key_ev] : NULL;
 				}
+    
 				$total_sub = round($subtotal / $total_data,2);
 				$total +=$total_sub;
 				$rekap_k3		.= '	<td class="nilai"><i>'.$total_sub.'</i></td>';
@@ -1277,6 +1274,7 @@ class certificate extends CI_Controller{
 
 			$nomor_rekap++;
 		}
+  
 				$rekap_k3		.= '<tr>';
 				$rekap_k3		.= 		'<td style="border:none;"></td>';
 				$rekap_k3		.= 		'<td style="border:none;" width="300px"></td>';
@@ -1338,6 +1336,7 @@ class certificate extends CI_Controller{
 
 					$subtotal += isset($data['value_k3'][$key_ev]) ? $data['value_k3'][$key_ev] : NULL;
 				}
+    
 				$total_sub = round($subtotal / $total_data,2);
 				$total +=$total_sub;
 				$csms_k3	.= '	<tr class="evalQuest subTotalQuest">
@@ -1356,6 +1355,7 @@ class certificate extends CI_Controller{
 									</tr>';
 			}
 		}
+  
 				$csms_k3	.= '<tr class="">
 									<td colspan=7>TOTAL</td>
 									<td><b>'.$total.'</b></td>

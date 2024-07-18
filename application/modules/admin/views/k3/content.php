@@ -36,7 +36,8 @@
 		            <div class="tambahBtn">
 						<a style="margin-right: 10px" class="btnBlue" href="<?php echo site_url('admin/admin_k3/tambah_sub_quest/'.$key)?>"><i class="fa fa-plus-square-o"></i>&nbsp; Tambah Sub Judul</a>
 					</div>
-					<?php }?>
+					<?php }
+?>
 					<!-- Group Content -->
 					<ol type="a" style="list-style-type: none;">
 						<?php if (isset($valuesq['data'])) { ?>
@@ -57,14 +58,16 @@
 										<a href="<?php echo site_url('admin/admin_k3/hapus_quest/'.$keydata)?>" style="top: -4px" class="delBtn" style="top: -4px"><i class="fa fa-trash"></i>Hapus</a>
 									</span>
 								</p>
-							<?php } ?>
+							<?php }
+ ?>
 								<div class="tambahBtn clearfix">
 									<a style="margin-right: 10px" class="btnBlue" href="<?php echo site_url('admin/admin_k3/tambah_quest/'.$keyq)?>"><i class="fa fa-plus-square-o"></i>&nbsp; Tambah Pertanyaan</a>
 								</div>
 							</div>
 						</li>
 						<!-- End of Content -->
-						<?php } ?>
+<?php }
+ ?>
 
 						<div class="tambahBtn clearfix">
 							<form method="POST" enctype="multipart/form-data" class="newGroup">
@@ -75,28 +78,34 @@
 							</form>
 						</div>
 
-						<?php }else{ ?>
+<?php }else{ ?>
 						<div class="tambahBtn clearfix">
 							<a href="<?php echo site_url('admin/admin_k3/tambah_group_quest/'.$key.'/'.$keysq)?>"><i class="fa fa-plus-square-o" style="margin-right: 10px" class="btnBlue"></i>&nbsp; Tambah Kelompok Pertanyaan</a>
 						</div>
-						<?php } ?>
+						<?php }
+ ?>
 					</ol>
 					<!-- End of Group Content -->
 	            </div>
-	            <?php } ?>
+<?php }
+ ?>
 	            <div class="tambahBtn clearfix">
 					<a style="margin-right: 10px" class="btnBlue" href="<?php echo site_url('admin/admin_k3/tambah_sub_quest/'.$key)?>"><i class="fa fa-plus-square-o"></i>&nbsp; Tambah Sub Judul</a>
 				</div>
-	        	<?php }else{ ?>	        	
+<?php }else{ ?>	        	
 	            <div class="tambahBtn clearfix">
 					<a style="margin-right: 10px" class="btnBlue" href="<?php echo site_url('admin/admin_k3/tambah_sub_quest/'.$key)?>"><i class="fa fa-plus-square-o"></i>&nbsp; Tambah Sub Judul</a>
 				</div>
-	        	<?php } ?>
+	        	<?php }
+ ?>
 	        </div>
 			<?php $nomor++; ?>
-	        <?php } ?>
-	        <?php } ?>
-	        <?php } ?>
+<?php }
+ ?>
+<?php }
+ ?>
+<?php }
+ ?>
             <div class="tambahBtn clearfix">
 				<a style="margin-right: 10px" class="btnBlue" href="<?php echo site_url('admin/admin_k3/tambah_header')?>"><i class="fa fa-plus-square-o"></i>&nbsp; Tambah Judul</a>
 			</div>

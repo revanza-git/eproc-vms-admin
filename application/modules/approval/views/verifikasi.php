@@ -20,11 +20,12 @@
 
 		<ul>
 
-			<?php foreach($approval_data[1] as $key =>$value){ ?>
+			<?php foreach($approval_data[1] as $value){ ?>
 
 			<li><?php echo $value;?></li>
 
-			<?php } ?>
+			<?php }
+ ?>
 
 		</ul>
 
@@ -36,11 +37,12 @@
 
 			<h4><?php echo count($approval_data[0])?> data belum terverifikasi</h4>
 
-			<?php foreach($approval_data[0] as $key =>$value){ ?>
+			<?php foreach($approval_data[0] as $value){ ?>
 
 			<li><?php echo $value;?></li>
 
-			<?php } ?>
+			<?php }
+ ?>
 
 		</ul>
 
@@ -52,11 +54,12 @@
 
 			<h4><?php echo count($approval_data[3])?> data tidak sesuai</h4>
 
-			<?php foreach($approval_data[3] as $key =>$value){ ?>
+			<?php foreach($approval_data[3] as $value){ ?>
 
 			<li><?php echo $value;?></li>
 
-			<?php } ?>
+			<?php }
+ ?>
 
 		</ul>
 
@@ -67,11 +70,7 @@
 		<?php
 		$admin = $this->session->userdata('admin');
 		if ($admin['id_role'] == 1 || $admin['id_role'] == 10 || $admin['id_role'] == 3) {
-			if ($admin['id_role'] == 1) {
-				$label = "Angkat Menjadi DPT";
-			} else {
-				$label = "Kirim Ke Supervisor";
-			}
+			$label = $admin['id_role'] == 1 ? "Angkat Menjadi DPT" : "Kirim Ke Supervisor";
 		?>
 			<?php
 			if (!$need_approve) { ?>
@@ -87,8 +86,9 @@
 
 
 
-		<?php }
-		} ?>
+<?php }
+		}
+   ?>
 
 	</div>
 

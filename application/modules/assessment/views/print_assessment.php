@@ -39,8 +39,8 @@
 			</thead>
 			<tbody>
 				<?php
-				if(count($vendor)){
-					foreach($vendor as $keyv => $valuev){
+				if(count($vendor) > 0){
+					foreach($vendor as $valuev){
 				?>
 				<tr>
 					<!-- <td width="15px" style="border: none !important;">1. </td> -->
@@ -63,7 +63,7 @@
 					<td style="border: none !important;">
 						<?php
 							$cat ="";
-							$kategori = ($valuev['point'] >= -30) ? $cat="Biru" : (($valuev['point'] <=-31 && $valuev['point'] >=-60) ? $cat="Kuning" : (($valuev['point'] <=-61 && $valuev['point'] >=-120) ? $cat="Merah" : $cat="Hitam")) ;
+							$kategori = ($valuev['point'] >= -30) ? $cat="Biru" : ($cat = ($valuev['point'] <=-31 && $valuev['point'] >=-60) ? "Kuning" : (($valuev['point'] <=-61 && $valuev['point'] >=-120) ? "Merah" : "Hitam")) ;
 							echo $cat;
 						?>
 					</td>
@@ -93,13 +93,13 @@
 			</thead>
 			<tbody>
 				<?php
-				if(count($assessment_question)){
+				if(count($assessment_question) > 0){
 					$i=1;
-					foreach($assessment_question as $key => $value){
+					foreach($assessment_question as $value){
 				?>
 				<tr><td colspan="4"><h2><?php echo strtoupper($value['name']); ?></h2></td><tr>
 				<?php
-						foreach($value['quest'] as $row => $val){ 
+						foreach($value['quest'] as $val){ 
 							$is_id = $this->session->userdata('admin')['id_role']==$val['id_role'];
 				?>
 				<tr>
@@ -108,11 +108,11 @@
 					<td width="20px"><?php echo $val['point'];?></td>
 					<td width="70px"><?php 
 						if(isset($data_assessment[$val['id']])){
-							if($data_assessment[$val['id']]!=0){
-								echo 'Memenuhi';
-							}else if($data_assessment[$val['id']]==0){
-								echo 'Tidak Memenuhi';
-							}
+							if ($data_assessment[$val['id']]!=0) {
+           echo 'Memenuhi';
+       } elseif ($data_assessment[$val['id']]==0) {
+           echo 'Tidak Memenuhi';
+       }
 						}
 						else{
 							echo 'Belum Dinilai';
@@ -120,7 +120,8 @@
 						?>
 					</td>
 				</tr>
-				<?php $i++;}}} ?>
+				<?php $i++;}}}
+     ?>
 			</tbody>
 		</table>		
 	</div>

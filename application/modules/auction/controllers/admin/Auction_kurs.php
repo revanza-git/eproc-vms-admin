@@ -1,13 +1,13 @@
 <?php
 class Auction_kurs extends CI_Controller{
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 		$this->load->model('auction_package/kurs_model');
 	}
 	
-	function index($id_lelang = ''){
+	public function index($id_lelang = ''){
 		$data['query'] = $this->kurs_model->get_data($id_lelang);
 		$data['id_lelang'] = $id_lelang;
 		$data['is_dynamic_rate'] = $this->kurs_model->get_rate_setting($id_lelang);
@@ -15,7 +15,7 @@ class Auction_kurs extends CI_Controller{
 		$this->load->view('content/auction_package/auction_kurs', $data);
 	}
 	
-	function form($id_lelang = '', $id = ''){
+	public function form($id_lelang = '', $id = ''){
 		$data['action'] = base_url()."index.php/auction_kurs/save/";
 		if($id){ $fill = $this->kurs_model->select_data($id); $data['action'] = base_url()."index.php/auction_kurs/edit/"; }
 		
@@ -34,15 +34,17 @@ class Auction_kurs extends CI_Controller{
 		$this->load->view('jc-table/form/jc-form', $data);
 	}
 	
-	function user_rate_setting(){
+	public function user_rate_setting(){
 		if(!$_POST['value']){ $_POST['value'] = 0; $message = 'User tidak diijinkan untuk mengubah mata uang selama auction berlangsung'; }
-		else $message = 'User diijinkan untuk mengubah mata uang selama auction berlangsung';
+		else {
+      $message = 'User diijinkan untuk mengubah mata uang selama auction berlangsung';
+  }
 		
 		$this->kurs_model->user_rate_setting(array($_POST['value'], $_POST['id_lelang']));
 		die(json_encode(array('status' => 'success', 'message' => $message)));
 	}
 	
-	function save(){
+	public function save(){
 		$param = array(
 			'id_lelang' => $_POST['id_lelang'],
 			'id_kurs' => $_POST['id_kurs'],
@@ -55,7 +57,7 @@ class Auction_kurs extends CI_Controller{
 		die(json_encode(array('status' => 'success', 'message' => 'data mata uang telah di simpan')));
 	}
 	
-	function edit(){
+	public function edit(){
 		$param = array(
 			'id_lelang' => $_POST['id_lelang'],
 			'id_kurs' => $_POST['id_kurs'],
@@ -69,7 +71,7 @@ class Auction_kurs extends CI_Controller{
 		die(json_encode(array('status' => 'success', 'message' => 'data mata uang telah di simpan')));
 	}
 	
-	function delete($id = ''){
+	public function delete($id = ''){
 		$this->kurs_model->delete_data($id);
 		die(json_encode(array('status' => 'success', 'message' => 'data mata uang telah di hapus')));
 	}

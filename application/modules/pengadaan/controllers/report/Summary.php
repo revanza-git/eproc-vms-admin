@@ -1,13 +1,13 @@
 <?php
 class Summary extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$this->load->model('report/report_pengadaan_model','rpm');
 		$this->load->model('pengadaan_model','pm');
 	}
 	
-	function index($id_lelang =  '', $id_vendor = ''){
+	public function index($id_lelang =  '', $id_vendor = ''){
 		$hide = array();
 		$summary = array('bsb','peserta','penawaran','barang','progress_pengadaan','pemenang','kontrak','progress_pengerjaan');
 		foreach ($summary as $key => $value) {
@@ -27,21 +27,28 @@ class Summary extends CI_Controller{
 		$start_date 	= '';
 		$end_date	= '';
 		foreach($pengerjaan as $key => $pp){
-			if($key==0) $start_date	= $pp['start_date'];
-			$_pengerjaan	.= '<tr>';
+			if ($key==0) {
+       $start_date	= $pp['start_date'];
+   }
+
+   $_pengerjaan	.= '<tr>';
 			$_pengerjaan 	.= '<td>'.$pp["step_name"].'</td>';
 			$_pengerjaan 	.= '<td>'.get_range_date($pp['end_date'],$pp['start_date']).' hari. ('.default_date($pp['start_date']).' - '.default_date($pp['end_date']).')</td>';
 			$_pengerjaan 	.= '</tr>';
-			if(strtotime($end_date)<strtotime($pp['end_date'])) $end_date	= $pp['end_date'];
+			if (strtotime($end_date)<strtotime($pp['end_date'])) {
+       $end_date	= $pp['end_date'];
+   }
 		}
-		$denda = array();
+		
 		$denda = $this->pm->get_denda($id_lelang);
 		if(count($denda)>0){
 			$_pengerjaan	.= '<tr>';
 			$_pengerjaan 	.= '<td>Denda</td>';
 			$_pengerjaan 	.= '<td>'.get_range_date($denda['end_date'],$denda['start_date']).' hari. ('.default_date($denda['start_date']).' - '.default_date($denda['end_date']).')</td>';
 			$_pengerjaan 	.= '</tr>';
-			if(strtotime($end_date)<strtotime($denda['end_date'])) $end_date	= $denda['end_date'];
+			if (strtotime($end_date)<strtotime($denda['end_date'])) {
+       $end_date	= $denda['end_date'];
+   }
 		}
 		
 
@@ -80,14 +87,15 @@ class Summary extends CI_Controller{
 
 			
 		}
-		$peserta = $_peserta;
+		
 
 		$denda = $this->pm->get_denda_price($id_lelang);
 
 
 		$bsb = $this->rpm->get_bsb($id_lelang);
 		foreach($bsb->result() as $data)
-			$_bsb .= '<li>'.$data->bidang.' - '.$data->sub_bidang.'</li>'; 
+			$_bsb .= '<li>'.$data->bidang.' - '.$data->sub_bidang.'</li>';
+   
 		$bsb = $_bsb;
 		
 		$progress = $this->rpm->get_progress_pengadaan($id_lelang);
@@ -101,16 +109,10 @@ class Summary extends CI_Controller{
 			$_progress .= '</tr>';
 		}
 		
-		$progress = $_progress;
-		
 		$kurs = $this->rpm->get_kurs($id_lelang);
 		foreach($kurs->result() as $data)
-			$_kurs .= '<li>'.$data->name.'</li>'; 
-		$kurs = $_kurs;
-		
-		
-		
-		$day = (ceil(strtotime($denda['end_date']) - strtotime($denda['start_date']))/86400)+1;
+			$_kurs .= '<li>'.$data->name.'</li>';
+  
 
 		
 			

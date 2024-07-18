@@ -1,8 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Akta_model extends CI_Model{
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$this->field_master = array(
 								'id_vendor',
@@ -21,7 +21,7 @@ class Akta_model extends CI_Model{
 							);
 	}
 
-	function save_data($data){
+	public function save_data($data){
 		$_param = array();
 		$sql = "INSERT INTO ms_akta (
 							id_vendor,
@@ -43,33 +43,37 @@ class Akta_model extends CI_Model{
 		foreach($this->field_master as $_param) $param[$_param] = $data[$_param];
 		
 		$this->db->query($sql, $param);
-		$id = $this->db->insert_id();
 		
-		return $id;
+		return $this->db->insert_id();
 	}
 
-	function edit_data($data,$id){
+	public function edit_data($data,$id){
 				
 		$this->db->where('id',$id);
 		
 
 		$result = $this->db->update('ms_akta',$data);
-		if($result)return $id;
+  if ($result) {
+      return $id;
+  }
+
+  return null;
 	}
-	function delete($id){
+ 
+	public function delete($id){
 		$this->db->where('id',$id);
 		
 		return $this->db->update('ms_akta',array('del'=>1));
 	}
 	
-	function get_data($id){
-		$user = $this->session->userdata('user');
+	public function get_data($id){
+		$this->session->userdata('user');
 		$sql = "SELECT * FROM ms_akta WHERE id = ".$id;
 		$query = $this->db->query($sql);
 		return $query->row_array();
 	}
 
-	function get_akta_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()) 
+	public function get_akta_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()) 
     {
     	$user = $this->session->userdata('user');
 		$this->db->select('*');
@@ -79,6 +83,7 @@ class Akta_model extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
@@ -90,9 +95,9 @@ class Akta_model extends CI_Model{
 		return $query->result_array();
     }
 
-    function get_akta_admin_list($id,$akta_type='pendirian') 
+    public function get_akta_admin_list($id,$akta_type='pendirian') 
     {
-    	$user = $this->session->userdata('user');
+    	$this->session->userdata('user');
 		$this->db->select('*');
 		$this->db->where('del',0);
 		$this->db->where('id_vendor',$id);

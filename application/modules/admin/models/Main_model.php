@@ -1,8 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Main_model extends CI_Model{
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 
 	}
@@ -14,17 +14,14 @@ class Main_model extends CI_Model{
 		} else {
 			$query = "SELECT * FROM ms_vendor WHERE del = 0 AND vendor_status = 1 AND need_approve = ".$st;
 		}
-		$query = $this->db->query($query);
 
-		return $query;
+		return $this->db->query($query);
 	}
 
 	public function search_bar($q){
 		// $result = array();
 
 		$query = " SELECT * FROM ms_vendor WHERE del = 0 AND name LIKE '%".$q."%' LIMIT 5";
-
-		$query = $this->db->query($query)->result_array();
 		// $query = $this->db->query($query, array('%'.$_POST['search'].'%','%'.$_POST['search'].'%'))->result_array();
 		// $result = array();
 	
@@ -57,14 +54,13 @@ class Main_model extends CI_Model{
 		// 			</div>
 		// 		</div>';
 		// }
-		return $query;
+		return $this->db->query($query)->result_array();
 		// return $result;
 	}
 
-	function search_data($value){
-		$result = array();
-		$admin = $this->session->userdata('admin');		
-		// $query = "	SELECT
+	public function search_data($value){
+		$this->session->userdata('admin');
+  // $query = "	SELECT
 		//                 a.id,
 		//                 a.nama_pengadaan,
 		//                 b.name nama_divisi,
@@ -77,8 +73,7 @@ class Main_model extends CI_Model{
 		// 			WHERE a.del = 0 AND a.nama_pengadaan LIKE ? OR b.name LIKE ?
 		// 			LIMIT 5";
 		$query = " SELECT * FROM ms_vendor WHERE del = 0 AND name LIKE ? LIMIT 5 ";
-	    $query = $this->db->query($query, array('%'.$_POST['search'].'%','%'.$_POST['search'].'%'))->result_array();		
-		$result = array();
+  $this->db->query($query, array('%'.$_POST['search'].'%','%'.$_POST['search'].'%'))->result_array();
 		// foreach($query as $key => $value){
 		// 	if ($value['is_status'] == 0) {
 		// 		$class = 'fppbj';
@@ -109,7 +104,7 @@ class Main_model extends CI_Model{
 		// 		</div>';
 		// }
 		
-		return $result;
+		return array();
 	}
 
 	public function to_app($id)
@@ -126,14 +121,12 @@ class Main_model extends CI_Model{
 					-- 	tb_division c ON c.id=a.id_division
 					WHERE
 						a.id = ?
-		"; 
-
-		$query = $this->db->query($query,array($id))->row_array();
+		";
 		// echo $this->eproc_db->last_query();die;
-		return $query;
+		return $this->db->query($query,array($id))->row_array();
 	}
 
-	function get_daftar_tunggu_chart(){
+	public function get_daftar_tunggu_chart(){
 
 		$query = " 	SELECT 
 						*
@@ -152,12 +145,11 @@ class Main_model extends CI_Model{
 						a.edit_stamp DESC
 						
 					";
-		$result = $this->db->query($query);
-		return $result;
+		return $this->db->query($query);
 
 	}
 
-	function daftar_hitam_chart(){
+	public function daftar_hitam_chart(){
 
 		$query = " 	SELECT 
 						*
@@ -179,12 +171,11 @@ class Main_model extends CI_Model{
 		$query .=	" ORDER BY 
 						b.start_date DESC
 					";
-		$result = $this->db->query($query);
-		return $result;
+		return $this->db->query($query);
 
 	}
 
-	function daftar_merah_chart(){
+	public function daftar_merah_chart(){
 
 		$query = " 	SELECT 
 						*
@@ -206,12 +197,11 @@ class Main_model extends CI_Model{
 		$query .=	" ORDER BY 
 						b.start_date DESC
 					";
-		$result = $this->db->query($query);
-		return $result;
+		return $this->db->query($query);
 
 	}
 
-	function dpt_chart(){
+	public function dpt_chart(){
 		$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 		
 		$query = " 	SELECT 
@@ -236,8 +226,7 @@ class Main_model extends CI_Model{
 
 
 					";
-		$result = $this->db->query($query);
-		return $result;
+		return $this->db->query($query);
 
 	}
 }

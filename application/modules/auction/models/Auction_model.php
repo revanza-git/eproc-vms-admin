@@ -1,7 +1,7 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Auction_model extends CI_Model{
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$this->field_master = array(
 								'name',
@@ -85,8 +85,9 @@ class Auction_model extends CI_Model{
 							'description',
 							'entry_stamp');
 	}
-	function get_auction_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
-    	$user = $this->session->userdata('user');
+ 
+	public function get_auction_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
+    	$this->session->userdata('user');
     	$this->db->query("SET sql_mode=(SELECT REPLACE (@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 		$this->db->select('*, ms_procurement.id id, ms_procurement.name name, ms_procurement.work_area work_area, ms_procurement.auction_date auction_date, ms_vendor.name pemenang, "-" as pemenang_kontrak , "-" as user_kontrak , proc_date, ms_procurement.del del');
 		$this->db->group_by('ms_procurement.id');
@@ -96,6 +97,7 @@ class Auction_model extends CI_Model{
 		if($this->session->userdata('admin')['id_role']==4){
 			$this->db->where('ms_procurement.status_procurement!=',0);
 		}
+  
 		$this->db->join('ms_procurement_peserta','ms_procurement_peserta.id_proc=ms_procurement.id','LEFT');
 		$this->db->join('ms_vendor','ms_procurement_peserta.is_winner=ms_vendor.id','LEFT');
 
@@ -104,18 +106,20 @@ class Auction_model extends CI_Model{
 		}else{
 			$this->db->order_by('ms_procurement.id','desc');
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
 		$a = $this->filter->generate_query($this->db->group_by('ms_procurement.id'),$filter);
 		$query = $a->get('ms_procurement');
 		return $query->result_array();
 		
     }
 
-    function get_auction_langsung($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
-    	$user = $this->session->userdata('user');
+    public function get_auction_langsung($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
+    	$this->session->userdata('user');
     	$this->db->query("SET sql_mode=(SELECT REPLACE (@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 		$this->db->select('*, ms_procurement.id id, ms_procurement.name name, ms_procurement.work_area work_area, ms_procurement.auction_date auction_date, ms_vendor.name pemenang, "-" as pemenang_kontrak , "-" as user_kontrak , proc_date, ms_procurement.del del');
 		$this->db->group_by('ms_procurement.id');
@@ -130,6 +134,7 @@ class Auction_model extends CI_Model{
 		if($this->session->userdata('admin')['id_role']==4){
 			$this->db->where('ms_procurement.status_procurement!=',0);
 		}
+  
 		$this->db->join('ms_procurement_peserta','ms_procurement_peserta.id_proc=ms_procurement.id','LEFT');
 		$this->db->join('ms_vendor','ms_procurement_peserta.is_winner=ms_vendor.id','LEFT');
 
@@ -138,17 +143,19 @@ class Auction_model extends CI_Model{
 		}else{
 			$this->db->order_by('ms_procurement.id','desc');
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
 		$a = $this->filter->generate_query($this->db->group_by('ms_procurement.id'),$filter);
 		$query = $a->get('ms_procurement');		
 		return $query->result_array();
     }
 
-    function get_auction_selesai($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
-    	$user = $this->session->userdata('user');
+    public function get_auction_selesai($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
+    	$this->session->userdata('user');
     	$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 
 		$this->db->select('*, ms_procurement.id id, ms_procurement.name name, ms_procurement.work_area work_area, ms_procurement.auction_date auction_date, ms_vendor.name pemenang, "-" as pemenang_kontrak , "-" as user_kontrak , proc_date, ms_procurement.del del');
@@ -162,6 +169,7 @@ class Auction_model extends CI_Model{
 		if($this->session->userdata('admin')['id_role']==4){
 			$this->db->where('ms_procurement.status_procurement!=',0);
 		}
+  
 		$this->db->join('ms_procurement_peserta','ms_procurement_peserta.id_proc=ms_procurement.id','LEFT');
 		$this->db->join('ms_vendor','ms_procurement_peserta.is_winner=ms_vendor.id','LEFT');
 
@@ -170,19 +178,21 @@ class Auction_model extends CI_Model{
 		}else{
 			$this->db->order_by('ms_procurement.id','desc');
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
 		$a = $this->filter->generate_query($this->db->group_by('ms_procurement.id'),$filter);
 		$query = $a->get('ms_procurement');		
 		return $query->result_array();
     }
 
-	function search_vendor(){
+	public function search_vendor(){
 		$result = array();
 		$query = $this->db->select('id, name')->like('name',$this->input->post('term'),'both')->where('del',0)->where('vendor_status',2)->get('ms_vendor')->result_array();
-		foreach($query as $key => $value){
+		foreach($query as $value){
 			$result[$value['id']]['id'] = $value['id'];
 			$result[$value['id']]['name'] = $value['name'];
 		}
@@ -191,7 +201,7 @@ class Auction_model extends CI_Model{
 	}
     
 
-   	function save_data($data){
+   	public function save_data($data){
    		$_param = array();
 		$sql = "INSERT INTO ms_procurement (								
 								`name`,
@@ -213,26 +223,22 @@ class Auction_model extends CI_Model{
 		foreach($this->field_master as $_param) $param[$_param] = $data[$_param];
 
 		$this->db->query($sql, $param);
-		$id = $this->db->insert_id();
 		
-		return $id;
+		return $this->db->insert_id();
    	}
 
-   	function edit_data($data,$id){
-		$param = array();
-		
+   	public function edit_data($data,$id){
 		$this->db->where('id',$id);
-		$res = $this->db->update('ms_procurement',$data);
 		
-		return $res;
+		return $this->db->update('ms_procurement',$data);
 	}
 
-   	function hapus($id,$table){
+   	public function hapus($id,$table){
    		$this->db->where('id',$id);
 		return $this->db->delete($table);
    	}
 
-   	function duplicate_data($total = 0, $id = ''){
+   	public function duplicate_data($total = 0, $id = ''){
 		for($i=0;$i<$total;$i++){
 			$sql = "SELECT * FROM ms_procurement WHERE id = ?";
 			$sql = $this->db->query($sql, $id);
@@ -299,48 +305,48 @@ class Auction_model extends CI_Model{
 				$this->db->query($sql_1, array($new_id, $data->id_kurs, $data->rate, date("Y-m-d H:i:s")));	
 			}
 		}
+  
 		return true;
 	}
 
-   	function get_auction($id){
-   		$arr = $this->db->select('*,ms_procurement.name name, tb_budget_holder.name budget_holder_name, tb_budget_spender.name budget_spender_name, tb_pejabat_pengadaan.name pejabat_pengadaan_name,tb_mekanisme.name mekanisme_name')
-   		->where('ms_procurement.id',$id)
-   		->join('ms_procurement_tatacara','ms_procurement_tatacara.id_procurement=ms_procurement.id','LEFT')
-   		->join('tb_pejabat_pengadaan','tb_pejabat_pengadaan.id=ms_procurement.id_pejabat_pengadaan','LEFT')
+   	public function get_auction($id){
+   		return $this->db->select('*,ms_procurement.name name, tb_budget_holder.name budget_holder_name, tb_budget_spender.name budget_spender_name, tb_pejabat_pengadaan.name pejabat_pengadaan_name,tb_mekanisme.name mekanisme_name')
+		->where('ms_procurement.id',$id)
+		->join('ms_procurement_tatacara','ms_procurement_tatacara.id_procurement=ms_procurement.id','LEFT')
+		->join('tb_pejabat_pengadaan','tb_pejabat_pengadaan.id=ms_procurement.id_pejabat_pengadaan','LEFT')
 		->join('tb_budget_holder','tb_budget_holder.id=ms_procurement.budget_holder','LEFT')
 		->join('tb_budget_spender','tb_budget_spender.id=ms_procurement.budget_spender','LEFT')
 		->join('tb_mekanisme','tb_mekanisme.id=ms_procurement.id_mekanisme','LEFT')
-   		->get('ms_procurement')->row_array();
-		
-		return $arr;
+		->get('ms_procurement')->row_array();
    	}
 
-   	function get_contract_progress($id){
-   		$arr = $this->db->select('*')->where('id_contract',$id)->get('tr_progress_kontrak')->result_array();
-   		return $arr;
+   	public function get_contract_progress($id){
+   		return $this->db->select('*')->where('id_contract',$id)->get('tr_progress_kontrak')->result_array();
    	}
 
-   	function tambah_progress($id,$data){
+   	public function tambah_progress($id,$data){
    		$contract = $this->get_kontrak($id);
    		$contract_length = ceil((abs(strtotime($contract['end_work'])-strtotime($contract['start_work']))+1)/86400) ;
 
    		$arr = $this->db->select('supposed,realization')->where('id_contract',$contract['id'])->get('tr_progress_kontrak')->result_array();
    		
    		$total_day = 0;
-   		foreach($arr as $key => $value){
+   		foreach($arr as $value){
    			$total_day += $value['supposed'];
    		}
    		
    		if(($this->input->post('supposed')+$total_day)>$contract_length){
    			$this->session->set_flashdata('msgSuccess','<p class="errorMsg">Tanggal yang ditentukan tidak boleh melebihi tanggal pada kontrak</p>');
    			return false;
-   		}else{
-   			if(($this->input->post('supposed')+$total_day)==$contract_length){
-   				$this->db->where('id',$id);
+   		}
+
+     if(($this->input->post('supposed')+$total_day)==$contract_length){
+  				$this->db->where('id',$id);
 				$this->db->update('ms_procurement',array('status_procurement'=>2));
-   			}
-   			$_param = array();
-			$sql = "INSERT INTO tr_progress_kontrak (
+  			}
+
+     $_param = array();
+     $sql = "INSERT INTO tr_progress_kontrak (
 									`id_contract`,
 									`step_name`,
 									`supposed`,
@@ -348,25 +354,25 @@ class Auction_model extends CI_Model{
 									`entry_stamp`
 									) 
 					VALUES (?,?,?,?,?) ";
+     foreach($this->progress as $_param) $param[$_param] = $data[$_param];
 
-			foreach($this->progress as $_param) $param[$_param] = $data[$_param];
-			
-			$this->db->query($sql, $param);
-			$id = $this->db->insert_id();
-			if($id){
-				$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Tambah progress berhasil</p>');
-				return $id;
-			}else{
-				$this->session->set_flashdata('msgSuccess','<p class="errorMsg">Gagal Menambahkan Data</p>');
-				return false;
-			}
-   		}
+     $this->db->query($sql, $param);
+     $id = $this->db->insert_id();
+     if($id){
+  				$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Tambah progress berhasil</p>');
+  				return $id;
+  			}
+
+     $this->session->set_flashdata('msgSuccess','<p class="errorMsg">Gagal Menambahkan Data</p>');
+     return false;
    	}
-   	function get_graph($id){
+    
+   	public function get_graph($id){
    		$data = $this->get_contract_progress($id);
    	
    		$result = array();
-   		$total_supposed = $total_realization = 0;
+     $total_supposed = 0;
+     $total_realization = 0;
    		$color = $this->config->item('color');
    		// $color_o = array(array(22, 160, 133),array(39, 174, 96),array(41, 128, 185),array(142, 68, 173),array(243, 156, 18),array(211, 84, 0),array(192, 57, 43));	
 
@@ -389,24 +395,23 @@ class Auction_model extends CI_Model{
    		return $result;
 
    	}
-   	function get_kontrak($id){
-   		$arr = $this->db->select('*,ms_contract.id id,CONCAT(tb_legal.name," " , ms_vendor.name) vendor_name, tb_kurs.symbol kurs_name')
+    
+   	public function get_kontrak($id){
+   		return $this->db->select('*,ms_contract.id id,CONCAT(tb_legal.name," " , ms_vendor.name) vendor_name, tb_kurs.symbol kurs_name')
 		->join('ms_vendor','ms_vendor.id=ms_contract.id_vendor','LEFT')
-   		->join('ms_vendor_admistrasi','ms_contract.id_vendor=ms_vendor_admistrasi.id_vendor','LEFT')
-   		->join('tb_legal','ms_vendor_admistrasi.id_legal=tb_legal.id','LEFT')
-   		->join('tb_kurs','ms_contract.contract_kurs=tb_kurs.id','LEFT')
-   		->where('id_procurement',$id)
-   		->get('ms_contract')->row_array();
-
-		return $arr;
+		->join('ms_vendor_admistrasi','ms_contract.id_vendor=ms_vendor_admistrasi.id_vendor','LEFT')
+		->join('tb_legal','ms_vendor_admistrasi.id_legal=tb_legal.id','LEFT')
+		->join('tb_kurs','ms_contract.contract_kurs=tb_kurs.id','LEFT')
+		->where('id_procurement',$id)
+		->get('ms_contract')->row_array();
    	}
 
    	//---------------------
 	//		  BARANG
 	//---------------------
-   	function get_procurement_barang($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+   	public function get_procurement_barang($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
 
-   		$result = $this->db->select('ms_procurement_barang.*, tb_kurs.name kurs')
+   		$this->db->select('ms_procurement_barang.*, tb_kurs.name kurs')
    		->join('tb_kurs','ms_procurement_barang.id_kurs=tb_kurs.id','left')
    		->where('ms_procurement_barang.del',0)
    		->where('ms_procurement_barang.id_procurement',$id);
@@ -414,63 +419,65 @@ class Auction_model extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
-   		$result = $this->db->get('ms_procurement_barang')->result_array();
 
-   		return $result;
+   		return $this->db->get('ms_procurement_barang')->result_array();
    	}
 
-   function get_barang_data($id){
-   		$barang			= $this->db->select('*, tb_kurs.name kurs_name')
+   public function get_barang_data($id){
+   		return $this->db->select('*, tb_kurs.name kurs_name')
 					   		->where('ms_procurement_barang.id',$id)
 					   		->join('tb_kurs', 'ms_procurement_barang.id_kurs=tb_kurs.id','LEFT')
 					   		->get('ms_procurement_barang')
 					   		->row_array();
-   		
-   		return $barang;
    	}
 
-   	function get_kurs_list($in=array()){
+   	public function get_kurs_list($in=array()){
 		$this->db->select('id,name');
 		if(!empty($in)){
 			$this->db->where_not_in('id',$in);
 		}
+  
 		$arr=$this->db->get('tb_kurs')->result_array();
 		$result = array();
-		foreach($arr as $key => $row){
+		foreach($arr as $row){
 			$result[$row['id']] = $row['name'];
 		}
+  
 		return $result;
 	}
 
-	function get_kurs_barang($in=array()){
+	public function get_kurs_barang($in=array()){
 		$this->db->select('id,name');
 
 		if(!empty($in)){
 			$this->db->where_in('id',$in);
 			$arr=$this->db->get('tb_kurs')->result_array();
 			$result = array();
-			foreach($arr as $key => $row){
+			foreach($arr as $row){
 				$result[$row['id']] = $row['name'];
 			}
+   
 			return $result;
-		}else{
-			return array();
 		}
+
+  return array();
 		
 	}
 
-	function get_kurs($id){
+	public function get_kurs($id){
 		
 	}
+ 
    	//---------------------
 	//		TATA CARA
 	//---------------------
-   	function get_procurement_tatacara($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
-   		$result = $this->db->select('*')
+   	public function get_procurement_tatacara($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+   		$this->db->select('*')
    		->where('ms_procurement_tatacara.id_procurement',$id)
    		->where('ms_procurement_tatacara.del',0)
    		->join('ms_procurement', 'ms_procurement_tatacara.id_procurement=ms_procurement.id');
@@ -478,29 +485,29 @@ class Auction_model extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
    		return $this->db->get('ms_procurement_tatacara')->row_array();
    	}
 
-   	function get_tatacara_peserta($id){
-   		$check			= $this->db->select('*')
+   	public function get_tatacara_peserta($id){
+   		return $this->db->select('*')
    		->where('id_procurement',$id)
    		->get('ms_procurement_tatacara')
    		->row_array();
-
-   		return $check;
    	}
 
-   	function get_tatacara_list($id){
+   	public function get_tatacara_list($id){
    		$tatacara			= $this->db->select('id_procurement')
    		->where('id',$id)
    		->get('ms_procurement_tatacara')
    		->result_array();
    		$id_procurement		 = array();
-   		foreach($tatacara as $key => $val){
+   		foreach($tatacara as $val){
    			$id_procurement[] = $val['id_procurement'];
    		}
 
@@ -511,14 +518,14 @@ class Auction_model extends CI_Model{
    		->get('ms_procurement_tatacara')->result_array();
    		
    		$res = array();
-   		foreach($id_vendor as $key => $row){
+   		foreach($id_vendor as $row){
    			$res[$row['id']] = $row['name'];
    		}
 
    		return $res;
    	}
 
-	function save_tatacara($data){
+	public function save_tatacara($data){
 		$_param = array();
 		$sql = "INSERT INTO ms_procurement_tatacara (
 							`id_procurement`,
@@ -532,23 +539,20 @@ class Auction_model extends CI_Model{
 		foreach($this->tatacara as $_param) $param[$_param] = $data[$_param];
 		
 		$this->db->query($sql, $param);
-		$id = $this->db->insert_id();
 		
-		return $id;	
+		return $this->db->insert_id();	
 	}
 	
-	function edit_tatacara($id, $data){
-		$param = array();
+	public function edit_tatacara($id, $data){
 		$this->db->where('id_procurement',$id);
-		$res = $this->db->update('ms_procurement_tatacara',$data);
-		return $res;
+		return $this->db->update('ms_procurement_tatacara',$data);
 	}
 
 
 
 
 
-	function save_barang($form){
+	public function save_barang($form){
 		
 		$_param = array();
 		$sql = "INSERT INTO ms_procurement_barang(
@@ -565,16 +569,13 @@ class Auction_model extends CI_Model{
 		
 		
 		foreach($this->barang as $_param) $param[$_param] = $form[$_param];
-		
-		$res = $this->db->query($sql, $param);
 
-
-  		$insert_id = $this->db->insert_id();
+  $this->db->query($sql, $param);
 		
-		return $insert_id;	
+		return $this->db->insert_id();	
 	}
 
-	function save_barang_catalogue($data){
+	public function save_barang_catalogue($data){
 		
 		$_param = array();
 		$sql = "INSERT INTO ms_material(
@@ -589,28 +590,23 @@ class Auction_model extends CI_Model{
 		foreach($this->barang_k as $_param) $param[$_param] = $data[$_param];
 		
 		$this->db->query($sql, $param);
-
-		$id = $this->db->insert_id();
 		
-		return $id;	
+		return $this->db->insert_id();	
 	}
 
-	function edit_barang($data,$id){
+	public function edit_barang($data,$id){
 
-		$param = array();
-		
 		$this->db->where('id',$id);
-		$res = $this->db->update('ms_procurement_barang',$data);
 		
-		return $res;
+		return $this->db->update('ms_procurement_barang',$data);
 	
 	}
 
 	//---------------------
 	//		PESERTA
 	//---------------------
-   	function get_procurement_peserta($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
-   		$result = $this->db->select('ms_procurement_peserta.*, ms_vendor.id id_vendor, ms_vendor.name name')
+   	public function get_procurement_peserta($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+   		$this->db->select('ms_procurement_peserta.*, ms_vendor.id id_vendor, ms_vendor.name name')
    		->join('ms_vendor', 'ms_procurement_peserta.id_vendor=ms_vendor.id')
    		->where('ms_procurement_peserta.id_proc',$id)
    		->where('ms_procurement_peserta.del',0);
@@ -618,24 +614,29 @@ class Auction_model extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
 		$res = $this->db->get('ms_procurement_peserta');
 
    		// echo $this->db->last_query();
    		return $res->result_array();
    	}
-   	function get_available_peserta($id, $search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
+    
+   	public function get_available_peserta($id, $search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
    		$id_peserta = array();
 
-   		foreach($this->get_procurement_peserta($id) as $key => $value) {
+   		foreach($this->get_procurement_peserta($id) as $value) {
    			$id_peserta[] = $value['id_vendor'];
    		}
-		if(count($id_peserta)>0){
+     
+		if($id_peserta !== []){
 	   		$peserta_id = "AND ms_vendor.id NOT IN ('".implode("','", $id_peserta)."')";
 	   	}
+  
 	   	$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 
 		$this->db->select('ms_vendor.id as id,is_vms,ms_vendor.id as id_vendor_list ,ms_vendor.name name, tb_blacklist_limit.value category_name,ms_vendor_admistrasi.npwp_code npwp_code,ms_vendor_admistrasi.nppkp_code nppkp_code')
@@ -650,6 +651,7 @@ class Auction_model extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$a->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$a->limit($per_page, $per_page*($cur_page - 1));
@@ -661,15 +663,15 @@ class Auction_model extends CI_Model{
 
    	}
 
-   	function get_peserta_list($id){
+   	public function get_peserta_list($id){
    		$peserta = $this->db->select('id_proc')
    		->where('id',$id)
    		->get('ms_procurement_peserta')
    		->result_array();
    		$id_proc 		= array();
 
-   		foreach($peserta as $key => $val){
-   			$id_proc[] 	= $val['id_proc'];
+   		foreach($peserta as $pesertum){
+   			$id_proc[] 	= $pesertum['id_proc'];
    		}
 
 
@@ -679,7 +681,7 @@ class Auction_model extends CI_Model{
    		->get('ms_procurement_peserta')->result_array();
    		
    		$res = array();
-   		foreach($id_vendor as $key => $row){
+   		foreach($id_vendor as $row){
    			$res[$row['id']] = $row['name'];
    		}
 
@@ -688,20 +690,20 @@ class Auction_model extends CI_Model{
 
 
 
-   	function get_vendor_list(){
+   	public function get_vendor_list(){
 		$arr = $this->db->select('id,name')
 				->where('ms_vendor.vendor_status',2)
 				->get('ms_vendor')->result_array();
 		$result = array();
-		foreach($arr as $key => $row){
+		foreach($arr as $row){
 			$result[$row['id']] = $row['name'];
 		}
+  
 		return $result;
 	}
 
-	function save_peserta($data){
+	public function save_peserta($data){
 		$this->db->where('id_proc',$data['id_proc'])->where('id_vendor',$data['id_vendor'])->delete('ms_procurement_peserta');
-		$_param = array();
 		$sql = "INSERT INTO ms_procurement_peserta(
 							`id_proc`,
 							`id_vendor`,
@@ -710,19 +712,17 @@ class Auction_model extends CI_Model{
 				VALUES (?,?,?) ";
 		
 		
-		foreach($this->peserta as $_param) $param[$_param] = $data[$_param];
+		foreach($this->peserta as $pesertum) $param[$pesertum] = $data[$pesertum];
 		
-		$res = $this->db->query($sql, $param);
-		
-		return $res;	
+		return $this->db->query($sql, $param);	
 	}
 
 
 	//---------------------
 	//		PESERTA
 	//---------------------
-   	function get_procurement_kurs($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
-   		$result = $this->db->select('*,ms_procurement_kurs.id id')
+   	public function get_procurement_kurs($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+   		$this->db->select('*,ms_procurement_kurs.id id')
    		->join('tb_kurs', 'ms_procurement_kurs.id_kurs=tb_kurs.id')
    		->where('ms_procurement_kurs.id_procurement',$id)
    		->where('ms_procurement_kurs.del',0);
@@ -730,18 +730,19 @@ class Auction_model extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
 		$res = $this->db->get('ms_procurement_kurs');
 
    		return $res->result_array();
    	}
 
 
-	function save_kurs($data){
-		$_param = array();
+	public function save_kurs($data){
 		$sql = "INSERT INTO ms_procurement_kurs(
 							`id_procurement`,
 							`id_kurs`,
@@ -751,59 +752,64 @@ class Auction_model extends CI_Model{
 				VALUES (?,?,?,?) ";
 		
 		
-		foreach($this->kurs as $_param) $param[$_param] = $data[$_param];
+		foreach($this->kurs as $kur) $param[$kur] = $data[$kur];
 		
-		$result = $this->db->query($sql, $param);
-		
-		return $result;	
+		return $this->db->query($sql, $param);	
 	}
 
 
 
 
 
-	function get_pejabat(){
+	public function get_pejabat(){
 		$arr = $this->db->select('id,name')->get('tb_pejabat_pengadaan')->result_array();
 		$result = array();
-		foreach($arr as $key => $row){
+		foreach($arr as $row){
 			$result[$row['id']] = $row['name'];
 		}
+  
 		return $result;
 	}
 
-	function get_tatacara($id){
+	public function get_tatacara($id){
 		$arr 	= $this->db->select('id,,id_procurement,metode_auction,metode_penawaran')
 					->where('ms_procurement_tatacara.id_procurement',$id)
 					->get('ms_procurement_tatacara')->result_array();
 		$result = array();
-		foreach($arr as $key => $row){
+		foreach($arr as $row){
 			$result[$row['id']] = $row['metode_auction'];
 		}
+  
 		return $result;
 	}
 	
-	function get_budget_holder(){
+	public function get_budget_holder(){
 		$arr = $this->db->select('id,name')->get('tb_budget_holder')->result_array();
 		$result = array();
-		foreach($arr as $key => $row){
+		foreach($arr as $row){
 			$result[$row['id']] = $row['name'];
 		}
+  
 		return $result;
 	}
-	function get_budget_spender(){
+ 
+	public function get_budget_spender(){
 		$arr = $this->db->select('id,name')->get('tb_budget_spender')->result_array();
 		$result = array();
-		foreach($arr as $key => $row){
+		foreach($arr as $row){
 			$result[$row['id']] = $row['name'];
 		}
+  
 		return $result;
 	}
-	function get_mekanisme(){
+ 
+	public function get_mekanisme(){
 		$arr = $this->db->select('id,name')->get('tb_mekanisme')->result_array();
 		$result = array();
-		foreach($arr as $key => $row){
+		foreach($arr as $row){
 			$result[$row['id']] = $row['name'];
 		}
+  
 		return $result;
 	}
 
@@ -811,18 +817,20 @@ class Auction_model extends CI_Model{
 	//-------------------
 	//		PERSYARATAN
 	//-------------------
-	function get_persyaratan($id){
+	public function get_persyaratan($id){
 		$arr 	= $this->db->select('*')
 					->where('ms_procurement_persyaratan.id_proc',$id)
 					->get('ms_procurement_persyaratan')->result_array();
 		$result = array();
-		foreach($arr as $key => $row){
+		foreach($arr as $row){
 			$result[$row['id']] = $row['description'];
 		}
+  
 		return $result;
 	}
-	function get_procurement_persyaratan($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
-   		$result = $this->db->select('ms_procurement_persyaratan.*, ms_procurement.id id_proc')
+ 
+	public function get_procurement_persyaratan($id,$search='', $sort='', $page='', $per_page='',$is_page=FALSE){
+   		$this->db->select('ms_procurement_persyaratan.*, ms_procurement.id id_proc')
    		->where('ms_procurement_persyaratan.id_proc',$id)
    		->where('ms_procurement_persyaratan.del',0)
    		->join('ms_procurement', 'ms_procurement_persyaratan.id_proc=ms_procurement.id');
@@ -830,14 +838,16 @@ class Auction_model extends CI_Model{
 		if($this->input->get('sort')&&$this->input->get('by')){
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort')); 
 		}
+  
 		if($is_page){
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page*($cur_page - 1));
 		}
+  
    		return $this->db->get('ms_procurement_persyaratan')->row_array();
    	}
 
-   	function save_persyaratan($data){
+   	public function save_persyaratan($data){
    		
    		$_param = array();
 		$sql = "INSERT INTO ms_procurement_persyaratan (
@@ -850,21 +860,17 @@ class Auction_model extends CI_Model{
 		foreach($this->persyaratan as $_param) $param[$_param] = $data[$_param];
 
 		$this->db->query($sql, $param);
-		$id = $this->db->insert_id();
 		
-		return $id;
+		return $this->db->insert_id();
    	}
 
-   function edit_persyaratan($id, $data){
-		$param = array();
+   public function edit_persyaratan($id, $data){
 		$this->db->where('id_proc',$id);
-		$res = $this->db->update('ms_procurement_persyaratan',$data);
 		// echo print_r($data);
-		return $res;
+		return $this->db->update('ms_procurement_persyaratan',$data);
 	}
 	
-	function save_remark($id){
-   		$res = $this->db->where('id',$id)->update('ms_procurement',array('remark'=>$this->input->post('remark')));
-   		return $res;
+	public function save_remark($id){
+   		return $this->db->where('id',$id)->update('ms_procurement',array('remark'=>$this->input->post('remark')));
    	}
 }

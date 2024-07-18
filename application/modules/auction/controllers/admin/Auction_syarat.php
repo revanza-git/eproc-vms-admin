@@ -1,19 +1,26 @@
 <?php
 class Auction_syarat extends CI_Controller{
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 		$this->load->model('auction_package/syarat_model');
 	}
 	
-	function index($id_lelang = ''){
+	public function index($id_lelang = ''){
 		$master = $this->syarat_model->get_auction($id_lelang);
 		$fill = $this->syarat_model->select_data($id_lelang);
 		$master = $this->syarat_model->get_master($id_lelang);
 				
-		if($master['type_lelang'] == "reverse"){ $limit = "minimum"; $indicator = "rendah"; $reverse = "tinggi"; }
-		else if($master['type_lelang'] == "forward"){ $limit = "maximum"; $indicator = "tinggi"; $reverse = "rendah"; }
+		if ($master['type_lelang'] == "reverse") {
+      $limit = "minimum";
+      $indicator = "rendah";
+      $reverse = "tinggi";
+  } elseif ($master['type_lelang'] == "forward") {
+      $limit = "maximum";
+      $indicator = "tinggi";
+      $reverse = "rendah";
+  }
 		
 		$data['action'] = "edit"; 
 		$value = $fill['content'];
@@ -24,7 +31,7 @@ class Auction_syarat extends CI_Controller{
 		$this->load->view('content/auction_package/auction_syarat', $data);
 	}
 	
-	function save(){
+	public function save(){
 		$param = array(
 			$_POST['content'],
 			$_POST['id_lelang'],
@@ -40,7 +47,7 @@ class Auction_syarat extends CI_Controller{
 		die(json_encode($json));
 	}
 	
-	function edit(){
+	public function edit(){
 		$param = array(
 			$_POST['content'],
 			date("Y-m-d H:i:s"),

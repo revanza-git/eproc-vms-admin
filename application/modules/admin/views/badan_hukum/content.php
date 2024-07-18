@@ -25,8 +25,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($hukum)){
-			foreach($hukum as $row => $value){
+		if(count($hukum) > 0){
+			foreach($hukum as $value){
 			?>
 				<tr>
 					<td><?php echo $value['name'];?></td>

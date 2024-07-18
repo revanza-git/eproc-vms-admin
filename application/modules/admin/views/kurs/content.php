@@ -24,15 +24,15 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($kurs)){
-			foreach($kurs as $row => $value){
+		if(count($kurs) > 0){
+			foreach($kurs as $kur){
 			?>
 				<tr>
-					<td><?php echo $value['name'];?></td>
-					<td><?php echo $value['symbol'];?></td>
+					<td><?php echo $kur['name'];?></td>
+					<td><?php echo $kur['symbol'];?></td>
 					<td class="actionBlock">
-						<a href="<?php echo site_url('admin/admin_kurs/edit_kurs/'.$value['id'])?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
-						<a style="top: -4px" href="<?php echo site_url('admin/admin_kurs/hapus_kurs/'.$value['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
+						<a href="<?php echo site_url('admin/admin_kurs/edit_kurs/'.$kur['id'])?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
+						<a style="top: -4px" href="<?php echo site_url('admin/admin_kurs/hapus_kurs/'.$kur['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
 					</td>
 				</tr>
 			<?php 

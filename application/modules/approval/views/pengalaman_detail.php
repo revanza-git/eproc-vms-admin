@@ -77,7 +77,8 @@
 				<a href="<?php echo BASE_LINK_EXTERNAL.('lampiran/contract_file/');?><?php echo "/".$contract_file;?>">Lampiran</a>
 				<?php }else{ ?>
 				-
-				<?php } ?>
+				<?php }
+ ?>
 			</td>
 		</tr>
 		<!--<tr class="input-form">

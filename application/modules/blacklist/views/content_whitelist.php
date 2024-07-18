@@ -69,9 +69,9 @@
 
 		// echo print_r($whitelist);
 
-		if(count($whitelist)){
+		if(count($whitelist) > 0){
 
-			foreach($whitelist as $row => $value){
+			foreach($whitelist as $value){
 
 				$yellow = "";
 
@@ -137,7 +137,7 @@
 
 				</tr>
 
-			<?php 
+<?php 
 
 			}
 

@@ -72,10 +72,10 @@
 				<td><label>Status</label></td>
 				<td>
 					<label class="lbform">
-						<?php echo form_radio(array('name'=>'vendor_office_status'),'pusat',(set_radio('vendor_office_status','pusat')||($this->form->get_temp_data('vendor_office_status')=='pusat'))?TRUE:FALSE)?>Pusat
+						<?php echo form_radio(array('name'=>'vendor_office_status'),'pusat',set_radio('vendor_office_status','pusat')||($this->form->get_temp_data('vendor_office_status')=='pusat'))?>Pusat
 					</label>
 					<label class="lbform">
-						<?php echo form_radio(array('name'=>'vendor_office_status'),'cabang',(set_radio('vendor_office_status','cabang')||($this->form->get_temp_data('vendor_office_status')=='cabang'))?TRUE:FALSE)?>Cabang
+						<?php echo form_radio(array('name'=>'vendor_office_status'),'cabang',set_radio('vendor_office_status','cabang')||($this->form->get_temp_data('vendor_office_status')=='cabang'))?>Cabang
 					</label>
 					<?php echo form_error('vendor_office_status'); ?>
 				</td>

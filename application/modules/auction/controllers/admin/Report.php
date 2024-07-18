@@ -1,34 +1,38 @@
 <?php
 class Report extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 
 		require_once(BASEPATH."plugins/dompdf/dompdf_config.inc.php");  
 		$this->load->model('auction_progress/auction_report_model');
 	}
 	
-	function index($id_lelang =  '', $id_vendor = ''){
+	public function index($id_lelang =  '', $id_vendor = ''){
 		$fill = $this->auction_report_model->get_header($id_lelang);
 		
 		$barang = $this->auction_report_model->get_barang($id_lelang);
 		foreach($barang->result() as $data)
-			$_barang .= '<li>'.$data->name.'</li>'; 
+			$_barang .= '<li>'.$data->name.'</li>';
+   
 		$barang = $_barang;
 		
 		$peserta = $this->auction_report_model->get_peserta($id_lelang);
 		foreach($peserta->result() as $data)
-			$_peserta .= '<li>'.$data->nama.'</li>'; 
+			$_peserta .= '<li>'.$data->nama.'</li>';
+   
 		$peserta = $_peserta;
 		
 		$pengguna = $this->auction_report_model->get_pengguna($id_lelang);
 		foreach($pengguna->result() as $data)
-			$_pengguna .= '<li>'.$data->name.'</li>'; 
+			$_pengguna .= '<li>'.$data->name.'</li>';
+   
 		$pengguna = $_pengguna;
 		
 		$kurs = $this->auction_report_model->get_kurs($id_lelang);
 		foreach($kurs->result() as $data)
-			$_kurs .= '<li>'.$data->name.'</li>'; 
+			$_kurs .= '<li>'.$data->name.'</li>';
+   
 		$kurs = $_kurs;
 		
 		if(!$id_vendor){
@@ -54,19 +58,23 @@ class Report extends CI_Controller{
 				$index = 1;
 				foreach($_peserta->result() as $_data){
 					$penawaran = $this->auction_report_model->get_penawaran($_data->id_penawaran);
-					$nilai = $in_rate = " - ";
+     $nilai = " - ";
+     $in_rate = " - ";
 					
 					if($penawaran['nilai'] > 0){
-						if($penawaran['id_kurs'] == 1)
-							$in_rate = number_format($penawaran['in_rate']);	
-						else{
+						if ($penawaran['id_kurs'] == 1) {
+          $in_rate = number_format($penawaran['in_rate']);
+      } else{
 							$nilai = $penawaran['symbol']." ".number_format($penawaran['nilai']);
 							$in_rate = number_format($penawaran['in_rate']);
 						}
 					}
 					
 					$return .= '<tr>';
-						if($is_first) $return .= '<td width="40%" rowspan="'.$_peserta->num_rows().'">'.$data->name.'</td>';
+     if ($is_first) {
+         $return .= '<td width="40%" rowspan="'.$_peserta->num_rows().'">'.$data->name.'</td>';
+     }
+     
 						$return .= '<td width="5%" align="center">'.$index.'</td>';
 						$return .= '<td>'.$_data->nama_vendor.'</td>';
 						$return .= '<td>'.$nilai.'</td>';
@@ -80,6 +88,7 @@ class Report extends CI_Controller{
 			$return .= '</table>';
 			$hasil = $return;
 		}
+  
 		/* history */
 		
 		$history = $this->auction_report_model->get_history($id_lelang, $id_vendor);
@@ -104,13 +113,16 @@ class Report extends CI_Controller{
 		$index = array();
 		
 			foreach($history->result() as $data){
-				if(!$index[$data->id_vendor][$data->id_barang]) $index[$data->id_vendor][$data->id_barang] = 1;
-				$nilai = $in_rate = " - ";
-				
-				if($data->nilai > 0){
-					if($data->id_kurs == 1)
-						$in_rate = number_format($data->in_rate);	
-					else{
+				if ($index[$data->id_vendor][$data->id_barang] === 0) {
+        $index[$data->id_vendor][$data->id_barang] = 1;
+    }
+
+    $nilai = " - ";
+    $in_rate = " - ";
+    if($data->nilai > 0){
+					if ($data->id_kurs == 1) {
+         $in_rate = number_format($data->in_rate);
+     } else{
 						$nilai = $data->symbol." ".number_format($data->nilai);
 						$in_rate = number_format($data->in_rate);
 					}
@@ -127,11 +139,11 @@ class Report extends CI_Controller{
 				
 				$index[$data->id_vendor][$data->id_barang]++;
 			}
+   
 		$return .= '</table>';
 		$history = $return;
 		
-		if($fill['metode_penawaran'] == 'harga_satuan') $metode_penawaran = 'Harga Satuan';
-		else $metode_penawaran = 'Lump Sum';
+		$metode_penawaran = $fill['metode_penawaran'] == 'harga_satuan' ? 'Harga Satuan' : 'Lump Sum';
 			
 		$return = '
 			<html>
@@ -184,9 +196,9 @@ class Report extends CI_Controller{
 										<td valign="top">'.$fill['anggaran'].'</td>
 									</tr>';
 									
-									if(!$id_vendor)
-										$return .= 
-										'<tr>
+									if (!$id_vendor) {
+             $return .= 
+   										'<tr>
 											<td valign="top">Pengguna Barang/Jasa</td>
 											<td valign="top">
 												<ol>
@@ -194,6 +206,7 @@ class Report extends CI_Controller{
 												</ol>
 											</td>
 										</tr>';
+         }
 									
 									$return .= '<tr>
 										<td valign="top">Pejabat Pengadaan</td>

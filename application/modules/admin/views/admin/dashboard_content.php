@@ -160,64 +160,69 @@
 <?php //print_r($admin); ?>
 
 <?php 
-	if($admin['id_role']!=9 && $admin['id_role']==2){
-	if(count($chart['daftar_tunggu_chart']->result_array())){ ?>
+	if ($admin['id_role']!=9 && $admin['id_role']==2 && count($chart['daftar_tunggu_chart']->result_array()) > 0) {
+     ?>
 
-	<?php if($admin['id_role'] != 3){?>
-		<div class="dataWrapper col-24" style="height: 648px">
-			
-			<div class="block">
-			    <h4>Daftar Tunggu Penyedia Jasa</h4>
-			   	<div class="tableWrapper">
-					<table class="tableData">
-						<thead>
-							<tr>
-								<td>Nama Penyedia Barang & Jasa</td>
-								<td class="actionPanel">Action</td>
-							</tr>
-						</thead>
-						<tbody>
-						<?php 
-						if(count($chart['daftar_tunggu_chart']->result_array())){
-							foreach($chart['daftar_tunggu_chart']->result_array() as $row => $value){
-							?>
-								<form method="POST" action="<?php echo site_url('admin/admin_vendor/waiting_list/1')?>">
-									<tr>
-										<td><?php echo $value['name'];?></td>
-										<td class="actionBlock">
-											<?php if($admin['id_role']!=8&&$admin['id_role']!=3){ ?>
-									<a href="<?php echo site_url('approval/administrasi/'.$value['id'])?>" class="editBtn"><i class="fa fa-pencil-square-o"></i>Cek Data</a>
-									<?php } ?>
-									<?php if($admin['id_role']==8){ ?>
-									<button type="submit" name="submit" class="editBtn"><i class="fa fa-check-square-o"></i>Angkat Menjadi DPT</button>
-									</form><?php } ?>
-										</td>
-									</tr>
-								</form>
-							<?php
-								if($row==4) break;
-							}
-						}else{?>
-							<tr>
-								<td colspan="11" class="noData">Data tidak ada</td>
-							</tr>
-						<?php }
-						?>
-						
-						</tbody>
-					</table>
-					<div class="buttonRegBox clearfix">
-						<a href="<?php echo site_url('admin/admin_vendor/waiting_list/1');?>" class="editBtn lihatData">Lihat Daftar Tunggu</a>
-					</div>
-				</div>
-			</div>
-			
-		</div>
-	<?php } 
-	}?>
-	<?php } ?>
+	<?php 
+     if($admin['id_role'] != 3){?>
+    		<div class="dataWrapper col-24" style="height: 648px">
+    			
+    			<div class="block">
+    			    <h4>Daftar Tunggu Penyedia Jasa</h4>
+    			   	<div class="tableWrapper">
+    					<table class="tableData">
+    						<thead>
+    							<tr>
+    								<td>Nama Penyedia Barang & Jasa</td>
+    								<td class="actionPanel">Action</td>
+    							</tr>
+    						</thead>
+    						<tbody>
+    						<?php 
+    						if(count($chart['daftar_tunggu_chart']->result_array()) > 0){
+    							foreach($chart['daftar_tunggu_chart']->result_array() as $row => $value){
+    							?>
+    								<form method="POST" action="<?php echo site_url('admin/admin_vendor/waiting_list/1')?>">
+    									<tr>
+    										<td><?php echo $value['name'];?></td>
+    										<td class="actionBlock">
+    											<?php if($admin['id_role']!=8&&$admin['id_role']!=3){ ?>
+    									<a href="<?php echo site_url('approval/administrasi/'.$value['id'])?>" class="editBtn"><i class="fa fa-pencil-square-o"></i>Cek Data</a>
+    									<?php }
+            ?>
+    									<?php if($admin['id_role']==8){ ?>
+    									<button type="submit" name="submit" class="editBtn"><i class="fa fa-check-square-o"></i>Angkat Menjadi DPT</button>
+    									</form><?php }
+            ?>
+    										</td>
+    									</tr>
+    								</form>
+    							<?php
+    								if ($row==4) {
+               break;
+           }
+    							}
+    						}else{?>
+    							<tr>
+    								<td colspan="11" class="noData">Data tidak ada</td>
+    							</tr>
+    						<?php }
+    						?>
+    						
+    						</tbody>
+    					</table>
+    					<div class="buttonRegBox clearfix">
+    						<a href="<?php echo site_url('admin/admin_vendor/waiting_list/1');?>" class="editBtn lihatData">Lihat Daftar Tunggu</a>
+    					</div>
+    				</div>
+    			</div>
+    			
+    		</div>
+    	<?php }
+ }
+  ?>
 
-<?php if(count($chart['dpt_chart']->result_array())){ ?>
+<?php if(count($chart['dpt_chart']->result_array()) > 0){ ?>
 <div class="dataWrapper col-24" style="margin-top: 25px">
 	
 	<div class="block">
@@ -232,18 +237,21 @@
 				</thead>
 				<tbody>
 				<?php 
-				if(count($chart['dpt_chart']->result_array())){
+				if(count($chart['dpt_chart']->result_array()) > 0){
 					foreach($chart['dpt_chart']->result_array() as $row => $value){
 					?>
 						<tr><?php //print_r($value);?>
 							<td><?php echo $value['name'];?></td>
 							<td class="actionBlock"><?php if($admin['id_role']!= 2){	?>
 								<a href="<?php echo site_url('vendor/dpt_print/'.$value['id_vendor'])?>" class="editBtn"><i class="fa fa-search"></i>&nbsp;Lihat Data</a>
-								<?php } ?>
+								<?php }
+      ?>
 							</td>
 						</tr>
 					<?php 
-						if($row==4) break;
+						if ($row==4) {
+          break;
+      }
 					}
 				}else{?>
 					<tr>
@@ -263,7 +271,8 @@
 	</div>
 	
 </div>
-<?php } ?>
+<?php }
+  ?>
 <?php if ($admin['id_role'] == 1 || $admin['id_role'] == 8) { ?>
 	<div class="dataWrapper col-24" style="height: 648px">
 			
@@ -279,7 +288,7 @@
 				</thead>
 				<tbody>
 				<?php 
-				if(count($chart['daftar_tunggu_chart']->result_array())){
+				if(count($chart['daftar_tunggu_chart']->result_array()) > 0){
 					foreach($chart['daftar_tunggu_chart']->result_array() as $row => $value){
 					?>
 						<form method="POST" action="<?php echo site_url('admin/admin_vendor/waiting_list/1')?>">
@@ -288,15 +297,19 @@
 								<td class="actionBlock">
 									<?php if($admin['id_role']!=8&&$admin['id_role']!=3){ ?>
 							<a href="<?php echo site_url('approval/administrasi/'.$value['id'])?>" class="editBtn"><i class="fa fa-pencil-square-o"></i>Cek Data</a>
-							<?php } ?>
+							<?php }
+      ?>
 							<?php if($admin['id_role']==8){ ?>
 							<button type="submit" name="submit" class="editBtn"><i class="fa fa-check-square-o"></i>Angkat Menjadi DPT</button>
-							</form><?php } ?>
+							</form><?php }
+      ?>
 								</td>
 							</tr>
 						</form>
 					<?php
-						if($row==4) break;
+						if ($row==4) {
+         break;
+     }
 					}
 				}else{?>
 					<tr>

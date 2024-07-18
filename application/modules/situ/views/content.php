@@ -71,9 +71,9 @@
 
 		<?php 
 		
-		if(count($situ_list)){
+		if(count($situ_list) > 0){
 			// print_r($situ_list);
-			foreach($situ_list as $row => $value){
+			foreach($situ_list as $value){
 
 			?>
 

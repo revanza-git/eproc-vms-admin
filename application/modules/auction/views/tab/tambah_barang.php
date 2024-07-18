@@ -25,6 +25,7 @@
 						}else{
 							echo '-- Mata uang belum dipilih --';
 						}
+      
 						?>				
 					</div>
 					<?php echo form_error('id_kurs'); ?>

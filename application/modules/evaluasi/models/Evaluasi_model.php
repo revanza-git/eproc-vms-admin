@@ -1,12 +1,12 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Evaluasi_model extends CI_Model
 {
 
-	function get_pengadaan_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
+	public function get_pengadaan_list($search = '', $sort = '', $page = '', $per_page = '', $is_page = FALSE, $filter = array())
 	{
 		$user = $this->session->userdata('user');
-		$admin = $this->session->userdata('admin');
+		$this->session->userdata('admin');
 
 		$this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
 
@@ -27,6 +27,7 @@ class Evaluasi_model extends CI_Model
 		if ($this->input->get('sort') && $this->input->get('by')) {
 			$this->db->order_by($this->input->get('by'), $this->input->get('sort'));
 		}
+  
 		if ($is_page) {
 			$cur_page = ($this->input->get('per_page')) ? $this->input->get('per_page') : 1;
 			$this->db->limit($per_page, $per_page * ($cur_page - 1));
@@ -41,8 +42,7 @@ class Evaluasi_model extends CI_Model
 
 	public function save_feedback($save)
 	{
-		$a = $this->db->insert('tr_feedback', $save);
-		return $a;
+		return $this->db->insert('tr_feedback', $save);
 	}
 
 	public function get_division($id_division)

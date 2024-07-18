@@ -9,7 +9,8 @@
 	<div class="filterBtnWp" >
 		<?php if($this->uri->segment(2)!='selesai'&&$this->uri->segment(2)!='langsung'){ ?>
 			<a href="<?php echo site_url('auction/tambah');?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
-		<?php } ?>
+		<?php }
+ ?>
 		<button class="editBtn lihatData filterBtn">Filter</button>
 	</div>
 	<div class="tableHeader">		
@@ -33,8 +34,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($auction_list)){
-			foreach($auction_list as $row => $value){
+		if(count($auction_list) > 0){
+			foreach($auction_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['name'];?></td>
@@ -51,13 +52,14 @@
 						<a href="<?php echo site_url('auction/report/index/eksternal/'.$value['id'])?>" class="editBtn lihatData">
 							<i class="fa fa-file-text-o"></i>&nbsp;Laporan Eksternal
 						</a>
-						<?php }?>
+						<?php }
+   ?>
 						
 						<a href="<?php echo site_url('auction/admin/auction_progress/index/'.$value['id'])?>" class="editBtn lihatData"><i class="fa fa-search"></i>&nbsp;Lihat Pengadaan</a>
 						<a href="<?php echo site_url('auction/hapus/'.$value['id'])?>" class="delBtn" style="top: -4px"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
 					</td>
 				</tr>
-			<?php 
+<?php 
 			}
 		}else{?>
 			<tr>

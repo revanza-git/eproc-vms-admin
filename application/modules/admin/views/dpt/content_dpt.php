@@ -34,9 +34,9 @@
 		</thead>
 		<tbody>
 			<?php
-			if (count($vendor_list)) {
+			if (count($vendor_list) > 0) {
 				// print_r($vendor_list);die;
-				foreach ($vendor_list as $row => $value) {
+				foreach ($vendor_list as $value) {
 			?>
 					<tr>
 						<td style="text-transform: uppercase;">
@@ -46,15 +46,16 @@
 								<a href="<?php echo site_url('/approval/administrasi/' . $value['id']) ?>" class="editBtn link">
 									<?php echo $value['legal'] . ". " . $value['name']; ?>
 								</a>
-							<?php } ?>
+							<?php }
+    ?>
 						</td>
 						<td>
 							<?php
-							foreach ($csms_limit as $key_ => $value_) {
+							foreach ($csms_limit as $csm_limit) {
 								# code...
-								if ($value['score'] > $value_['end_score'] && $value['score'] < $value_['start_score']) {
+								if ($value['score'] > $csm_limit['end_score'] && $value['score'] < $csm_limit['start_score']) {
 									# code...
-									echo $value_['value'];
+									echo $csm_limit['value'];
 								}
 							}
 							?>
@@ -75,23 +76,26 @@
 
 									<a href="#" no="<?php echo $value['certificate_no']; ?>" id_vendor="<?php echo $value['id']; ?>" class="editBtn certificateBtn"><i class="fa fa-cog"></i>Edit Nomor Sertifikat</button>
 
-									<?php } ?>
+									<?php }
+        ?>
 									<?php if ($this->session->userdata('admin')['id_role'] == 1 || $this->session->userdata('admin')['id_role'] == 8) { ?>
 
 										<a data-id="<?php echo $value['id']; ?>" href="<?php echo site_url('admin/certificate/dpt/' . $value['id'] . '/') ?>" class="editBtn printSerti">
 											<i class="fa fa-print"></i>Print Sertifikat
 										</a>
-									<?php } ?>
+									<?php }
+        ?>
 
 									<!--  |  
 						<a data-id="<?php echo $value['id']; ?>" class="showCSMS" href="#" class="editBtn">
 							<i class="fa fa-print"></i>&nbsp;Print CSMS
 						</a>-->
-								<?php } ?>
+<?php }
+        ?>
 						</td>
 					</tr>
 
-				<?php
+<?php
 				}
 			} else { ?>
 				<tr>

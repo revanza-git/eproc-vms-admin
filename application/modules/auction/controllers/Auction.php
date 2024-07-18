@@ -1,8 +1,9 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Auction extends CI_Controller {
 
 	public $id_auction;
+ 
 	public $tabNav;
 
 	public function __construct(){
@@ -13,15 +14,8 @@ class Auction extends CI_Controller {
 		}
 
 		$this->load->model('auction_model','am');
-		
-		if ($this->uri->segment(3) === FALSE)
-		{
-		    $this->id_auction = 0;
-		}
-		else
-		{
-		   	$this->id_auction = $this->uri->segment(3);
-		}
+  $this->id_auction = $this->uri->segment(3) === FALSE ? 0 : $this->uri->segment(3);
+  
 		$this->tabNav = array(
 								'tatacara'		=> array(
 										'url' 	=> site_url('auction/ubah/'.$this->id_auction.'/tatacara#tabNav/'),
@@ -65,6 +59,7 @@ class Auction extends CI_Controller {
 			
 		);
 	}
+ 
 	public function index()
 	{	
 		$this->load->library('form');
@@ -72,9 +67,10 @@ class Auction extends CI_Controller {
 
 
 		$this->load->library('form');
+  
 		$search = $this->input->get('q');
 		$page 	= '';
-		$post 	= $this->input->post();
+		$this->input->post();
 
 		$per_page	= 10;
 		$sort 		= $this->utility->generateSort(array('ms_procurement.name', 'auction_date', 'work_area'));
@@ -92,6 +88,7 @@ class Auction extends CI_Controller {
 		$item['content'] 		= $this->load->view('dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function langsung()
 	{	
 		$this->load->library('form');
@@ -99,9 +96,10 @@ class Auction extends CI_Controller {
 
 
 		$this->load->library('form');
+  
 		$search = $this->input->get('q');
 		$page 	= '';
-		$post 	= $this->input->post();
+		$this->input->post();
 
 		$per_page	= 10;
 		$sort 		= $this->utility->generateSort(array('name', 'auction_date', 'work_area'));
@@ -119,6 +117,7 @@ class Auction extends CI_Controller {
 		$item['content'] 		= $this->load->view('dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function selesai()
 	{	
 		$this->load->library('form');
@@ -126,9 +125,10 @@ class Auction extends CI_Controller {
 
 
 		$this->load->library('form');
+  
 		$search = $this->input->get('q');
 		$page 	= '';
-		$post 	= $this->input->post();
+		$this->input->post();
 
 		$per_page	= 10;
 		$sort 		= $this->utility->generateSort(array('name', 'auction_date', 'work_area'));
@@ -151,7 +151,7 @@ class Auction extends CI_Controller {
 
 	public function duplikat($id){
 		$_POST 	= $this->securities->clean_input($_POST,'save');
-		$admin 	= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		if($this->input->post('simpan')){
 			$res = $this->am->duplicate_data($this->input->post('total'),$id);
 			
@@ -170,7 +170,7 @@ class Auction extends CI_Controller {
 
 	public function tambah(){
 		$_POST 	= $this->securities->clean_input($_POST,'save');
-		$admin 	= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$vld 	= array(
 			array(
 				'field'=>'name',
@@ -272,7 +272,7 @@ class Auction extends CI_Controller {
 
 	public function edit($id){
 		$_POST = $this->securities->clean_input($_POST,'save');
-		$admin = $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$vld   = array(
 			array(
 				'field'=>'name',
@@ -359,6 +359,7 @@ class Auction extends CI_Controller {
 				redirect(site_url('auction/ubah/'.$id.'/'));
 			}
 		}
+  
 		$data = $this->am->get_auction($id);
 		
 		$data['pejabat_pengadaan'] 		= $this->am->get_pejabat();
@@ -373,6 +374,7 @@ class Auction extends CI_Controller {
 		$item['content'] 	= $this->load->view('dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function hapus($id){
 		if($this->am->hapus($id,'ms_procurement')){
 			
@@ -383,6 +385,7 @@ class Auction extends CI_Controller {
 			redirect(site_url('auction'));
 		}
 	}
+ 
 	public function ubah($id, $page='tatacara'){
 		$data 			= $this->am->get_auction($id);
 		$data['id'] 	= $id;
@@ -415,6 +418,7 @@ class Auction extends CI_Controller {
 				redirect(site_url('auction/ubah/'.$id.'/remark#contentWrap'));
 			}
 		}
+  
 		$data['sort'] 	= $this->utility->generateSort(array('step_name','supposed','realization'));
 		return $this->load->view('tab/remark',$data,TRUE);
 	}
@@ -442,17 +446,17 @@ class Auction extends CI_Controller {
 			}
 			
 			return $this->load->view('tab/tatacara',$data,TRUE);
-		}else{
-			$this->session->keep_flashdata('msgSuccess');
-			 redirect(site_url('auction/ubah/'.$id.'/tambah_tatacara'));
 		}
+
+  $this->session->keep_flashdata('msgSuccess');
+  redirect(site_url('auction/ubah/'.$id.'/tambah_tatacara'));
+  return null;
 	}
 
 	public function tambah_tatacara($id,$page){
 		$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		$fill 	= $this->securities->clean_input($_POST,'save');
-		$item 	= $vld = $save_data = array();
-		$admin 	= $this->session->userdata('admin');
+  $this->securities->clean_input($_POST,'save');
+  $this->session->userdata('admin');
 		$vld 	= 	array(
 					array(
 						'field'=>'metode_auction',
@@ -467,26 +471,25 @@ class Auction extends CI_Controller {
 				);
 		$this->form_validation->set_rules($vld);
 
-		if($this->input->post('simpan')){
-			if($this->form_validation->run()==TRUE){
-				// print_r($this->input->post('simpan'));
-				$form['id_procurement'] 	= $id;
-				$form['metode_auction'] 	= $this->input->post('metode_auction');
-				$form['metode_penawaran'] 	= $this->input->post('metode_penawaran');
-				$form['entry_stamp'] 		= date('Y-m-d H:i:s');
-				if($form['metode_penawaran'] =='lump_sum') $this->set_barang($id,true);
-				
-				// $this->session->set_userdata('form',array_merge($form,$this->input->post()));
-				
-				$result = $this->am->save_tatacara($form);
-				if($result){
-					$this->set_syarat($id);
-					$this->session->unset_userdata('form');
-					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah Tata Cara </p>');
-					redirect(site_url('auction/ubah/'.$id.'#contentWrap'));
-				}
-			}
-		}
+		if ($this->input->post('simpan') && $this->form_validation->run()==TRUE) {
+      // print_r($this->input->post('simpan'));
+      $form['id_procurement'] 	= $id;
+      $form['metode_auction'] 	= $this->input->post('metode_auction');
+      $form['metode_penawaran'] 	= $this->input->post('metode_penawaran');
+      $form['entry_stamp'] 		= date('Y-m-d H:i:s');
+      if ($form['metode_penawaran'] =='lump_sum') {
+          $this->set_barang($id,true);
+      }
+
+      // $this->session->set_userdata('form',array_merge($form,$this->input->post()));
+      $result = $this->am->save_tatacara($form);
+      if($result){
+  					$this->set_syarat($id);
+  					$this->session->unset_userdata('form');
+  					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah Tata Cara </p>');
+  					redirect(site_url('auction/ubah/'.$id.'#contentWrap'));
+  				}
+  }
 
 		$data['sort'] 		= $this->utility->generateSort(array('metode_auction', 'metode_penawaran'));
 		$data['tabNav'] 	= $this->tabNav;
@@ -501,9 +504,8 @@ class Auction extends CI_Controller {
 
 	public function edit_tatacara($id,$page){
 		$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		$fill 	= $this->securities->clean_input($_POST,'save');
-		$item 	= $vld = $save_data = array();
-		$admin 	= $this->session->userdata('admin');
+  $this->securities->clean_input($_POST,'save');
+  $this->session->userdata('admin');
 		$vld 	= 	array(
 						array(
 							'field'=>'metode_auction',
@@ -518,25 +520,21 @@ class Auction extends CI_Controller {
 					);
 		$this->form_validation->set_rules($vld);
 
-		if($this->input->post('update')){
-			if($this->form_validation->run()==TRUE){
-				unset($_POST['update']);
-				unset($form['update']);
-				$form['id_procurement'] 	= $id;
-				$form['metode_auction'] 	= $this->input->post('metode_auction');
-				$form['metode_penawaran'] 	= $this->input->post('metode_penawaran');
-				$form['edit_stamp'] 		= date('Y-m-d H:i:s');
-
-				
-				
-				$result = $this->am->edit_tatacara($id, $form);
-				if($result){
-					$this->session->unset_userdata('form');
-					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses Mengubah Tata Cara </p>');
-					redirect(site_url('auction/ubah/'.$id.'/#contentWrap'));
-				}
-			}
-		}
+		if ($this->input->post('update') && $this->form_validation->run()==TRUE) {
+      unset($_POST['update']);
+      unset($form['update']);
+      $form['id_procurement'] 	= $id;
+      $form['metode_auction'] 	= $this->input->post('metode_auction');
+      $form['metode_penawaran'] 	= $this->input->post('metode_penawaran');
+      $form['edit_stamp'] 		= date('Y-m-d H:i:s');
+      $result = $this->am->edit_tatacara($id, $form);
+      if($result){
+  					$this->session->unset_userdata('form');
+  					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses Mengubah Tata Cara </p>');
+  					redirect(site_url('auction/ubah/'.$id.'/#contentWrap'));
+  				}
+  }
+  
 		$data 				= $this->am->get_tatacara_peserta($id);
 
 		$data['sort'] 		= $this->utility->generateSort(array('metode_auction', 'metode_penawaran'));
@@ -545,7 +543,7 @@ class Auction extends CI_Controller {
 		return $this->load->view('tab/edit_tatacara',$data,TRUE);
 	}
 
-	function set_barang($id_lelang = '',$is_lump = FALSE){
+	public function set_barang($id_lelang = '',$is_lump = FALSE){
 		$master = $this->am->get_auction($id_lelang);
 		
 		$param = array(
@@ -560,6 +558,7 @@ class Auction extends CI_Controller {
 		if($is_lump){
 			$param['volume'] = TRUE;
 		}
+  
 		$this->am->save_barang($param);	
 	}
 
@@ -574,7 +573,6 @@ class Auction extends CI_Controller {
 
 		$data['tabNav'] 	= $this->tabNav;
 		$data['id'] 		= $id;
-		$per_page			= 10;
 		$data['list'] = $this->am->get_procurement_barang($id,'', $data['sort'], '','',FALSE);
 		// $data['pagination'] = $this->utility->generate_page('auction/ubah/'.$id.'/'.$page,$data['sort'], $per_page,  $this->am->get_procurement_barang($id,'', $data['sort'], '','',FALSE));
 		
@@ -583,8 +581,9 @@ class Auction extends CI_Controller {
 
 	public function tambah_barang($id){
 		$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		$fill 	= $this->securities->clean_input($_POST,'save');
-		$item 	= $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$admin 	= $this->session->userdata('admin');
 		
 		$vld 	= 	array(
@@ -618,48 +617,41 @@ class Auction extends CI_Controller {
 					);
 		$this->form_validation->set_rules($vld);
 
-		if($this->input->post('simpan')){
+		if ($this->input->post('simpan') && $this->form_validation->run()==TRUE) {
+      if ($this->input->post('is_catalogue')){
+  
+  					$katalog['nama']		= $this->input->post('nama_barang');
+  					$katalog['entry_stamp'] = date('Y-m-d H:i:s');
+  					$katalog['category'] 	= $this->input->post('category');
+  					$katalog['id_kurs'] 		= $this->input->post('id_kurs');
+  					$id_material = $this->am->save_barang_catalogue($katalog);
+  				}
 
-			if($this->form_validation->run()==TRUE){
-
-				if ($this->input->post('is_catalogue')){
-
-					$katalog['nama']		= $this->input->post('nama_barang');
-					$katalog['entry_stamp'] = date('Y-m-d H:i:s');
-					$katalog['category'] 	= $this->input->post('category');
-					$katalog['id_kurs'] 		= $this->input->post('id_kurs');
-					$id_material = $this->am->save_barang_catalogue($katalog);
-				}
-
-				$form['id_procurement'] = $id;
-				$form['nama_barang'] 	= $this->input->post('nama_barang');
-				$form['nilai_hps'] 		= preg_replace("/[,]/", "", $this->input->post('nilai_hps'));
-				$form['id_kurs'] 		= $this->input->post('id_kurs');
-				$form['id_material'] 	= ($id_material) ? $id_material : $this->input->post('id_material');
-				$form['is_catalogue'] 	= ($this->input->post('id_material')) ? 1 : $this->input->post('is_catalogue');
-				$form['category'] 	= $this->input->post('category');
-				$form['volume'] 	= $this->input->post('volume');
-				$form['entry_stamp'] 	= date('Y-m-d H:i:s');
-
-				$result = $this->am->save_barang($form);
-				if($result){
-
-					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah Barang!</p>');
-					redirect(site_url('auction/ubah/'.$id.'/barang#contentWrap'));
-
-				}
-
-
-				
-			}
-		}
+      $form['id_procurement'] = $id;
+      $form['nama_barang'] 	= $this->input->post('nama_barang');
+      $form['nilai_hps'] 		= preg_replace("/[,]/", "", $this->input->post('nilai_hps'));
+      $form['id_kurs'] 		= $this->input->post('id_kurs');
+      $form['id_material'] 	= ($id_material) ? $id_material : $this->input->post('id_material');
+      $form['is_catalogue'] 	= ($this->input->post('id_material')) ? 1 : $this->input->post('is_catalogue');
+      $form['category'] 	= $this->input->post('category');
+      $form['volume'] 	= $this->input->post('volume');
+      $form['entry_stamp'] 	= date('Y-m-d H:i:s');
+      $result = $this->am->save_barang($form);
+      if($result){
+  
+  					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah Barang!</p>');
+  					redirect(site_url('auction/ubah/'.$id.'/barang#contentWrap'));
+  
+  				}
+  }
 
 
 		$kurs_list = $this->am->get_procurement_kurs($id,'', NULL, '','',FALSE);
 		$where_in = array();
-		foreach ($kurs_list as $key => $value) {
-			$where_in[] = $value['id_kurs'];
+		foreach ($kurs_list as $kur_list) {
+			$where_in[] = $kur_list['id_kurs'];
 		}
+  
 		$data['id'] = $id;
 		
 		$data['id_kurs'] 	= $this->am->get_kurs_barang($where_in);
@@ -673,8 +665,9 @@ class Auction extends CI_Controller {
 
 	public function edit_barang($id,$id_procurement){
 		$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		$fill 	= $this->securities->clean_input($_POST,'save');
-		$item 	= $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$admin 	= $this->session->userdata('admin');
 
 		$data 	= $this->am->get_barang_data($id);
@@ -698,27 +691,22 @@ class Auction extends CI_Controller {
 					);
 		$this->form_validation->set_rules($vld);
 
-		if($this->input->post('simpan')){
-
-			if($this->form_validation->run()==TRUE){
-				
-				$form['nilai_hps'] 		= preg_replace("/[,]/", "", $this->input->post('nilai_hps'));
-				$form['id_kurs'] 		= $this->input->post('id_kurs');
-				$form['entry_stamp'] 	= date('Y-m-d H:i:s');
-				$form['volume'] 		= $this->input->post('volume');
-				
-				$result = $this->am->edit_barang($form,$id);
-				if($result){
-					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah Barang / Jasa!</p>');
-					redirect(site_url('auction/ubah/'.$id_procurement.'/barang#contentWrap'));
-				}
-			}
-		}
+		if ($this->input->post('simpan') && $this->form_validation->run()==TRUE) {
+      $form['nilai_hps'] 		= preg_replace("/[,]/", "", $this->input->post('nilai_hps'));
+      $form['id_kurs'] 		= $this->input->post('id_kurs');
+      $form['entry_stamp'] 	= date('Y-m-d H:i:s');
+      $form['volume'] 		= $this->input->post('volume');
+      $result = $this->am->edit_barang($form,$id);
+      if($result){
+  					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah Barang / Jasa!</p>');
+  					redirect(site_url('auction/ubah/'.$id_procurement.'/barang#contentWrap'));
+  				}
+  }
 
 		$kurs_list = $this->am->get_procurement_kurs($id_procurement,'', NULL, '','',FALSE);
 		$where_in = array();
-		foreach ($kurs_list as $key => $value) {
-			$where_in[] = $value['id_kurs'];
+		foreach ($kurs_list as $kur_list) {
+			$where_in[] = $kur_list['id_kurs'];
 		}
 		
 		$data['kurs'] 	= $this->am->get_kurs_barang($where_in);
@@ -786,7 +774,7 @@ class Auction extends CI_Controller {
 
 	public function add_peserta($id,$id_vendor){
 		
-		$fill 	= $this->securities->clean_input($_POST,'save');
+		$this->securities->clean_input($_POST,'save');
 		
 			$form['id_proc'] 		= $id;
 			$form['id_vendor'] 		= $id_vendor;
@@ -810,6 +798,7 @@ class Auction extends CI_Controller {
 			redirect(site_url('auction/ubah/'.$id_procurement.'/peserta#contentWrap'));
 		}
 	}
+ 
 	//---------------------
 	//		KURS
 	//---------------------
@@ -826,8 +815,9 @@ class Auction extends CI_Controller {
 
 	public function tambah_kurs($id){
 		$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		$fill 	= $this->securities->clean_input($_POST,'save');
-		$item 	= $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$admin 	= $this->session->userdata('admin');
 		$vld 	= 	array(
 						array(
@@ -843,29 +833,28 @@ class Auction extends CI_Controller {
 							'rules'=>'required'
 						);
 		}
+  
 		$this->form_validation->set_rules($vld);
 
-		if($this->input->post('simpan')){
-
-			if($this->form_validation->run()==TRUE){
-				$form['id_procurement'] = $id;
-				$form['id_kurs'] 		= $this->input->post('id_kurs');
-				$form['rate'] 			= ($this->input->post('id_kurs')=='1') ? 1:preg_replace("/[,]/", "", $this->input->post('rate'));
-				$form['entry_stamp'] 	= date('Y-m-d H:i:s');
-				
-				$result = $this->am->save_kurs($form);
-				if($result){
-					$this->session->unset_userdata('form');
-					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah kurs!</p>');
-					redirect(site_url('auction/ubah/'.$id.'/kurs#contentWrap'));
-				}
-			}
-		}
+		if ($this->input->post('simpan') && $this->form_validation->run()==TRUE) {
+      $form['id_procurement'] = $id;
+      $form['id_kurs'] 		= $this->input->post('id_kurs');
+      $form['rate'] 			= ($this->input->post('id_kurs')=='1') ? 1:preg_replace("/[,]/", "", $this->input->post('rate'));
+      $form['entry_stamp'] 	= date('Y-m-d H:i:s');
+      $result = $this->am->save_kurs($form);
+      if($result){
+  					$this->session->unset_userdata('form');
+  					$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah kurs!</p>');
+  					redirect(site_url('auction/ubah/'.$id.'/kurs#contentWrap'));
+  				}
+  }
+  
 		$kurs_list = $this->am->get_procurement_kurs($id,'', NULL, '','',FALSE);
 		$where_in = array();
-		foreach ($kurs_list as $key => $value) {
-			$where_in[] = $value['id_kurs'];
+		foreach ($kurs_list as $kur_list) {
+			$where_in[] = $kur_list['id_kurs'];
 		}
+  
 		$data['kurs'] 	= $this->am->get_kurs_list($where_in);
 		
 		$layout['menu']			= $this->am->get_auction_list();
@@ -899,7 +888,9 @@ class Auction extends CI_Controller {
 		if (!empty($check)){
 			$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
 			$fill 	= $this->securities->clean_input($_POST,'save');
-			$item 	= $vld = $save_data = array();
+   $item = array();
+   $vld = array();
+   $save_data = array();
 			$admin 	= $this->session->userdata('admin');
 			$vld 	= 	array(
 							array(
@@ -910,28 +901,26 @@ class Auction extends CI_Controller {
 						);
 				$this->form_validation->set_rules($vld);
 
-			if($this->input->post('update')){
-				if($this->form_validation->run()==TRUE){
-					$form['id_proc'] 		= $id;
-					$form['description'] 	= $_POST['description'];
-					$form['edit_stamp'] 	= date('Y-m-d H:i:s');
-					unset($_POST['update']);
-
-					$result = $this->am->edit_persyaratan($id, $form);;
-					if($result){
-						$this->session->unset_userdata('form');
-						$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menyimpan persyaratan!</p>');
-						redirect(site_url('auction/ubah/'.$id.'/persyaratan#contentWrap'));
-					}
-				}
-			}	
+			if ($this->input->post('update') && $this->form_validation->run()==TRUE) {
+       $form['id_proc'] 		= $id;
+       $form['description'] 	= $_POST['description'];
+       $form['edit_stamp'] 	= date('Y-m-d H:i:s');
+       unset($_POST['update']);
+       $result = $this->am->edit_persyaratan($id, $form);
+       if($result){
+  						$this->session->unset_userdata('form');
+  						$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menyimpan persyaratan!</p>');
+  						redirect(site_url('auction/ubah/'.$id.'/persyaratan#contentWrap'));
+  					}
+   }
+   	
 			$data 				= $this->am->get_procurement_persyaratan($id);
 			$data['tabNav'] 	= $this->tabNav;
 			$data['id'] 		= $id;
 			return $this->load->view('tab/persyaratan',$data,TRUE);
-		}else{
-			 redirect(site_url('auction/ubah/'.$id.'/tambah_persyaratan/'));
 		}
+
+  redirect(site_url('auction/ubah/'.$id.'/tambah_persyaratan/'));
 
 		$data['tabNav'] 	= $this->tabNav;
 		$data['id'] 		= $id;
@@ -944,7 +933,9 @@ class Auction extends CI_Controller {
 		if (empty($check)){
 			$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
 			$fill 	= $this->securities->clean_input($_POST,'save');
-			$item 	= $vld = $save_data = array();
+   $item = array();
+   $vld = array();
+   $save_data = array();
 			$admin 	= $this->session->userdata('admin');
 			$vld 	= 	array(
 						array(
@@ -955,61 +946,74 @@ class Auction extends CI_Controller {
 					);
 			$this->form_validation->set_rules($vld);
 
-			if($this->input->post('simpan')){
-				if($this->form_validation->run()==TRUE){
-					$_POST['id_proc'] 		= $id;
-					$_POST['description'] 	= $this->input->post('description');
-					$_POST['entry_stamp'] 	= date('Y-m-d H:i:s');
-
-					$result = $this->am->save_persyaratan($this->input->post());
-					if($result){
-						$this->session->unset_userdata('form');
-						$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah persyaratan!</p>');
-						redirect(site_url('auction/ubah/'.$id.'/persyaratan#contentWrap'));
-					}
-				}
-			}
+			if ($this->input->post('simpan') && $this->form_validation->run()==TRUE) {
+       $_POST['id_proc'] 		= $id;
+       $_POST['description'] 	= $this->input->post('description');
+       $_POST['entry_stamp'] 	= date('Y-m-d H:i:s');
+       $result = $this->am->save_persyaratan($this->input->post());
+       if($result){
+  						$this->session->unset_userdata('form');
+  						$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambah persyaratan!</p>');
+  						redirect(site_url('auction/ubah/'.$id.'/persyaratan#contentWrap'));
+  					}
+   }
 				
 			$data['tabNav'] 	= $this->tabNav;
 			$data['id'] 		= $id;
 			return $this->load->view('tab/tambah_persyaratan',$data,TRUE);
-		}else{
-			redirect(site_url('auction/ubah/'.$id.'/persyaratan/'));
 		}
+
+  redirect(site_url('auction/ubah/'.$id.'/persyaratan/'));
+  return null;
 	}
 		
-	function set_syarat($id_lelang = '', $is_edit = false){
+	public function set_syarat($id_lelang = '', $is_edit = false){
 		$master = $this->am->get_auction($id_lelang);
 
-		if($master['auction_type'] == "reverse_auction"){ $limit = "minimum"; $indicator = "rendah"; $reverse = "tinggi"; $winner = "dibawah";}
-		else if($master['auction_type'] == "forward_auction"){ $limit = "maximum"; $indicator = "tinggi"; $reverse = "rendah"; $winner = "diatas";}
+		if ($master['auction_type'] == "reverse_auction") {
+      $limit = "minimum";
+      $indicator = "rendah";
+      $reverse = "tinggi";
+      $winner = "dibawah";
+  } elseif ($master['auction_type'] == "forward_auction") {
+      $limit = "maximum";
+      $indicator = "tinggi";
+      $reverse = "rendah";
+      $winner = "diatas";
+  }
 		
 		$value = '
 			<ol>
 				<li>Harga penawaran sudah termasuk pajak-pajak.</li>
 				<li>Durasi auction selama '.$master['auction_duration'].' menit, tanpa ada penambahan waktu.</li>
 				<li>';
-				if($master['metode_auction'] == "posisi")
-					$value .= 'Metode auction menggunakan metode posisi/rangking, dimana para peserta e-auction hanya
+				if ($master['metode_auction'] == "posisi") {
+        $value .= 'Metode auction menggunakan metode posisi/rangking, dimana para peserta e-auction hanya
 					mengetahui posisi/rangking dari penawaran harga yang telah dimasukkan dibandingkan dengan
 					penawaran harga peserta e-auction lainnya.';
+    }
 					
-				if($master['metode_auction'] == "indikator")
-					$value .= 'Metode auction menggunakan metode indikator, dimana para peserta e-auction akan
+				if ($master['metode_auction'] == "indikator") {
+        $value .= 'Metode auction menggunakan metode indikator, dimana para peserta e-auction akan
 					diberikan indikator terhadap penawaran harga yang telah dimasukan, dibandingkan dengan penawaran harga 
 					peserta e-auction lainnya.';
+    }
 		
 		$value .= '</li>
 				<li>Tidak ada batas harga penawaran '.$limit.' yang dapat dimasukkan.</li>';
 		if($master['auction_type'] == "reverse_auction"){ 
 			$value .= '<li>Harga penawaran dibawah kewajaran harga tidak secara otomatis menjadi pemenang pengadaan. Penawaran akan dievaluasi lebih lanjut oleh Fungsi Pengadaan PT. Nusantara Regas</li>';
 		}
+  
 		$value .= '<li>Harga penawaran yang dimasukkan tidak boleh sama atau lebih '.$reverse.' dari harga penawaran yang telah dimasukkan sebelumnya.</li>
 				<li>';
-		if($master['metode_auction'] == "posisi")
-			$value .= 'Apabila terdapat penawaran harga yang sama, maka posisi/rangking yang lebih tinggi akan diberikan kepada penawar harga yang masuk terlebih dahulu'; 
-		if($master['metode_auction'] == "indikator")
-			$value .= 'Apabila terdapat penawaran harga yang sama, maka indikator lambang medali akan diberikan kepada penawar harga yang masuk terlebih dahulu'; 
+  if ($master['metode_auction'] == "posisi") {
+      $value .= 'Apabila terdapat penawaran harga yang sama, maka posisi/rangking yang lebih tinggi akan diberikan kepada penawar harga yang masuk terlebih dahulu';
+  }
+
+  if ($master['metode_auction'] == "indikator") {
+      $value .= 'Apabila terdapat penawaran harga yang sama, maka indikator lambang medali akan diberikan kepada penawar harga yang masuk terlebih dahulu';
+  } 
 		
 		$value .= '</li>
 				<li>Selama auction berlangsung, peserta tidak diperkenankan menggunakan tombol Back (backspace) dan Refresh (F5). </li>
@@ -1024,9 +1028,10 @@ class Auction extends CI_Controller {
 				'entry_stamp'=>date("Y-m-d H:i:s")	
 			);
 		
-		if($is_edit)
-			$this->am->edit_persyaratan($param);
-		else
-			$this->am->save_persyaratan($param);
+		if ($is_edit) {
+      $this->am->edit_persyaratan($param);
+  } else {
+      $this->am->save_persyaratan($param);
+  }
 	}
 }

@@ -1,8 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class admin_assessment_model extends CI_Model{
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$this->field_master = array(
 								'id_group',
@@ -17,7 +17,7 @@ class admin_assessment_model extends CI_Model{
 							);
 		}
 
-	function get_assessment_quest_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE) 
+	public function get_assessment_quest_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE) 
     {
 		$query = $this->db->select('')->where('del',0)->get('ms_ass_group')->result_array();
 		foreach($query as $key => $value){
@@ -26,29 +26,32 @@ class admin_assessment_model extends CI_Model{
 			->where('id_group',$value['id'])->get('ms_ass')->result_array();
 			$query[$key]['data_quest'] = $ass;
 		}
+  
 		return $query;
 		
     }
-    function get_data_assessment($id){
+ 
+    public function get_data_assessment($id){
     	return $this->db->select('*')->where('del',0)->where('id',$id)->get('ms_ass')->row_array();
     }
 
-    function get_data_group(){
+    public function get_data_group(){
     	$result = $this->db->select('*')->get('ms_ass_group')->result_array();
     	$arr = array();
-    	foreach($result as $key => $val){
+    	foreach($result as $val){
     		$arr[$val['id']] = $val['name'];
     	}
+     
     	return $arr;
     }
 
-    function edit_data_assessment($data,$id){
+    public function edit_data_assessment($data,$id){
     	$this->db->where('id',$id);
-		$res = $this->db->update('ms_ass',$data);
 		
-		return $res;
+		return $this->db->update('ms_ass',$data);
     }
-    function save_assessment($data){
+    
+    public function save_assessment($data){
 		$_param = array();
 		
 		$sql = "INSERT INTO ms_ass (
@@ -67,24 +70,21 @@ class admin_assessment_model extends CI_Model{
 		
 	}
 
-    function get_data_group_list($id){
-    	$result = $this->db
+    public function get_data_group_list($id){
+    	return $this->db
     				   ->select('*')
     				   ->where('id', $id)
     				   ->get('ms_ass_group')
     				   ->row_array();
-    	
-    	return $result;
     }
 
-    function edit_data_group($data,$id){
+    public function edit_data_group($data,$id){
     	$this->db->where('id',$id);
-		$res = $this->db->update('ms_ass_group',$data);
 		
-		return $res;
+		return $this->db->update('ms_ass_group',$data);
     }
 
-	function save_group($data){
+	public function save_group($data){
 		$_param = array();
 		
 		$sql = "INSERT INTO ms_ass_group (
@@ -100,13 +100,13 @@ class admin_assessment_model extends CI_Model{
 		
 	}
 
-	function hapus_data_assessment($id){
+	public function hapus_data_assessment($id){
 		$this->db->where('id',$id);
 		
 		return $this->db->update('ms_ass',array('del'=>1));
 	}
 
-	function hapus_data_group($id){
+	public function hapus_data_group($id){
 		$this->db->where('id',$id);
 		
 		return $this->db->update('ms_ass_group',array('del'=>1));

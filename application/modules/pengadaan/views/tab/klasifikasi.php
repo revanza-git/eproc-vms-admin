@@ -19,12 +19,13 @@
 				
 				<td>
 					<label class="lbform">
-						<?php echo form_radio(array('name'=>'id_dpt_type'),$val['id'],(set_radio('id_dpt_type',$val['id'])||($this->form->get_temp_data('id_dpt_type')==$val['id']))?TRUE:FALSE)?><?php echo $val['name'];?>
+						<?php echo form_radio(array('name'=>'id_dpt_type'),$val['id'],set_radio('id_dpt_type',$val['id'])||($this->form->get_temp_data('id_dpt_type')==$val['id']))?><?php echo $val['name'];?>
 					</label>
 				</td>
 				
 			</tr>
-			<?php } ?>
+			<?php }
+ ?>
 			<tr>
 				<td>
 					<?php echo form_error('id_dpt_type'); ?>

@@ -46,33 +46,34 @@
 
 		<?php 
 
-		if(count($akta_list)){
+		if(count($akta_list) > 0){
 
-			foreach($akta_list as $row => $value){
+			foreach($akta_list as $aktum_list){
 			?>
 
 				<tr>
 
-					<td><?php echo $value['role_name']?></td>
+					<td><?php echo $aktum_list['role_name']?></td>
 
-					<td><?php echo $value['name'];?></td>
+					<td><?php echo $aktum_list['name'];?></td>
 
-					<td><?php echo $value['password'];?></td>
+					<td><?php echo $aktum_list['password'];?></td>
 
-					<td><?php echo $value['email'];?></td>
+					<td><?php echo $aktum_list['email'];?></td>
 
 					<td class="actionBlock">
 
-						<a href="<?php echo site_url('admin/admin_user/edit/'.$value['id'])?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
-						<?php if($value['id_role'] != 1){ ?>
-						<a style="top: -4px" href="<?php echo site_url('admin/admin_user/hapus/'.$value['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
-						<?php }?>
+						<a href="<?php echo site_url('admin/admin_user/edit/'.$aktum_list['id'])?>" class="editBtn"><i class="fa fa-cog"></i>Edit</a>
+						<?php if($aktum_list['id_role'] != 1){ ?>
+						<a style="top: -4px" href="<?php echo site_url('admin/admin_user/hapus/'.$aktum_list['id'])?>" class="delBtn"><i class="fa fa-trash"></i>Hapus</a>
+						<?php }
+   ?>
 
 					</td>
 
 				</tr>
 
-			<?php 
+<?php 
 
 			}
 

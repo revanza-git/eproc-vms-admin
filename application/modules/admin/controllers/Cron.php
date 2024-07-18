@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 class Cron extends CI_Controller
 {
     public function __construct()
@@ -8,10 +8,12 @@ class Cron extends CI_Controller
             ->load
             ->library('email');
     }
+    
     public function index()
     {
 
     }
+    
     public function drop_dpt()
     {
         error_reporting(E_ALL);
@@ -50,7 +52,7 @@ class Cron extends CI_Controller
         $table .= '</table>';
         echo $table;die;*/
 
-        foreach ($query as $key => $value)
+        foreach ($query as $value)
         {
             if ($value['id_doc'] != '')
             {
@@ -78,8 +80,7 @@ class Cron extends CI_Controller
                 {
                     if ($value['doc_type'] == 'ms_ijin_usaha')
                     {
-                        foreach ($queryDocument->result_array() as $keyDocument
- => $valueDocument)
+                        foreach ($queryDocument->result_array() as $valueDocument)
                         {
                             $selectTransaction = $this
                                 ->db
@@ -158,8 +159,7 @@ class Cron extends CI_Controller
                     else
                     {
 
-                        foreach ($queryDocument->result_array() as $keyDocument
- => $valueDocument)
+                        foreach ($queryDocument->result_array() as $valueDocument)
                         {
 
                             $queryTransaction = $this
@@ -185,7 +185,7 @@ class Cron extends CI_Controller
                                 ->db
                                 ->affected_rows() > 0)
                             {
-                                foreach ($selectDPT as $keys => $values)
+                                foreach ($selectDPT as $select)
                                 {
                                     $this
                                         ->db
@@ -197,7 +197,7 @@ class Cron extends CI_Controller
                                         $valueDocument['id_vendor'],
                                         'id_dpt_type' =>
 
-                                        $values['id_dpt_type'],
+                                        $select['id_dpt_type'],
                                         'status' => 0,
                                         'entry_stamp' => date
 
@@ -206,6 +206,7 @@ class Cron extends CI_Controller
                                 }
 
                             }
+                            
                             $this
                                 ->db
                                 ->where('id', $valueDocument
@@ -218,6 +219,7 @@ class Cron extends CI_Controller
                     }
 
                 }
+                
                 $value['message'] = str_replace('\n', '<br>', $value['message']);
                 $message = "
 								Kepada Yth. <br/>
@@ -327,7 +329,7 @@ class Cron extends CI_Controller
         foreach ($doc as $key => $value)
         {
 
-            if ($key == 'ms_ijin_usaha')
+            if ($key === 'ms_ijin_usaha')
             {
                 $file = 'Izin';
             }
@@ -350,7 +352,7 @@ class Cron extends CI_Controller
                 ->get($key)
                 ->result_array();
 
-            foreach ($query as $k => $v)
+            foreach ($query as $v)
             {
 
                 $arr = array(
@@ -422,6 +424,7 @@ class Cron extends CI_Controller
 				</tr>';
             }
         }
+        
         // Set to, from, message
         $this
             ->email
@@ -442,6 +445,7 @@ class Cron extends CI_Controller
         }else{
         	echo $this->email->print_debugger();
         }
+        
         // echo $msg;
         $data .= '</tbody>
 		</table>';

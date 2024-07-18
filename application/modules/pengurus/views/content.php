@@ -36,8 +36,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($situ_list)){
-			foreach($situ_list as $row => $value){
+		if(count($situ_list) > 0){
+			foreach($situ_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['position'];?></td>
@@ -47,13 +47,13 @@
 					<td><?php echo ($value['expire_date']=='lifetime')?'Seumur Hidup':default_date($value['expire_date']);?></td>
 					<td><?php echo $value['no_akta'];?></td>
 					<td>
-						<?php if (count($value['pengurus_file'])) {
+						<?php if (count($value['pengurus_file']) > 0) {
 							# code...
 						?>
 						<a href="<?php echo base_url('lampiran/pengurus_file/'.$value['pengurus_file']);?>"  target="_blank">
 							<?php echo $value['pengurus_file'];?> <i class="fa fa-link"> </i>
 						</a>
-						<?php
+<?php
 						} else {
 							echo "-";
 						}

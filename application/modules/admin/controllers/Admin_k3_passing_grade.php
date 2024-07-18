@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class admin_k3_passing_grade extends CI_Controller {
 	public function __construct(){
@@ -29,8 +29,6 @@ class admin_k3_passing_grade extends CI_Controller {
 
 	public function index(){	
 		$search 	= $this->input->get('q');
-
-		$page 		= '';
 		$per_page	= 10;
 		$sort 		= $this->utility->generateSort(array('value','start_score','end_score'));
 

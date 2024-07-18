@@ -34,9 +34,11 @@
 						: <?php echo '<a href="'.site_url('lampiran/spmk_file/'.$spmk_file).'">lampiran</a>';?>
 					</td>
 				</tr>
-			<?php } ?>
+			<?php }
+ ?>
 
-			<?php } ?>
+<?php }
+ ?>
 			<?php if ($no_cf != '' || $start_cf_date != '' || $contract_formation_file != '') { ?>
 				<tr class="input-form">
 					<td><label>*Contract Formation</label></td>
@@ -62,26 +64,28 @@
 						: <?php echo '<a href="'.site_url('lampiran/contract_formation_file/'.$contract_formation_file).'">lampiran</a>';?>
 					</td>
 				</tr>
-			<?php } ?>
+			<?php }
+ ?>
 
-			<?php } ?>
+<?php }
+ ?>
 			<tr class="input-form">
 
 				<td><label>Tipe Pengadaan</label></td>
 				<td>
-					: <?php if($tipe_pengadaan == 'barang') {
-								$tipe = 'Barang';
-							} else if($tipe_pengadaan == 'jasa_konstruksi') {
-								$tipe = 'Jasa Konstruksi';
-							} else if($tipe_pengadaan == 'jasa_konsultasi') {
-								$tipe = 'Jasa Konsultasi';
-							} else if($tipe_pengadaan == 'jasa_lainnya') {
-								$tipe = 'Jasa Konsultasi';
-							} else if($tipe_pengadaan == 'jasa_konsultan_konstruksi') {
-								$tipe = 'Jasa Konsultan Perencana/Pengawas Konstruksi';
-							} else if($tipe_pengadaan == 'jasa_konsultan_non_konstruksi') {
-								$tipe = 'Jasa Konsultan non-Konstruksi';
-							} echo ucfirst($tipe);?>
+					: <?php if ($tipe_pengadaan == 'barang') {
+    $tipe = 'Barang';
+} elseif ($tipe_pengadaan == 'jasa_konstruksi') {
+    $tipe = 'Jasa Konstruksi';
+} elseif ($tipe_pengadaan == 'jasa_konsultasi') {
+    $tipe = 'Jasa Konsultasi';
+} elseif ($tipe_pengadaan == 'jasa_lainnya') {
+    $tipe = 'Jasa Konsultasi';
+} elseif ($tipe_pengadaan == 'jasa_konsultan_konstruksi') {
+    $tipe = 'Jasa Konsultan Perencana/Pengawas Konstruksi';
+} elseif ($tipe_pengadaan == 'jasa_konsultan_non_konstruksi') {
+    $tipe = 'Jasa Konsultan non-Konstruksi';
+} echo ucfirst($tipe);?>
 				</td>
 			</tr>
 				<tr class="input-form">
@@ -164,13 +168,13 @@
 
 					<?php 
 
-					if($evaluation_method_desc == "kualitas_terbaik"){
-						echo "Kualitas/Teknik Terbaik";
-					}else if($evaluation_method_desc == "kualitas"){
-						echo "Kualitas/Teknik dan Harga";
-					}else if($evaluation_method_desc == "harga"){
-						echo "Harga Terendah";
-					}
+					if ($evaluation_method_desc == "kualitas_terbaik") {
+         echo "Kualitas/Teknik Terbaik";
+     } elseif ($evaluation_method_desc == "kualitas") {
+         echo "Kualitas/Teknik dan Harga";
+     } elseif ($evaluation_method_desc == "harga") {
+         echo "Harga Terendah";
+     }
 					?>
 				</td>
 			</tr>
@@ -195,7 +199,8 @@
 			<a href="<?php echo site_url('kontrak/edit/'.$id);?>" class="editBtn"><i class='fa fa-cog'></i>&nbsp;Ubah</a>
 
 			<!-- <a href="<?php echo site_url('pengadaan/reset/'.$id);?>" class="editBtn printSerti"><i class='fa fa-undo'></i>&nbsp;Reset</a> -->
-			<?php } ?>
+			<?php }
+      ?>
 		</div>
 		
 </div>

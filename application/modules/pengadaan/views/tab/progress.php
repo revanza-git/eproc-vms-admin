@@ -20,7 +20,8 @@
 
 					// }
 
-				} ?>
+				}
+ ?>
 
 		<?php if(isset($graph['supposed']['percentage'])||isset($graph['realization']['percentage'])){ ?>
 
@@ -44,11 +45,12 @@
 
 						<?php
 
-					}?>
+					}
+    ?>
 
 				</div>
 
-				<?php } 
+<?php } 
 
 				 if(isset($graph['realization']['percentage'])){ ?>
 
@@ -62,17 +64,20 @@
 
 						<?php
 
-					}?>
+					}
+     ?>
 
 				</div>
 
-				<?php } ?>
+<?php }
+      ?>
 
 			</div>
 
 		</div>
 
-		<?php } ?>
+<?php }
+     ?>
 
 		
 
@@ -106,11 +111,11 @@
 
 
 
-			if(count($contract)){
+			if(count($contract) > 0){
 
 				$key = 0;
 
-				foreach($contract as $row => $value){
+				foreach($contract as $value){
 
 				?>
 

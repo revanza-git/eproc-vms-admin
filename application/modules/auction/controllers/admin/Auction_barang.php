@@ -1,20 +1,20 @@
 <?php
 class Auction_barang extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 		$this->load->model('auction_package/barang_model');
 	}
 	
-	function index($id_lelang = ''){
+	public function index($id_lelang = ''){
 		$data['id_lelang'] = $id_lelang;
 		$data['query'] = $this->barang_model->get_data($id_lelang);
 
 		$this->load->view('content/auction_package/auction_barang', $data);
 	}
 	
-	function form($id_lelang = '', $id = ''){
+	public function form($id_lelang = '', $id = ''){
 		
 		$data['action'] = "save";
 		if($id){
@@ -23,8 +23,10 @@ class Auction_barang extends CI_Controller{
 		}
 		
 		$data['id_kurs'] = $this->drop_down_kurs($id_lelang, 'id_kurs', $fill['id_kurs']);
-		
-		if($fill['volume']) $volume = $fill['volume'];
+  if ($fill['volume']) {
+      $volume = $fill['volume'];
+  }
+  
 		$volume = 1;
 		
 		$data['volume'] = $this->form->number('volume', $volume);
@@ -42,21 +44,23 @@ class Auction_barang extends CI_Controller{
 		$this->load->view("jc-table/form/jc-form", $data);
 	}
 	
-	function drop_down_kurs($id_lelang = '', $id = '', $selected = ''){
+	public function drop_down_kurs($id_lelang = '', $id = '', $selected = ''){
 		$query = $this->barang_model->get_kurs($id_lelang);
 
 		$return = '<select name="'.$id.'" id="'.$id.'">'; 
 		foreach($query->result() as $data){
 			$return .= '<option value="'.$data->id.'"';
-			if($selected == $data->id) $return .= ' selected="selected"';
+   if ($selected == $data->id) {
+       $return .= ' selected="selected"';
+   }
+   
 			$return .= '>'.$data->name.'</option>';
 		}
-		$return .= '</select>';
 		
-		return $return;
+		return $return . '</select>';
 	}
 	
-	function save(){		 
+	public function save(){		 
 		$param = array(
 			'id_lelang' => $_POST['id_lelang'],
 			'name' => $_POST['name'],
@@ -77,7 +81,7 @@ class Auction_barang extends CI_Controller{
 		die(json_encode($json));
 	}
 
-	function edit(){
+	public function edit(){
 		$param = array(
 			'name' => $_POST['name'],
 			'id_kurs' => $_POST['id_kurs'],
@@ -98,7 +102,7 @@ class Auction_barang extends CI_Controller{
 		die(json_encode($json));
 	}
 		
-	function delete($id = ''){
+	public function delete($id = ''){
 		$this->barang_model->delete_data($id);
 		
 		$json = array(

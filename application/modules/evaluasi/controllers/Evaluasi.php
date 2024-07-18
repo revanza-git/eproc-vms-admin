@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Evaluasi extends CI_Controller
 {
@@ -9,6 +9,7 @@ class Evaluasi extends CI_Controller
 		if (!$this->session->userdata('user')) {
 			redirect(site_url());
 		}
+  
 		$this->load->model('evaluasi_model', 'em');
 		$this->load->model('assessment/assessment_model', 'am');
 		$this->load->helpers('utility_helpers');
@@ -22,7 +23,7 @@ class Evaluasi extends CI_Controller
 		$this->load->library('form');
 		$search = $this->input->get('q');
 		$page = '';
-		$post = $this->input->post();
+		$this->input->post();
 
 		$per_page = 10;
 
@@ -35,6 +36,7 @@ class Evaluasi extends CI_Controller
 				$data['pengadaan_list'][$key]['pemenang'] = $winner['pemenang'];
 			}
 		}
+  
 		// print_r($data['pengadaan_list']);die;
 		$data['admin']			= $this->session->userdata('admin');
 		$data['filter_list'] = $this->filter->group_filter_post($this->get_field_pe());
@@ -77,9 +79,10 @@ class Evaluasi extends CI_Controller
 				$msg = $vendor['legal'] . " - " . $vendor['name'] . " memberikan umpan balik ke pengadaan " . $proc['name'] . " dengan pesan sebagai berikut : <br> " . $save['remark'];
 				$sub = "UMPAN BALIK EVALUASI KINERJA";
 
-				foreach ($div_proc as $key => $value) {
+				foreach ($div_proc as $value) {
 					$this->utility->mail($value['email'], $msg, $sub);
 				}
+    
 				$this->session->set_flashdata('msgSuccess', '<p class="msgSuccess">Sukses memberikan umpan balik!</p>');
 				redirect(site_url('evaluasi'));
 			}

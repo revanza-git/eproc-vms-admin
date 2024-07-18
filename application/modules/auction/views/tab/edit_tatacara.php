@@ -2,7 +2,7 @@
 	<?php echo $this->utility->tabNav($tabNav,'tatacara');?>
 	
 	<div class="tableWrapper" style="margin-bottom: 20px">
-	<?php if($this->session->userdata('admin')['id_role']==6|7){ ?>
+	<?php if(($this->session->userdata('admin')['id_role']==6|7) !== 0){ ?>
 	<div class="btnTopGroup clearfix">
 		<form method="POST" enctype="multipart/form-data">
 			<h2>Edit Tatacara</h2>
@@ -11,10 +11,10 @@
 					<td><label>Pilih Metode Auction</label></td>
 					<td>
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'metode_auction'),'posisi',(set_radio('metode_auction','posisi')||((isset($metode_auction)?$metode_auction:$this->form->get_temp_data('metode_auction'))=='posisi'))?TRUE:FALSE)?>Posisi/Ranking 
+							<?php echo form_radio(array('name'=>'metode_auction'),'posisi',set_radio('metode_auction','posisi')||((isset($metode_auction)?$metode_auction:$this->form->get_temp_data('metode_auction'))=='posisi'))?>Posisi/Ranking 
 						</label>
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'metode_auction'),'indikator',(set_radio('metode_auction','indikator')||((isset($metode_auction)?$metode_auction:$this->form->get_temp_data('metode_auction'))=='indikator'))?TRUE:FALSE)?>Indikator
+							<?php echo form_radio(array('name'=>'metode_auction'),'indikator',set_radio('metode_auction','indikator')||((isset($metode_auction)?$metode_auction:$this->form->get_temp_data('metode_auction'))=='indikator'))?>Indikator
 						</label>
 						<?php echo form_error('metode_auction'); ?>
 					</td>
@@ -23,10 +23,10 @@
 					<td><label>Pilih Metode Penawaran</label></td>
 					<td>
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'metode_penawaran'),'lump_sum',(set_radio('metode_penawaran','lump_sum')||((isset($metode_penawaran)?$metode_penawaran:$this->form->get_temp_data('metode_penawaran'))=='lump_sum'))?TRUE:FALSE)?>Lump Sum 
+							<?php echo form_radio(array('name'=>'metode_penawaran'),'lump_sum',set_radio('metode_penawaran','lump_sum')||((isset($metode_penawaran)?$metode_penawaran:$this->form->get_temp_data('metode_penawaran'))=='lump_sum'))?>Lump Sum 
 						</label>
 						<label class="lbform">
-							<?php echo form_radio(array('name'=>'metode_penawaran'),'harga_satuan',(set_radio('metode_penawaran','harga_satuan')||((isset($metode_penawaran)?$metode_penawaran:$this->form->get_temp_data('metode_penawaran'))=='harga_satuan'))?TRUE:FALSE)?>Harga Satuan
+							<?php echo form_radio(array('name'=>'metode_penawaran'),'harga_satuan',set_radio('metode_penawaran','harga_satuan')||((isset($metode_penawaran)?$metode_penawaran:$this->form->get_temp_data('metode_penawaran'))=='harga_satuan'))?>Harga Satuan
 						</label>
 						<?php echo form_error('metode_penawaran'); ?>
 					</td>
@@ -38,5 +38,6 @@
 			</div>
 		</form>
 	</div>
-	<?php } ?>
+	<?php }
+ ?>
 </div>

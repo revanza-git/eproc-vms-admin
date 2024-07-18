@@ -1,9 +1,10 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Feedback extends CI_Controller
 {
 
     public $id_pengadaan;
+    
     public $tabNav;
 
     public function __construct()
@@ -24,7 +25,7 @@ class Feedback extends CI_Controller
         $this->load->library('form');
         $search = $this->input->get('q');
         $page = '';
-        $post = $this->input->post();
+        $this->input->post();
 
         $per_page = 10;
 
@@ -47,12 +48,14 @@ class Feedback extends CI_Controller
     public function view($id)
     {
         $admin = $this->session->userdata('admin');
+        if ($this->session->userdata('form')) {
+            $this->session->userdata('form');
+        }
 
-        $form = ($this->session->userdata('form')) ? $this->session->userdata('form') : array();
-
-        $fill = $this->securities->clean_input($_POST, 'save');
-        $item = $vld = $save_data = array();
-        $user = $this->session->userdata('user');
+        $this->securities->clean_input($_POST, 'save');
+        $item = array();
+        $vld = array();
+        $this->session->userdata('user');
         $layout['get_feedback'] = $this->fm->get_feedback($id);
 
         $vld =     array(
@@ -79,6 +82,7 @@ class Feedback extends CI_Controller
                 redirect(site_url('feedback/view/' . $id));
             }
         }
+        
         $layout['content'] = $this->load->view('feedback/view', $layout, TRUE);
 
         $item['header'] = $this->load->view('admin/header', $admin, TRUE);

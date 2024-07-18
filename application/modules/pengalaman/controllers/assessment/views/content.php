@@ -19,8 +19,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($pengadaan_list)){
-			foreach($pengadaan_list as $row => $value){
+		if(count($pengadaan_list) > 0){
+			foreach($pengadaan_list as $value){
 			?>
 				<tr>
 					<td><?php echo $value['name'];?></td>

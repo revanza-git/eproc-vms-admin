@@ -12,7 +12,8 @@
 					<?php } else{
 						
 						echo $nama_barang;
-					 } ?>
+					 }
+      ?>
 
 				</td>
 			</tr>

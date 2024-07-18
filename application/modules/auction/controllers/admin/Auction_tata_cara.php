@@ -1,7 +1,7 @@
 <?php
 class Auction_tata_cara extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 		$this->load->model('auction_package/tata_cara_model');
@@ -9,7 +9,7 @@ class Auction_tata_cara extends CI_Controller{
 		$this->load->model('auction_package/barang_model');
 	}
 	
-	function index($id_lelang = ''){
+	public function index($id_lelang = ''){
 		$fill = $this->tata_cara_model->select_data($id_lelang);
 		
 		$data['content'] = $content = "form/auction_package/auction_tata_cara";
@@ -24,7 +24,7 @@ class Auction_tata_cara extends CI_Controller{
 		$this->load->view($content, $data);
 	}
 	
-	function form($id_lelang = ''){
+	public function form($id_lelang = ''){
 		$fill = $this->tata_cara_model->select_data($id_lelang);
 		
 		$data['content'] = "form/auction_package/auction_tata_cara";
@@ -41,7 +41,7 @@ class Auction_tata_cara extends CI_Controller{
 		$this->load->view('jc-table/form/jc-form', $data);
 	}
 	
-	function save(){
+	public function save(){
 		$param = array(
 			'id_lelang' => $_POST['id_lelang'],
 			'hps' => $_POST['hps'],
@@ -56,7 +56,9 @@ class Auction_tata_cara extends CI_Controller{
 		
 		$this->tata_cara_model->save($param);
 		$this->set_syarat($_POST['id_lelang']);
-		if($_POST['metode_penawaran'] == "lump_sum") $this->set_barang($_POST['id_lelang']);
+		if ($_POST['metode_penawaran'] == "lump_sum") {
+      $this->set_barang($_POST['id_lelang']);
+  }
 		
 		$json = array(
 			'status' => 'success',
@@ -66,7 +68,7 @@ class Auction_tata_cara extends CI_Controller{
 		
 	}
 	
-	function edit(){
+	public function edit(){
 		$param = array(
 			'hps' => $_POST['hps'],
 			'metode_lelang' => $_POST['metode_lelang'],
@@ -87,7 +89,7 @@ class Auction_tata_cara extends CI_Controller{
 		die(json_encode($json));
 	}
 	
-	function set_barang($id_lelang = ''){
+	public function set_barang($id_lelang = ''){
 		$master = $this->syarat_model->get_master($id_lelang);
 		
 		$param = array(
@@ -103,11 +105,18 @@ class Auction_tata_cara extends CI_Controller{
 		$this->barang_model->save($param);	
 	}
 	
-	function set_syarat($id_lelang = '', $is_edit = false){
+	public function set_syarat($id_lelang = '', $is_edit = false){
 		$master = $this->syarat_model->get_master($id_lelang);
 				
-		if($master['type_lelang'] == "reverse"){ $limit = "minimum"; $indicator = "rendah"; $reverse = "tinggi"; }
-		else if($master['type_lelang'] == "forward"){ $limit = "maximum"; $indicator = "tinggi"; $reverse = "rendah"; }
+		if ($master['type_lelang'] == "reverse") {
+      $limit = "minimum";
+      $indicator = "rendah";
+      $reverse = "tinggi";
+  } elseif ($master['type_lelang'] == "forward") {
+      $limit = "maximum";
+      $indicator = "tinggi";
+      $reverse = "rendah";
+  }
 		
 		$value = '
 			<ol>
@@ -115,24 +124,29 @@ class Auction_tata_cara extends CI_Controller{
 				<li>Durasi auction selama '.$master['duration'].' menit, tanpa ada penambahan waktu.</li>
 				<li>';
 		
-				if($master['metode_lelang'] == "ranking")
-					$value .= 'Metode auction menggunakan metode posisi/rangking, dimana para peserta e-auction hanya
+				if ($master['metode_lelang'] == "ranking") {
+        $value .= 'Metode auction menggunakan metode posisi/rangking, dimana para peserta e-auction hanya
 					mengetahui posisi/rangking dari penawaran harga yang telah dimasukkan dibandingkan dengan
 					penawaran harga peserta e-auction lainnya.';
+    }
 					
-				if($master['metode_lelang'] == "penawaran_terendah")
-					$value .= 'Metode auction menggunakan metode indikator, dimana para peserta e-auction akan
+				if ($master['metode_lelang'] == "penawaran_terendah") {
+        $value .= 'Metode auction menggunakan metode indikator, dimana para peserta e-auction akan
 					diberikan indikator terhadap penawaran harga yang telah dimasukan, dibandingkan dengan penawaran harga 
 					peserta e-auction lainnya.';
+    }
 		
 		$value .= '</li>
 				<li>Tidak ada batas harga penawaran '.$limit.' yang dapat dimasukkan.</li>
 				<li>Harga penawaran yang dimasukkan tidak boleh sama atau lebih '.$reverse.' dari harga penawaran yang telah dimasukkan sebelumnya.</li>
 				<li>';
-		if($master['metode_lelang'] == "ranking")
-			$value .= 'Apabila terdapat penawaran harga yang sama, maka posisi/rangking yang lebih tinggi akan diberikan kepada penawar harga te'.$indicator.' yang masuk terlebih dahulu'; 
-		if($master['metode_lelang'] == "penawaran_terendah")
-			$value .= 'Apabila terdapat penawaran harga yang sama, maka indikator lambang medali akan diberikan kepada penawar harga te'.$indicator.' yang masuk terlebih dahulu'; 
+  if ($master['metode_lelang'] == "ranking") {
+      $value .= 'Apabila terdapat penawaran harga yang sama, maka posisi/rangking yang lebih tinggi akan diberikan kepada penawar harga te'.$indicator.' yang masuk terlebih dahulu';
+  }
+
+  if ($master['metode_lelang'] == "penawaran_terendah") {
+      $value .= 'Apabila terdapat penawaran harga yang sama, maka indikator lambang medali akan diberikan kepada penawar harga te'.$indicator.' yang masuk terlebih dahulu';
+  } 
 		
 		$value .= '</li>
 				<li>Selama auction berlangsung, peserta tidak diperkenankan menggunakan tombol Back (backspace) dan Refresh (F5). </li>
@@ -141,17 +155,14 @@ class Auction_tata_cara extends CI_Controller{
 			</ol>';			 
 		$data['action'] = "save"; 
 		
-		if(!$is_edit)
-			$param = array(
-				$value,
-				$id_lelang,
-				date("Y-m-d H:i:s")	
-			);
-		else
-			$param = array(
+		$param = $is_edit ? array(
 				$value,
 				date("Y-m-d H:i:s"),
 				$id_lelang
+			) : array(
+				$value,
+				$id_lelang,
+				date("Y-m-d H:i:s")	
 			);
 		
 		$this->syarat_model->save($is_edit, $param);

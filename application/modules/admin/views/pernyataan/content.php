@@ -1,7 +1,7 @@
 <?php echo $this->session->flashdata('msgSuccess')?>
 <?php echo $this->session->flashdata('msgError')?>
 <div class="tableWrapper" style="margin-bottom: 20px">
-	<?php foreach ($pernyataan as $key => $value) {?>
+	<?php foreach ($pernyataan as $value) {?>
 	<div class="btnTopGroup clearfix">
 		<form method="POST" enctype="multipart/form-data">
 			<h2>Surat Pernyataan</h2>

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
  
 
@@ -6,7 +6,7 @@ class Admin_user_model extends CI_Model{
 
 
 
-	function __construct(){
+	public function __construct(){
 
 		parent::__construct();
 
@@ -56,7 +56,7 @@ class Admin_user_model extends CI_Model{
 
 
 
-	function get_admin_user_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()) 
+	public function get_admin_user_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()) 
 
     {
 
@@ -96,7 +96,7 @@ class Admin_user_model extends CI_Model{
 
     }
 
-    function get_role(){
+    public function get_role(){
 
     	$get = $this->db->select('id,name')->get('tb_role');
 
@@ -106,7 +106,7 @@ class Admin_user_model extends CI_Model{
 
 		$res[''] = 'Pilih salah satu';
 
-		foreach($raw as $key => $val){
+		foreach($raw as $val){
 
 			$res[$val['id']] = $val['name'];
 
@@ -116,7 +116,7 @@ class Admin_user_model extends CI_Model{
 
     }
 
-    function save_data($data){
+    public function save_data($data){
 
 		$_param = array();
 
@@ -190,9 +190,7 @@ class Admin_user_model extends CI_Model{
 
 		$this->db->query($sql, $param);
 
-		$id = $this->db->insert_id();
-
-		return $id;
+		return $this->db->insert_id();
 
 	}
 
@@ -200,7 +198,7 @@ class Admin_user_model extends CI_Model{
 
 
 
-	function get_data($id){
+	public function get_data($id){
 
 
 
@@ -214,29 +212,23 @@ class Admin_user_model extends CI_Model{
 
 
 
-	function edit_data($data,$id){
+	public function edit_data($data,$id){
 
 				
 
 		
 
-		$res 	= $this->db->where('id',$id)->update('ms_admin',$data);
-
-		
-
-		return $res;
+		return $this->db->where('id',$id)->update('ms_admin',$data);
 
 	}
 
-	function edit_data2($data,$id){
+	public function edit_data2($data,$id){
 
-		$result = $this->db->where('id_user',$id)->where('type','admin')->update('ms_login',$data);
-
-		return $result;
+		return $this->db->where('id_user',$id)->where('type','admin')->update('ms_login',$data);
 
 	}
 
-	function delete($id){
+	public function delete($id){
 
 		$this->db->where('id',$id);
 
@@ -264,7 +256,7 @@ class Admin_user_model extends CI_Model{
 
 	##################################################
 
-	function get_kurs_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
+	public function get_kurs_list($search='', $sort='', $page='', $per_page='',$is_page=FALSE,$filter=array()){
 
 		$this->db->select('*');
 
@@ -300,21 +292,19 @@ class Admin_user_model extends CI_Model{
 
     }
 
-    function edit_kurs($data,$id){
+    public function edit_kurs($data,$id){
 
 				
 
 		$this->db->where('id',$id);
 
-		$res = $this->db->update('tb_kurs',$data);
-
 		
 
-		return $res;
+		return $this->db->update('tb_kurs',$data);
 
 	}
 
-    function delete_kurs($id){
+    public function delete_kurs($id){
 
 		$this->db->where('id',$id);
 
@@ -322,7 +312,7 @@ class Admin_user_model extends CI_Model{
 
 	}
 
-	function get_kurs($id){
+	public function get_kurs($id){
 
 		$sql = "SELECT * FROM tb_kurs WHERE id = ".$id;
 
@@ -332,11 +322,9 @@ class Admin_user_model extends CI_Model{
 
 	}
 
-	function save_kurs($data){
+	public function save_kurs($data){
 
 
-
-		$_param = array();
 
 		$sql = "INSERT INTO tb_kurs (
 
@@ -354,17 +342,15 @@ class Admin_user_model extends CI_Model{
 
 		
 
-		foreach($this->kurs as $_param) $param[$_param] = $data[$_param];
+		foreach($this->kurs as $kur) $param[$kur] = $data[$kur];
 
 		// echo print_r($this->input->post());
 
 		$this->db->query($sql, $param);
 
-		$id = $this->db->insert_id();
-
 		
 
-		return $id;
+		return $this->db->insert_id();
 
 	
 

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class admin_reporting extends CI_Controller {
 	public function __construct(){
@@ -6,6 +6,7 @@ class admin_reporting extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('report/admin_report_model','arm');
 		$this->load->model('pengadaan_model','pm');
 		$this->load->helper('form');
@@ -69,7 +70,7 @@ class admin_reporting extends CI_Controller {
 
 
 
-	function filter_parameter(){
+	public function filter_parameter(){
 		return array( 
 			'administrasi' =>
 			array(
@@ -77,7 +78,6 @@ class admin_reporting extends CI_Controller {
 				'field' => array(
 					'administrasi_nama'	=> array('name' => 'Nama Badan Usaha', 'header' => 'administrasi_nama', 'field' => 'a.nama','type' => 'text'),
 					'badan_usaha' => array('name' => 'Badan Hukum', 'header' => 'badan_usaha', 'field' => 'bg.name','type' => 'text'),
-					'website' => array('name' => 'Website', 'header' => 'website', 'field' => 'a.website','type' => 'text'),
 					'administrasi_sbu' => array('name' => 'Satuan Unit/Kerja', 'header' => 'administrasi_sbu','field' => 'i.name','type' => 'text'),
 					'npwp' 	=> array('name' => 'NPWP', 'header' => 'npwp', 'field' => 'a.npwp','type' => 'text'),
 					'nppkp' => array('name' => 'NPPKP', 'header' => 'nppkp', 'field' => 'a.nppkp','type' => 'text'),
@@ -99,21 +99,17 @@ class admin_reporting extends CI_Controller {
 	}
 
 
-	function content($input=''){
+	public function content($input=''){
 		$this->load->library('form');
 		$this->load->library('datatables');
 
-
-		$search = $this->input->get('q');
-		$page = '';
-		
-		$per_page=10;
+  $this->input->get('q');
 
 		$sort = $this->utility->generateSort(array('name','address','type','city'));
 
 		$data['sort'] = $sort;
 
-			foreach ($input as $key => $value) {
+			foreach ($input as $value) {
 				foreach ($value as $zero) {
 					if ($zero == "name"){
 						$data['name'] = $this->arm->get_name();
@@ -141,7 +137,7 @@ class admin_reporting extends CI_Controller {
 	}
 
 
-	function asd($input=''){
+	public function asd($input=''){
 		
 	}
 	

@@ -56,9 +56,9 @@
 
 		<?php 
 
-		if(count($vendor_list)){
+		if(count($vendor_list) > 0){
 
-			foreach($vendor_list as $row => $value){
+			foreach($vendor_list as $value){
 
 			?>
 

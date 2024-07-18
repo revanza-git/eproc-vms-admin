@@ -23,8 +23,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($evaluasi)){
-			foreach($evaluasi as $row => $value){
+		if(count($evaluasi) > 0){
+			foreach($evaluasi as $value){
 			?>
 				<tr>
 					<td><?php echo $value['name']?></td>

@@ -8,13 +8,13 @@
 				<div class="panel-group">
 				<?php 
 				$i=1;
-				foreach($assessment_question as $key => $value){ ?>
+				foreach($assessment_question as $value){ ?>
 				<div class="panel">
 					<div class="panel-body">
 						<h4 class="panel-title"><?php echo $value['name']; ?></h4>
 						<ul class="assQuest">
 							<?php
-							foreach($value['quest'] as $row => $val){ ?>
+							foreach($value['quest'] as $val){ ?>
 							<li>
 								<div class="fieldPanel">
 									<div class="questBox">
@@ -39,14 +39,16 @@
 							</li>
 							<?php
 							$i++;
-							 } ?>
+							 }
+     ?>
 						</ol>
 						
 		            </div>
 		        </div>
-				<?php 
+<?php 
 				
-				} ?>
+				}
+     ?>
 				
 	              	
 			</div>

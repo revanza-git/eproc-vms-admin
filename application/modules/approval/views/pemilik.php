@@ -16,8 +16,8 @@
 			</thead>
 			<tbody>
 			<?php 
-			if(count($pemilik_list)){
-				foreach($pemilik_list as $row => $value){
+			if(count($pemilik_list) > 0){
+				foreach($pemilik_list as $value){
 				?>
 					<tr>
 						<td><?php echo $value['name'];?></td>
@@ -43,7 +43,8 @@
 				<tr>
 					<td colspan="6"><a target="blank" href="<?= BASE_LINK_EXTERNAL.('lampiran/ubo_file/'.$ubo_file['ubo_file']) ?>" class="btnBlue"><i class="fa fa-eye"></i> Lihat Surat UBO</a></td>
 				</tr>
-			<?php } ?>
+			<?php }
+    ?>
 			</tbody>
 		</table>
 		
@@ -56,5 +57,6 @@
 <div class="buttonRegBox clearfix">
 	<input type="submit" value="Simpan" class="btnBlue" name="simpan">
 </div>
-<?php }?>
+<?php }
+  ?>
 </form>

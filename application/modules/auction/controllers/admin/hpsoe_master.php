@@ -1,14 +1,14 @@
 <?php
 class Hpsoe_master extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 		$this->load->model('hpsoe/hpsoe_model');
 		$this->load->model('hpsoe/hpsoe_group_model');
 	}
 	
-	function index($is_public = false){
+	public function index($is_public = false){
 		$data['query'] = $this->hpsoe_model->get_variable();
 		$data['formula'] = $this->hpsoe_model->get_variable('formula');
 		
@@ -45,16 +45,18 @@ class Hpsoe_master extends CI_Controller{
 		$data['komag'] = $this->form->text_box('komag', '', array(15,15));
 		$data['satuan'] = $this->form->text_box('satuan', '', array(5,5));
 		
-		if($is_public) $data['is_public'] = true;
+		if ($is_public) {
+      $data['is_public'] = true;
+  }
 		
 		$this->load->view('content/hpsoe/master', $data);
 	}
 	
-	function user_view(){
+	public function user_view(){
 		$this->load->view('template/main_hpsoe');
 	}
 	
-	function form_formula($id = ''){
+	public function form_formula($id = ''){
 		$data['content'] = "form/hpsoe/formula";
 		$data['width'] = 700;
 		
@@ -79,32 +81,36 @@ class Hpsoe_master extends CI_Controller{
 		$this->load->view("jc-table/form/jc-form", $data);
 	}
 	
-	function drop_down_formula($name = '', $is_noname = false){
-		$return = '<select '; 
-		if(!$is_noname) $return .= 'name="'.$name.'" id="'.$name.'"'; else $return .= ' class="hidden-'.$name.'"'; 
+	public function drop_down_formula($name = '', $is_noname = false){
+		$return = '<select ';
+  if (!$is_noname) {
+      $return .= 'name="'.$name.'" id="'.$name.'"';
+  } else {
+      $return .= ' class="hidden-'.$name.'"';
+  }
+   
 		$return .= ' onchange="draw_formula()">';
 
 		$return .= '<option value="">-- pilih --</option>';
 		$query = $this->hpsoe_model->get_formula();
 		foreach($query->result() as $data)
 			$return .= '<option value="'.$data->id.'">'.$data->var_name.'</option>';
-		$return .= '</select>';
 		
-		return $return;
+		return $return . '</select>';
 	}
 	
-	function formula_drawer($is_report = false){
+	public function formula_drawer($is_report = false){
 		$data['query'] = $this->hpsoe_model->get_variable('formula', $_POST['group']);
 		$data['variable'] = $this->hpsoe_model->get_variable('variable');
 		$data['group'] = $this->hpsoe_group_model->get_group();
 		
 		$data['param'] = $_POST;
-		if($is_report) $data['param']['is_report'] = "true"; else $data['param']['is_report'] = "false";
+		$data['param']['is_report'] = $is_report ? "true" : "false";
 		
 		$this->load->view('content/hpsoe/formula-drawer', $data);	
 	}
 	
-	function save(){
+	public function save(){
 		$param = array(
 			'name' => $_POST['name'],
 			'var_name' => $_POST['var_name'], 
@@ -126,7 +132,7 @@ class Hpsoe_master extends CI_Controller{
 		die(json_encode($json));
 	}
 	
-	function delete($id = ''){
+	public function delete($id = ''){
 		$this->hpsoe_model->delete($id);
 		
 		$json = array(

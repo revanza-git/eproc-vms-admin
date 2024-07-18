@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Dashboard extends CI_Controller {
 	public function __construct(){
@@ -6,11 +6,14 @@ class Dashboard extends CI_Controller {
 		if(!$this->session->userdata('user')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('vendor/vendor_model','vm');
 		$this->load->model('dashboard/dashboard_model','bm');
-		$data = $this->session->userdata('user');
+
+  $this->session->userdata('user');
 		
 	}
+ 
 	public function index()
 	{
 		$data = $this->session->userdata('user');

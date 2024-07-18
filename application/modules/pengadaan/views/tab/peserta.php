@@ -9,21 +9,24 @@
 		<div class="btnTopGroup clearfix">
 			<a href="<?php echo site_url('pengadaan/tambah_peserta/'.$id);?>" class="btnBlue"><i class="fa fa-plus"></i> Tambah</a>
 		</div>
-		<?php } ?>
-	<?php }else{ ?>
+		<?php }
+ ?>
+<?php }else{ ?>
 		<p class="noticeMsg">Pilih Bidang & Sub Bidang terlebih dahulu</p>
-	<?php } ?>
+	<?php }
+ ?>
 		<table class="tableData">
 			<thead>
 				<tr>
 					<td><a href="?<?php echo $this->utility->generateLink('sort','desc')?>&sort=<?php echo ($sort['peserta_name'] == 'asc') ? 'desc' : 'asc'; ?>&by=peserta_name">Peserta<i class="fa fa-sort-<?php echo ($sort['peserta_name'] == 'asc') ? 'desc' : 'asc'; ?>"></i></a></td>
-					<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?><td class="actionPanel">Action</td><?php } ?>
+					<?php if($this->session->userdata('admin')['id_role']==3||$this->session->userdata('admin')['id_role']==10){ ?><td class="actionPanel">Action</td><?php }
+ ?>
 				</tr>
 			</thead>
 			<tbody>
 			<?php 
-			if(count($list)){
-				foreach($list as $row => $value){
+			if(count($list) > 0){
+				foreach($list as $value){
 				?>
 					<tr>
 						<td><?php echo $value['peserta_name'];?></td>
@@ -32,9 +35,10 @@
 						<td class="actionBlock">
 							<a href="<?php echo site_url('pengadaan/hapus_peserta/'.$value['id'].'/'.$id)?>" class="delBtn"><i class="fa fa-trash"></i>&nbsp;Hapus</a>
 						</td>
-						<?php } ?>
+						<?php }
+     ?>
 					</tr>
-				<?php 
+<?php 
 				}
 			}else{?>
 				<tr>

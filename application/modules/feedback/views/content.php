@@ -19,8 +19,8 @@
 		</thead>
 		<tbody>
 			<?php
-			if (count($feedback_list)) {
-				foreach ($feedback_list as $row => $value) {
+			if (count($feedback_list) > 0) {
+				foreach ($feedback_list as $value) {
 			?>
 					<tr>
 						<td><?php echo $value['name']; ?></td>

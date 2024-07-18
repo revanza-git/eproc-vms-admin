@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class admin_pernyataan extends CI_Controller {
 	public function __construct(){
@@ -6,9 +6,11 @@ class admin_pernyataan extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('pernyataan/pernyataan_model','pm');
 		
 	}
+ 
 	/*public function index(){
 		
 		$data['pernyataan']	=$this->pm->get_pernyataan_list();
@@ -25,7 +27,9 @@ class admin_pernyataan extends CI_Controller {
 		if (!empty($check)){
 			$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
 			$fill 	= $this->securities->clean_input($_POST,'save');
-			$item 	= $vld = $save_data = array();
+   $item = array();
+   $vld = array();
+   $save_data = array();
 			$admin 	= $this->session->userdata('admin');
 			$vld 	= 	array(
 							array(
@@ -63,16 +67,11 @@ class admin_pernyataan extends CI_Controller {
 				$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 				
 			return $this->load->view('template',$item);
-		}else{
-			 redirect(site_url('admin_pernyataan/tambah_pernyataan/'));
 		}
+
+  redirect(site_url('admin_pernyataan/tambah_pernyataan/'));
+  
 		return $this->load->view('pernyataan/tambah_pernyataan',$data,TRUE);
-
-		$layout['content']	= $this->load->view('pernyataan/content',$data,TRUE);
-
-		$item['header'] 	= $this->load->view('admin/header',$this->session->userdata('admin'),TRUE);
-		$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
-		$this->load->view('template',$item);
 	}
 
 	public function tambah_pernyataan(){
@@ -81,7 +80,9 @@ class admin_pernyataan extends CI_Controller {
 		if (empty($check)){
 			$form 	= ($this->session->userdata('form'))?$this->session->userdata('form'):array();
 			$fill 	= $this->securities->clean_input($_POST,'save');
-			$item 	= $vld = $save_data = array();
+   $item = array();
+   $vld = array();
+   $save_data = array();
 			$admin 	= $this->session->userdata('admin');
 			$vld 	= 	array(
 						array(
@@ -116,9 +117,10 @@ class admin_pernyataan extends CI_Controller {
 				$item['content'] 	= $this->load->view('admin/dashboard',$layout,TRUE);
 				
 			return $this->load->view('template',$item);
-		}else{
-			redirect(site_url('admin_pernyataan/'));
 		}
+
+  redirect(site_url('admin_pernyataan/'));
+  return null;
 	}
 
 }

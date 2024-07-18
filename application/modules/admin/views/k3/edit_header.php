@@ -7,10 +7,11 @@
 			<tr class="input-form">
 				<td><label>Nama* :</label></td>
 				<td style="width: 500px;"><?php //print_r($header)?>
-					<?php foreach ($header as $key => $question) { ?>
+					<?php foreach ($header as $question) { ?>
 					<textarea id="wysiwyg" style="width:700px !important;" name="question"><?php echo $question; ?></textarea>
 					<?php echo form_error('question');?>
-					<?php } ?>
+					<?php }
+ ?>
 				</td>
 			</tr>
 		</table>

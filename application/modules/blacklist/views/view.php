@@ -90,7 +90,8 @@
 
 			</tr>
 
-			<?php } ?>
+			<?php }
+ ?>
 
 			<?php if(isset($white_date)){ ?>
 
@@ -112,7 +113,8 @@
 
 			</tr>
 
-			<?php } ?>
+			<?php }
+ ?>
 
 		</table>
 

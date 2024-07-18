@@ -1,13 +1,13 @@
 <?php
 class Hpsoe_group extends CI_Controller{
 	
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		
 		$this->load->model('hpsoe/hpsoe_group_model');
 	}
 	
-	function form($id = ''){
+	public function form($id = ''){
 		$data['content'] = "form/hpsoe/group";
 		$data['width'] = 550;
 		
@@ -21,7 +21,7 @@ class Hpsoe_group extends CI_Controller{
 		$this->load->view("jc-table/form/jc-form", $data);
 	}
 	
-	function save(){
+	public function save(){
 		$this->do_upload('images', 'lampiran_hpsoe');
 		
 		$param = array(
@@ -41,7 +41,7 @@ class Hpsoe_group extends CI_Controller{
 		die(json_encode($json));
 	}
 	
-	function do_upload($name = '', $db_name = ''){	
+	public function do_upload($name = '', $db_name = ''){	
 		$file_name = $_FILES[$name]['name'] = $name.'_'.$this->utility->name_generator($_FILES[$name]['name']);
 		
 		$config['upload_path'] = '../lampiran/'.$db_name.'/';

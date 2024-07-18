@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class blacklist extends CI_Controller {
 
@@ -9,6 +9,7 @@ class blacklist extends CI_Controller {
 		if(!$this->session->userdata('admin')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('blacklist_model','bm');
 		$this->load->model('vendor/vendor_model', 'vm');
 		// $this->load->library('encrypt');
@@ -48,6 +49,7 @@ class blacklist extends CI_Controller {
 		if($id_blacklist==1){
 			$this->blacklist_filter[0][0]['filter'][] = array('table'=>'tr_blacklist|end_date' ,'type'=>'date','label'=> 'Tanggal Selesai Blacklist');
 		}
+  
 		$this->session->unset_userdata('blacklist');
 		$data 					= $this->bm->get_form_data($id_blacklist);
 		$data['id_blacklist'] 	= $id_blacklist;
@@ -81,7 +83,7 @@ class blacklist extends CI_Controller {
 
 	public function tambah($id=0){
 		$_POST 	= $this->securities->clean_input($_POST,'save');
-		$admin 	= $this->session->userdata('admin');
+		$this->session->userdata('admin');
 		$vendor = ($this->session->userdata('blacklist')) ? $this->session->userdata('blacklist') : array();
 
 
@@ -122,11 +124,8 @@ class blacklist extends CI_Controller {
 		$this->form_validation->set_rules($vld);
 		if($this->form_validation->run()==TRUE){
 			$_POST['entry_stamp'] = date("Y-m-d H:i:s");
-			if($id_blacklist==1){
-				$_POST['end_date'] = date('Y-m-d',strtotime($_POST['start_date'] . ' +2 years'));	
-			}else{
-				$_POST['end_date'] = 'lifetime';
-			}
+   $_POST['end_date'] = $id_blacklist==1 ? date('Y-m-d',strtotime($_POST['start_date'] . ' +2 years')) : 'lifetime';
+   
 			// $_POST['edit_stamp'] = date("Y-m-d H:i:s");
 			$_POST['data_status'] = 0;
 			$result = $this->bm->save_data($this->input->post());
@@ -135,6 +134,7 @@ class blacklist extends CI_Controller {
 				$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Menunggu approval Supervisor!</p>');
 				redirect(site_url('blacklist/index/'.$id_blacklist)/*$this->session->userdata('blacklist')['site']*/);
 			}
+   
 			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Menunggu approval Supervisor!</p>');
 			redirect(site_url('blacklist/index/'.$id_blacklist));
 		}
@@ -268,7 +268,7 @@ class blacklist extends CI_Controller {
 $blacklist = $data['id_blacklist'];			$_POST['id_blacklist'] = $id_blacklist;
 			
 			// echo $blacklist;die;
-			$result = $this->bm->approve_blacklist($this->input->post());
+			$this->bm->approve_blacklist($this->input->post());
 			
 			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Sukses menambahkan vendor '.$data['value'].' !</p>');
 			redirect(site_url('blacklist/index/'.$blacklist));
@@ -290,10 +290,10 @@ $blacklist = $data['id_blacklist'];			$_POST['id_blacklist'] = $id_blacklist;
 			$_POST[$db_name] = $file_name;
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 
 
@@ -310,8 +310,7 @@ $blacklist = $data['id_blacklist'];			$_POST['id_blacklist'] = $id_blacklist;
 
 
 		// print_r($data);
-		$search 	= $this->input->get('q');
-		$page 		= '';		
+		$search 	= $this->input->get('q');		
 		$per_page	= 10;
 
 		$sort = $this->utility->generateSort(array('id_vendor', 'white_date', 'point', 'category', 'remark'));
@@ -339,7 +338,7 @@ $blacklist = $data['id_blacklist'];			$_POST['id_blacklist'] = $id_blacklist;
 			
 
 
-			$result = $this->bm->approve_white($this->input->post());
+			$this->bm->approve_white($this->input->post());
 			
 			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Masuk daftar putih dan menunggu verifikasi ulang oleh Super Admin! </p>');
 			redirect(site_url('blacklist/whitelist'));
@@ -355,7 +354,7 @@ $blacklist = $data['id_blacklist'];			$_POST['id_blacklist'] = $id_blacklist;
 			$_POST['id_blacklist'] = $id_blacklist;
 			
 			// print_r($this->input->post());die;
-			$result = $this->bm->approve_white($this->input->post());
+			$this->bm->approve_white($this->input->post());
 			
 			$this->session->set_flashdata('msgSuccess','<p class="msgSuccess">Vendor masuk ke daftar tunggu Super Admin!</p>');			
 			redirect(site_url('blacklist/whitelist'));
@@ -370,13 +369,9 @@ $blacklist = $data['id_blacklist'];			$_POST['id_blacklist'] = $id_blacklist;
 	}
 
 	public function export_excel($id_blacklist, $title=""){
-		if ($id_blacklist ==1) {
-			# code...
-			$title = "Data Daftar Merah";
-		}else{
-			$title = "Data Daftar Hitam";			
-		}
-		$data = $this->bm->get_blacklist_list($id_blacklist,$search, $sort, $page, $per_page,TRUE);
+		$title = $id_blacklist ==1 ? "Data Daftar Merah" : "Data Daftar Hitam";
+
+  $data = $this->bm->get_blacklist_list($id_blacklist,$search, $sort, $page, $per_page,TRUE);
 		// print_r($data);die;	
 		$table = "<table border=1>";
 
@@ -401,6 +396,7 @@ $blacklist = $data['id_blacklist'];			$_POST['id_blacklist'] = $id_blacklist;
 			$table .= "<td>".$value['remark']."</td>";
 			$table .= "</tr>";
 		}
+  
 		$table .= "</table>";
 		header('Content-type: application/ms-excel');
 
@@ -411,7 +407,7 @@ $blacklist = $data['id_blacklist'];			$_POST['id_blacklist'] = $id_blacklist;
 		echo $table;
 	}
 
-	public function export_whitelist($title="Data Whitelist", $data){
+	public function export_whitelist($data, $title="Data Whitelist"){
 		$data = $this->bm->whitelist_data();
 		// print_r($data);die;	
 		$table = "<table border=1>";
@@ -437,6 +433,7 @@ $blacklist = $data['id_blacklist'];			$_POST['id_blacklist'] = $id_blacklist;
 			$table .= "<td>".$value['remark']."</td>";
 			$table .= "</tr>";
 		}
+  
 		$table .= "</table>";
 		header('Content-type: application/ms-excel');
 

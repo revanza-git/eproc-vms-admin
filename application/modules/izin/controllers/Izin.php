@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 class Izin extends CI_Controller {
 
@@ -7,6 +7,7 @@ class Izin extends CI_Controller {
 		if(!$this->session->userdata('user')){
 			redirect(site_url());
 		}
+  
 		$this->load->model('Izin_model','im');
 		$this->load->library('encrypt');
 		$this->load->library('utility');
@@ -38,6 +39,7 @@ class Izin extends CI_Controller {
 		if($this->vm->check_pic($data['id_user'])==0){
 			redirect(site_url('dashboard/pernyataan'));
 		}
+  
 		$search = $this->input->get('q');
 		$page = '';
 		
@@ -59,11 +61,12 @@ class Izin extends CI_Controller {
 		$item['script'] = $this->load->view('dashboard/script2',NULL,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function klasifikasi(){
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		$layout['get_dpt_type'] = $this->im->get_dpt_type();
 		$vld = 	array(
@@ -80,16 +83,19 @@ class Izin extends CI_Controller {
 
 			redirect('izin/siu');
 		}
+  
 		$layout['content']= $this->load->view('klasifikasi',$layout,TRUE);
 
 		$item['header'] = $this->load->view('dashboard/header',$user,TRUE);
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function siu(){
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		$layout['siu'] = array('siup'=>'SIUP','ijin_lain'=>'Surat Ijin Usaha Lainnya','asosiasi'=>'Sertifikat Asosiasi/Lainnya','siujk'=>'SIUJK','sbu'=>'SBU');
 		$layout['dpt'] = array(1=>array('siup','ijin_lain','asosiasi'),2=>array('siup','ijin_lain','asosiasi'),3=>array('siup','ijin_lain','asosiasi'),4=>array('siujk','sbu','asosiasi'),5=>array('siujk','sbu','asosiasi'));
@@ -116,18 +122,20 @@ class Izin extends CI_Controller {
 			$this->session->set_userdata('form',array_merge($form,$this->input->post()));
 			redirect('izin/klasifikasi');
 		}
+  
 		$layout['content']= $this->load->view('siu',$layout,TRUE);
 
 		$item['header'] = $this->load->view('dashboard/header',$user,TRUE);
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function pengisian_data(){
 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		
 		$layout['form'] = $form;
@@ -153,6 +161,7 @@ class Izin extends CI_Controller {
 						'rules'=>''
 					);
 		}
+  
 		if(isset($form['qualification'])){
 			$vld[] = array(
 						'field'=>'qualification',
@@ -160,6 +169,7 @@ class Izin extends CI_Controller {
 						'rules'=>'required'
 					);
 		}
+  
 		if(!empty($_FILES['izin_file']['name'])){
 			$vld[] = array(
 						'field'=>'izin_file',
@@ -167,6 +177,7 @@ class Izin extends CI_Controller {
 						'rules'=>'callback_do_upload[izin_file]'
 					);
 		}
+  
 		$this->form_validation->set_rules($vld);
 		
 		if($this->input->post('simpan')){
@@ -194,12 +205,14 @@ class Izin extends CI_Controller {
 			$this->session->set_userdata('form',array_merge($form,$this->input->post()));
 			redirect('izin/siu');
 		}
+  
 		$layout['content']= $this->load->view('pengisian_data',$layout,TRUE);
 
 		$item['header'] = $this->load->view('dashboard/header',$user,TRUE);
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function edit($id){
 		$data = $this->im->get_data($id);
 		// echo print_r($data);
@@ -227,6 +240,7 @@ class Izin extends CI_Controller {
 						'rules'=>'required'
 					);
 		}
+  
 		if(isset($form['qualification'])){
 			$vld[] = array(
 						'field'=>'qualification',
@@ -279,6 +293,7 @@ class Izin extends CI_Controller {
 			redirect(site_url('izin'));
 		}
 	}
+ 
 	public function do_upload($field, $db_name = ''){	
 		
 		$file_name = $_FILES[$db_name]['name'] = $db_name.'_'.$this->utility->name_generator($_FILES[$db_name]['name']);
@@ -294,10 +309,10 @@ class Izin extends CI_Controller {
 			$_POST[$db_name] = $file_name;
 			$this->form_validation->set_message('do_upload', $this->upload->display_errors('',''));
 			return false;
-		}else{
-			$_POST[$db_name] = $file_name; 
-			return true;
 		}
+
+  $_POST[$db_name] = $file_name;
+  return true;
 	}
 
 	public function bsb($id){
@@ -324,9 +339,9 @@ class Izin extends CI_Controller {
 
 	public function formBidang($id){
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		$data_izin = $this->im->get_data($id);
 
@@ -338,14 +353,10 @@ class Izin extends CI_Controller {
 					)
 				);
 		$this->form_validation->set_rules($vld);
-		if($this->input->post('next')){
-			if($this->form_validation->run()==TRUE){
-				
-				$this->session->set_userdata('form',array_merge($form,$this->input->post()));
-				redirect(site_url('izin/formSubBidang/'.$id));
-			
-			}
-		}
+		if ($this->input->post('next') && $this->form_validation->run()==TRUE) {
+      $this->session->set_userdata('form',array_merge($form,$this->input->post()));
+      redirect(site_url('izin/formSubBidang/'.$id));
+  }
 
 		$data['id_bidang'] = $this->im->get_bidang($data_izin['id_dpt_type']);
 
@@ -356,12 +367,13 @@ class Izin extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function formSubBidang($id){
 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):array();
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		
 
@@ -413,8 +425,9 @@ class Izin extends CI_Controller {
 	public function formEditBidang($bsb,$id){
 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):$this->im->get_bsb_data($id);
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		$data_izin = $this->im->get_data($bsb);
 
@@ -426,14 +439,12 @@ class Izin extends CI_Controller {
 					)
 				);
 		$this->form_validation->set_rules($vld);
-		if($this->input->post('next')){
-			if($this->form_validation->run()==TRUE){
-				unset($_POST['next']);
-				$this->session->set_userdata('form',array_merge($form,$this->input->post()));
-				redirect(site_url('izin/formEditSubBidang/'.$bsb.'/'.$id));
-			
-			}
-		}
+		if ($this->input->post('next') && $this->form_validation->run()==TRUE) {
+      unset($_POST['next']);
+      $this->session->set_userdata('form',array_merge($form,$this->input->post()));
+      redirect(site_url('izin/formEditSubBidang/'.$bsb.'/'.$id));
+  }
+  
 		$data['id_bidang'] = $this->im->get_bidang($data_izin['id_dpt_type']);
 		$data['form'] = $form;
 		$layout['content']= $this->load->view('form_bidang_edit',$data,TRUE);
@@ -446,9 +457,9 @@ class Izin extends CI_Controller {
 	public function formEditSubBidang($bsb,$id){
 
 		$form = ($this->session->userdata('form'))?$this->session->userdata('form'):$this->im->get_bsb_data($id);
-		
-		$fill = $this->securities->clean_input($_POST,'save');
-		$item = $vld = $save_data = array();
+  $this->securities->clean_input($_POST,'save');
+  $item = array();
+  $vld = array();
 		$user = $this->session->userdata('user');
 		
 
@@ -493,6 +504,7 @@ class Izin extends CI_Controller {
 		$item['content'] = $this->load->view('user/dashboard',$layout,TRUE);
 		$this->load->view('template',$item);
 	}
+ 
 	public function bsb_hapus($bsb,$id){
 		if($this->im->delete_bsb($id)){
 			$this->dpt->non_iu_change($user['id_user']);
@@ -503,5 +515,6 @@ class Izin extends CI_Controller {
 			redirect(site_url('izin/bsb/'.$bsb));
 		}
 	}
+ 
 	/*Edit Sub bidang*/
 }

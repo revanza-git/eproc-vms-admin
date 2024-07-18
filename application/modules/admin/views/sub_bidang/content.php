@@ -24,8 +24,8 @@
 		</thead>
 		<tbody>
 		<?php 
-		if(count($subbidang)){
-			foreach($subbidang as $row => $value){
+		if(count($subbidang) > 0){
+			foreach($subbidang as $value){
 			?>
 				<tr>
 					<td class="remarkTxt" style="width:50px !important;"><?php echo $value['id_bidang']?></td>

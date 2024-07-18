@@ -14,6 +14,7 @@
 		"php": ">=5.2.4"
 	},
 	"require-dev": {
-		"mikey179/vfsStream": "1.1.*"
+		"mikey179/vfsstream": "1.1.*",
+		"rector/rector": "^1.2"
 	}
 }
