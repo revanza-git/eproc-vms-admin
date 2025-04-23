@@ -125,7 +125,7 @@ class Assessment extends CI_Controller {
 			$_POST['id_vendor'] 		= $id_vendor;
 			$_POST['id_procurement'] 	= $id;
 			$_POST['date']				= date('Y-m-d H:i:s');
-			//print_r($this->input->post());die;
+			// /print_r($this->input->post());die;
 			$assessment = $this->am->save_assessment($id,$this->input->post());
 
 			switch ($this->session->userdata('admin')['id_role']) {

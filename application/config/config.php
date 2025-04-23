@@ -23,6 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $config['BASE_LINK.']	=  	"";
 $config['BASE_LINK_EXTERNAL.']	=  	"";
 $config['base_app']	= 	"http://local.eproc.intra.com/eproc_pengadaan/";
+$config['logout_url'] = 'http://local.vms.intra.com/eproc_nusantararegas/main/logout';
+$config['base_vms'] = 'http://local.eproc.vms.com/eproc_nusantararegas';
 
 /*
 |--------------------------------------------------------------------------

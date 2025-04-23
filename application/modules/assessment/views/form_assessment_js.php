@@ -98,4 +98,13 @@
 
 	});
 
+	function toggleHiddenInput(checkbox, pointValue) {
+		var hiddenInput = checkbox.nextElementSibling;
+		if (checkbox.checked) {
+			hiddenInput.value = pointValue;
+		} else {
+			hiddenInput.value = '';
+		}
+	}
+
 </script>

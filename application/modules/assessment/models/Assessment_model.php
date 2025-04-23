@@ -351,7 +351,7 @@ class Assessment_model extends CI_Model{
 		foreach($data_list as $row){
 			$result[$row['id_ass']] = $row['value'];
 		}
-  
+		
 		return $result;
 	}
  
