@@ -27,7 +27,7 @@ This project is part of a larger E-Procurement ecosystem that consists of three 
 
 ### System Flow
 
-![E-Procurement Flow](assets/images/eproc_flow/eproc_flow.jpg)
+![E-Procurement Flow](assets/images/eproc_flow.jpg)
 
 The flow diagram above illustrates how the three components interact:
 - Vendors register and submit documents through VMS
