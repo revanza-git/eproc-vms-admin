@@ -251,7 +251,7 @@ class Pre_auction_model extends CI_Model{
 			$exp = array(
 					'id_vendor'			=> $key_vendor,
 					'job_name' 			=> $data['proc']['name'],
-					'job_giver'			=> "PT. Nusantara Regas",
+					'job_giver'			=> "E-Procurement System",
 					// 'contract_no'		=> $data['no_contract'],
 					// 'contract_start'	=> $data['start_contract'],
 					// 'contract_end'		=> $data['end_contract'],

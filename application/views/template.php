@@ -6,7 +6,7 @@
 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-		<title>Sistem Aplikasi Kelogistikan - PT Nusantara Regas</title>
+		<title>Sistem Aplikasi Kelogistikan</title>
 
 		
 
@@ -92,7 +92,7 @@
 
 				<div class="footer">
 
-					<p class="copyright">© PT Nusantara Regas <?php echo date('Y');?></p>
+					<p class="copyright">© <?php echo date('Y');?></p>
 
 					<p class="systemVer">System Version 1.0</p>
 

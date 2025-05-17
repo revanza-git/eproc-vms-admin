@@ -1895,7 +1895,7 @@ class Pengadaan_model extends CI_Model{
 		$exp = array(
 					'id_vendor'			=> $data['id_vendor'],
 					'job_name' 			=> $proc['name'],
-					'job_giver'			=> "PT. Nusantara Regas",
+					'job_giver'			=> "E-Procurement System",
 					'contract_no'		=> $data['no_contract'],
 					'contract_start'	=> $data['start_contract'],
 					'contract_end'		=> $data['end_contract'],

@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '10.10.11.20',
+	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => 'Nusantara1234',
 	'database' => 'eproc_dev',
@@ -97,7 +97,7 @@ $db['default'] = array(
 
 $db['perencanaan'] = array(
 	'dsn'	=> '',
-	'hostname' => '10.10.11.20',
+	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => 'Nusantara1234',
 	'database' => 'eproc_perencanaan_dev',

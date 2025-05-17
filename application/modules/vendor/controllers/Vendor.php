@@ -351,7 +351,7 @@ class Vendor extends CI_Controller {
 				$res = $this->vm->add_vendor($_POST);
 
 				if($res){
-					$message = 'Perusahaan saudara telah terdaftar kedalam Sistem Aplikasi Kelogistikan PT Nusantara Regas.
+					$message = 'Perusahaan saudara telah terdaftar kedalam Sistem Aplikasi Kelogistikan.
 					Berikut username &amp; password saudara : <br/><br/>
 					
 					Username : '.(isset($_POST['vendor_email'])?$_POST['vendor_email']:'').'<br/>
@@ -576,10 +576,10 @@ class Vendor extends CI_Controller {
 	public function mail($to,$message){
  		$this->email->clear(TRUE);
 
-		$this->email->from('vms-noreply@nusantararegas.com', 'VMS REGAS');
+		$this->email->from('noreply@eprocurement.com', 'E-Procurement System');
 		$this->email->to($to); 
 
-		$this->email->subject('Autentikasi Login Sistem Aplikasi Kelogistikan PT Nusantara Regas');
+		$this->email->subject('Authentication Login E-Procurement System');
 		
 		$this->email->message($message);	
 		$this->email->send();
@@ -588,12 +588,12 @@ class Vendor extends CI_Controller {
 	public function mail_test(){
  		$this->email->clear(TRUE);
 
-		$this->email->from('vms-noreply@nusantararegas.com', 'VMS REGAS');
-		$this->email->to('krisna@nusantararegas.com'); 
+		$this->email->from('noreply@eprocurement.com', 'E-Procurement System');
+		$this->email->to('admin@eprocurement.com'); 
 
-		$this->email->bcc('muarifgustiar@gmail.com'); 
+		$this->email->bcc('admin@eprocurement.com'); 
 
-		$this->email->subject('Autentikasi Login Sistem Aplikasi Kelogistikan PT Nusantara Regas');
+		$this->email->subject('Authentication Login E-Procurement System');
 		
 		$this->email->message($message);	
 		$this->email->send();

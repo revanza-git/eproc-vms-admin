@@ -52,14 +52,14 @@ class cron{
 	
 	function send_email($to = '', $subject = '', $message = ''){
 		
-		$from = 	 'vms-noreply@nusantararegas.co.id';
-		$from_name = 'Sistem Aplikasi Kelogistikan';
-		$subject = 	 'Update data Penyedia Barang/Jasa : '.$subject;
+		$from = 'noreply@eprocurement.com';
+		$from_name = 'E-Procurement System';
+		$subject = 'Update data Penyedia Barang/Jasa : '.$subject;
  
-		$header  = "Reply-To: Sistem Aplikasi Kelogistikan <vms-noreply@nusantararegas.co.id>\r\n"; 
-    		$header .= "Return-Path: Sistem Aplikasi Kelogistikan <vms-noreply@nusantararegas.co.id>\r\n"; 
-    		$header .= "From: Sistem Aplikasi Kelogistikan <vms-noreply@nusantararegas.co.id>\r\n"; 
-    		$header .= "Organization: PT Nusantara Regas\r\n"; 
+		$header  = "Reply-To: E-Procurement System <noreply@eprocurement.com>\r\n"; 
+    		$header .= "Return-Path: E-Procurement System <noreply@eprocurement.com>\r\n"; 
+    		$header .= "From: E-Procurement System <noreply@eprocurement.com>\r\n"; 
+    		$header .= "Organization: E-Procurement System\r\n"; 
     		$header .= "Content-Type: text/html; charset=UTF-8\r\n"; 
 		$header .= "X-Mailer: PHP/" . phpversion()."\n";
 
