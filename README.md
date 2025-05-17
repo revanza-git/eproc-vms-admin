@@ -2,6 +2,38 @@
 
 This is the administrative backend system for the Vendor Management System (VMS), designed to manage and streamline the procurement process. This system serves as the control center for managing vendors, procurement requests, and the entire procurement lifecycle.
 
+## E-Procurement Ecosystem
+
+This project is part of a larger E-Procurement ecosystem that consists of three main components:
+
+1. **E-Procurement Admin Panel** (This Project)
+   - Handles procurement management
+   - Manages vendor approvals
+   - Processes procurement requests
+   - Generates reports
+   - Accessible only with admin accounts
+
+2. **E-Procurement Internal** ([eproc-internal](https://github.com/revanza-git/eproc-internal))
+   - Internal procurement management
+   - Department management
+   - Budget management
+   - Accessible only with admin accounts
+
+3. **E-Procurement VMS** ([eproc-vms](https://github.com/revanza-git/eproc-vms))
+   - Vendor registration and management
+   - Document submission
+   - Vendor self-service portal
+   - Accessible only with vendor accounts
+
+### System Flow
+
+![E-Procurement Flow](assets/images/eproc_flow/eproc_flow.jpg)
+
+The flow diagram above illustrates how the three components interact:
+- Vendors register and submit documents through VMS
+- Internal system manages procurement requests and budgets
+- Admin Panel processes approvals and manages the overall procurement lifecycle
+
 ## Features
 
 ### Vendor Management
@@ -48,6 +80,8 @@ This is the administrative backend system for the Vendor Management System (VMS)
 - Apache Web Server
 - Composer
 - mod_rewrite enabled in Apache
+- Access to E-Procurement Internal system
+- Access to E-Procurement VMS system
 
 ## Installation Steps
 
@@ -71,6 +105,7 @@ This is the administrative backend system for the Vendor Management System (VMS)
    - Set base URL in `application/config/config.php`
    - Configure email settings in `application/config/email.php`
    - Update system settings
+   - Configure integration settings for VMS and Internal systems
 
 5. **Set Permissions**
    - Ensure `application/cache` and `application/logs` directories are writable
@@ -112,15 +147,23 @@ This is the administrative backend system for the Vendor Management System (VMS)
 └── vendor/              # Composer dependencies
 ```
 
-## Integration with VMS
+## Integration with VMS and Internal Systems
 
-This admin panel is designed to work in conjunction with a separate Vendor Management System (VMS). The integration points include:
+This admin panel is designed to work in conjunction with both the VMS and Internal systems. The integration points include:
 
+### VMS Integration
 - Vendor data synchronization
 - Document management
 - Authentication and authorization
 - Notification system
 - Audit trail
+
+### Internal System Integration
+- Procurement request synchronization
+- Budget management
+- Department data synchronization
+- User role management
+- Workflow integration
 
 ## Security Considerations
 
@@ -131,6 +174,7 @@ This admin panel is designed to work in conjunction with a separate Vendor Manag
 - Input validation and sanitization
 - SQL injection prevention
 - XSS protection
+- Secure API endpoints for system integration
 
 ## Support
 
@@ -148,4 +192,4 @@ Please read CONTRIBUTING.md for details on our code of conduct and the process f
 
 ---
 
-**Note**: This system is part of a larger VMS ecosystem. Make sure to properly configure the integration points with the main VMS system before deployment. 
+**Note**: This system is part of a larger E-Procurement ecosystem. Make sure to properly configure the integration points with both the VMS and Internal systems before deployment. 
